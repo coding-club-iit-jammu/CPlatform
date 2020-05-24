@@ -43,7 +43,7 @@
             <div class = "mainClass" >
                 <mat-tab-group class="mx-auto text-dark justify-content-between">
                     <mat-tab label="MCQ">
-                        <div class="w-75 mx-auto my-4" *ngIf="mcqQuestions.length > 0">
+                        <div class="w-75 mx-auto my-4" *ngIf="mcqQuestions && mcqQuestions.length > 0">
                             <div class="card border-secondary my-2" *ngFor="let q of mcqQuestions; let i=index;" [ngClass]="{'border-success':q.isSolved}">
                                 <div class="card-header" id="headingOne">
                                     <div class="w-100 text-center" [innerHtml]='q.question'></div>
@@ -55,14 +55,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="mcqQuestions.length==0">
+                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="!mcqQuestions || mcqQuestions.length==0">
                             <div class="card-body">
                                 <h3>No Question Found.</h3>
                             </div>
                         </div>
                     </mat-tab>
                     <mat-tab label="True/False">
-                        <div class="w-75 mx-auto my-4" *ngIf="trueFalseQuestions.length>0">
+                        <div class="w-75 mx-auto my-4" *ngIf="trueFalseQuestions && trueFalseQuestions.length>0">
                             <div class="card border-secondary" *ngFor="let q of trueFalseQuestions; let i=index;" [ngClass]="{'border-success':q.isSolved}">
                                 <div class="card-header" id="headingOne">
                                     <div class="w-100 text-center" [innerHtml]='q.question'></div>
@@ -74,14 +74,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="trueFalseQuestions.length==0">
+                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="!trueFalseQuestions || trueFalseQuestions.length==0">
                             <div class="card-body">
                                 <h3>No Question Found.</h3>
                             </div>
                         </div>
                     </mat-tab>
                     <mat-tab label="Coding Questions">
-                        <div class="w-75 mx-auto my-4">
+                        <div class="w-75 mx-auto my-4" *ngIf="codingQuestions && codingQuestions.length > 0">
                             <div class="card border-secondary" *ngFor="let q of codingQuestions; let i=index;">
                                 <div class="card-header" id="headingOne">
                                     <div class="w-100 text-center" [innerHtml]='q.title'></div>
@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="codingQuestions.length==0">
+                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="!codingQuestions || codingQuestions.length==0">
                             <div class="card-body">
                                 <h3>No Question Found.</h3>
                             </div>
