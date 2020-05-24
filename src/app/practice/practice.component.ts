@@ -24,8 +24,10 @@ export class PracticeComponent implements OnInit {
   
   showSpinner: Boolean = false;
   view:Number = 0;
-  code:String;
-  courseTitle:String;
+  code:string;
+  courseTitle:string;
+  role:string;
+  title:string;
   mcqQuestions=[];
   trueFalseQuestions=[];
   codingQuestions=[];
@@ -94,7 +96,9 @@ export class PracticeComponent implements OnInit {
     };
     await this.http.get(this.storeInfo.serverUrl+'/practice/getMCQ',options).toPromise().then(response=>{
       if(response['status'] == 200){
-        this.mcqQuestions = response['body'];
+        this.mcqQuestions = response['body']['mcq'];
+        this.role = response['body']['role'];
+        this.title = response['body']['title'];
       }
     },error=>{
       console.log(error)
@@ -133,7 +137,9 @@ export class PracticeComponent implements OnInit {
     };
     await this.http.get(this.storeInfo.serverUrl+'/practice/getTrueFalse',options).toPromise().then(response=>{
       if(response['status'] == 200){
-        this.trueFalseQuestions = response['body'];
+        this.trueFalseQuestions = response['body']['trueFalse'];
+        this.role = response['body']['role'];
+        this.title = response['body']['title'];
       }
     },error=>{
       console.log(error)
@@ -165,7 +171,9 @@ export class PracticeComponent implements OnInit {
     };
     await this.http.get(this.storeInfo.serverUrl+'/practice/getCodingQuestion',options).toPromise().then(response=>{
       if(response['status'] == 200){
-        this.codingQuestions = response['body'];
+        this.codingQuestions = response['body']['codingQuestion'];
+        this.role = response['body']['role'];
+        this.title = response['body']['title'];
       }
     },error=>{
       console.log(error)

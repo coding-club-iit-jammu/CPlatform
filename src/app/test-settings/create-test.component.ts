@@ -35,6 +35,14 @@ export class CreateTestComponent implements OnInit {
        + ("0" + (date.getDate())).slice(-2))
        + 'T' + date.toTimeString().slice(0,5);
   }
+
+  calcTime(time){
+    var d = new Date();
+    var utc = time+(d.getTimezoneOffset()*60000);
+    var nd = new Date(utc+(3600000)*(-5.5));      
+    return this.toDateString(nd);
+  }
+
   addGroup(data){
     let arraay = this.testForm.get('groups') as FormArray; 
     let l = arraay.length;

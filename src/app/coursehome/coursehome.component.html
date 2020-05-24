@@ -42,7 +42,7 @@
         <div class="completeView">
             <div class = "mainClass" >
                 <div class="view1 mt-6 pb-3" *ngIf="view==1">
-                    <div class="row mx-3 pl-4" *ngIf="course.posts.length>0">
+                    <div class="row mx-3 pl-4" *ngIf="course.posts && course.posts.length>0">
                         <div class="card shadow text-center mt-3 mx-2 border-info width45" *ngFor="let post of course.posts">
                             <div class="card-header border-info text-left">
                               {{post.by}}
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="course.posts.length==0">
+                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="!course.posts || course.posts.length==0">
                         <div></div>
                         <div class="card shadow text-center mt-3 border-info">
                             <div class="card-body">
@@ -74,7 +74,7 @@
                 </div>
                 
                 <div class="view2" *ngIf="view==2">
-                    <div class="row mx-3 pl-4" *ngIf="course.assignments.length>0">
+                    <div class="row mx-3 pl-4" *ngIf="course.assignments && course.assignments.length>0">
                         <div class="card shadow text-center mt-3 mx-2 border-warning width45" *ngFor="let assignment of course.assignments">
                             <div class="card-header border-warning">
                                 {{assignment.title}}
@@ -93,10 +93,10 @@
                                     <button class="btn btn-outline-secondary my-2" (click)="getAssignmentDoc(assignment._id)">Resourses</button>
                                 </div>  
                                 <div class="my-auto mx-auto text-center" *ngIf="course.role=='student'">
-                                    <div *ngIf="checkStatus(assignment.deadline) && assignment.requiresSubmission" class="mx-auto text-center">
+                                    <div *ngIf="checkStatus(assignment.deadline) && assignment.requiresSubmission" class="mx-auto my-2 text-center">
                                         <button class="btn btn-info" data-toggle="modal" data-target="#submitAssignmentModal" (click)="setSubmissionAssignment(assignment._id,assignment.title)">Submit</button>
                                     </div>
-                                    <div *ngIf="assignment.submissionTime">
+                                    <div *ngIf="assignment.submissionTime" class="my-2">
                                         <button class="btn btn-secondary" (click)="downloadSubmission(assignment._id)">Download Submission</button>
                                     </div>
                                 </div>
@@ -107,16 +107,18 @@
                             <div *ngIf="assignment.requiresSubmission" class="card-footer text-muted border-warning">
                               <p>Deadline: {{assignment.deadline | date:'medium'}}</p>
                               <p *ngIf="course.role=='student' && assignment.submissionTime">Last Submission: {{assignment.submissionTime | date:'medium'}}</p>
-                              <div *ngIf="course.role=='instructor'">
-                                <button class="btn btn-warning" data-toggle="modal" data-target="#shiftDeadlineModal" (click)="setShiftDeadline(assignment._id,assignment.title)">Shift Deadline</button>
-                              </div>
-                              <div *ngIf="course.role=='instructor'">
-                                <button class="btn btn-success" data-toggle="modal" data-target="#uploadMarksModal" (click)="setUploadMarksForm(assignment._id,assignment.title)">Upload Marks</button>
+                              <div *ngIf="course.role!='student'" class="d-flex flex-row justify-content-around">
+                                  <div>
+                                    <button class="btn btn-warning" data-toggle="modal" data-target="#shiftDeadlineModal" (click)="setShiftDeadline(assignment._id,assignment.title)">Shift Deadline</button>
+                                  </div>
+                                  <div>
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#uploadMarksModal" (click)="setUploadMarksForm(assignment._id,assignment.title)">Upload Marks</button>
+                                  </div>
                               </div>
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="course.assignments.length==0">
+                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="!course.assignments || course.assignments.length==0">
                         <div></div>
                         <div class="card shadow text-center mt-3 border-info">
                             <div class="card-body">
@@ -131,7 +133,7 @@
                 </div>
     
                 <div class="view3" *ngIf="view==3">
-                    <div class="row mx-3 pl-4" *ngIf="course.tests.length>0">
+                    <div class="row mx-3 pl-4" *ngIf="course.tests && course.tests.length>0">
                         <div class="card shadow text-center mt-3 mx-2 border-danger width45" *ngFor="let test of course.tests">
                             <div class="card-header border-danger">
                               {{test.testId}}
@@ -147,7 +149,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="course.tests.length==0">
+                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="!course.tests || course.tests.length==0">
                         <div></div>
                         <div class="card shadow text-center mt-3 border-info">
                             <div class="card-body">

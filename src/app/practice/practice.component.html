@@ -23,7 +23,7 @@
                         <li class="nav-item">
                             <a class="nav-link" (click) = "setView(3)"> Tests</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" *ngIf="role!='student'">
                             <a class="nav-link" (click)="goToQuestions()">Questions</a>
                         </li>
                         <li class="nav-item active">
@@ -130,7 +130,7 @@
             </div>
         </div>
         <div class="bottom bg-dark py-3 text-light text-center">
-            <h3>{{courseTitle}}</h3>
+            <h3>{{title}}</h3>
         </div>
         <div class="modal fade" id="mcqModal" role="dialog" *ngIf="view==1 && selectedMCQ!=null">
             <div class="modal-dialog modal-dialog-centered">
