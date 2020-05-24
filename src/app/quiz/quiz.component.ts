@@ -215,7 +215,7 @@ export class QuizComponent implements OnInit {
       }
     },error=>{
       console.log(error)
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }

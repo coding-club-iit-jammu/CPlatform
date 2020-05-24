@@ -76,7 +76,7 @@ export class PracticeComponent implements OnInit {
       }
     }, (error) => {
       console.log(error);
-      this.matComp.openSnackBar(error, 3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     console.log(this.leaderboard);
     this.leaderboard.sort((a, b) => {return b.score - a.score});
@@ -102,7 +102,7 @@ export class PracticeComponent implements OnInit {
       }
     },error=>{
       console.log(error)
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -143,7 +143,7 @@ export class PracticeComponent implements OnInit {
       }
     },error=>{
       console.log(error)
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -177,7 +177,7 @@ export class PracticeComponent implements OnInit {
       }
     },error=>{
       console.log(error)
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -209,7 +209,7 @@ export class PracticeComponent implements OnInit {
       this.matComp.openSnackBar(response['body']['message'],2000);
     },error=>{
       console.log(error)
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -236,7 +236,7 @@ export class PracticeComponent implements OnInit {
       this.matComp.openSnackBar(response['body']['message'],2000);
     },error=>{
       console.log(error)
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
