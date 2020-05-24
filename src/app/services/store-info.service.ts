@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
@@ -5,8 +6,7 @@ import { Injectable } from '@angular/core';
 export class StoreInfoService {
 
   token:string;
-  serverUrl: string = "https://coding-platform-btp.herokuapp.com";
-  // serverUrl: string = "http://localhost:8080";
+  serverUrl: string;
   role = {
   };
 
@@ -17,7 +17,10 @@ export class StoreInfoService {
   userData:any; 
   userType:string;
   selectedCourse:string;
-  constructor() { }
+  constructor() {
+    this.serverUrl = environment.serverUrl;
+    console.log(this.serverUrl);
+   }
 
   setUserDetails(userid: string,name: string,branch: string){
     this.branch = branch;
