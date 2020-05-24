@@ -156,11 +156,9 @@
                             Are you Sure?
                         </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <button class="btn btn-primary" style="float: left;">No</button>
-                            <button class="btn btn-danger" style="float: right;"(click)="endTest()">Yes</button>
-                        </div>
+                    <div class="modal-body d-flex flex-row justify-content-around">
+                        <button class="btn btn-primary" style="float: left;">No</button>
+                        <button class="btn btn-danger" style="float: right;"(click)="endTest()">Yes</button>
                     </div>
                 </div>
             </div>
@@ -176,11 +174,9 @@
                     <div class="modal-body">
                         <p>You will not be able to come back to this section again.</p>
                     </div>
-                    <div class="modal-footer">
-                        <div class="container">
-                            <button class="btn btn-primary" data-dismiss="modal" style="float: left;">No</button>
-                            <button class="btn btn-danger" style="float: right;"(click)="nextSection()" data-dismiss="modal">Yes</button>
-                        </div>
+                    <div class="modal-footer d-flex flex-row justify-content-around">
+                        <button class="btn btn-primary" data-dismiss="modal">No</button>
+                        <button class="btn btn-danger" (click)="nextSection()" data-dismiss="modal">Yes</button>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,10 @@
     flex-direction: row;
   }
 
+  .z-10{
+    z-index: 10;
+  }
+
   .w-10{
     width: 10%;
   }

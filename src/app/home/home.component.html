@@ -106,12 +106,12 @@
                         </div>
                       </ng-container>
                     </div>
-                    <div class="modal-footer footerModal">
-                      <div class="text-left">
-                        <button type="button" class="btn btn-danger" style="float: left;" data-dismiss="modal">Close</button>
+                    <div class="modal-footer footerModal d-flex flex-row justify-content-around">
+                      <div>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                       </div>
-                      <div class="text-right">
-                        <button type="submit" class="btn btn-primary" style="float: right;" [disabled]="!addCourseForm.valid" (click)="addCourse()" data-dismiss="modal">Add</button>
+                      <div>
+                        <button type="submit" class="btn btn-primary" [disabled]="!addCourseForm.valid" (click)="addCourse()" data-dismiss="modal">Add</button>
                       </div>
                     </div>
                   </form>
@@ -135,8 +135,12 @@
                     <label for="joiningCode">Access Code</label>
                     <input type="text" class="form-control" name="joiningCode" placeholder="Enter Access Code Here" formControlName="joiningCode" required>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary" style="float: inline-start;" (click)="joinCourse()" data-dismiss="modal">Join</button>
-                      <button type="button" class="btn btn-danger" style="float: right;" data-dismiss="modal">Close</button>
+                      <div>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                      </div>
+                      <div>
+                        <button type="submit" class="btn btn-primary" (click)="joinCourse()" data-dismiss="modal">Join</button>
+                      </div>
                     </div>
                   </form>
                 </div>

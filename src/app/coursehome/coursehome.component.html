@@ -42,8 +42,8 @@
         <div class="completeView">
             <div class = "mainClass" >
                 <div class="view1 mt-6 pb-3" *ngIf="view==1">
-                    <div class="row mx-3 pl-4">
-                        <div class="card shadow-sm text-center mt-3 mx-2 border-info width45" *ngFor="let post of course.posts">
+                    <div class="row mx-3 pl-4" *ngIf="course.posts.length>0">
+                        <div class="card shadow text-center mt-3 mx-2 border-info width45" *ngFor="let post of course.posts">
                             <div class="card-header border-info text-left">
                               {{post.by}}
                             </div>
@@ -59,14 +59,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="course.posts.length==0">
+                        <div></div>
+                        <div class="card shadow text-center mt-3 border-info">
+                            <div class="card-body">
+                                <h5 class="card-title">No Posts.</h5>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
                     <div class="row mx-3 pl-4 fixed-bottom mb-4">
-                        <button class="btn btn-success border-success mx-auto bigButton rounded-circle btn-lg" data-toggle="modal" data-target="#createPostModal">+</button>
+                        <button class="btn btn-success border-success shadow mx-auto bigButton rounded-circle btn-lg" data-toggle="modal" data-target="#createPostModal">+</button>
                     </div>
                 </div>
                 
                 <div class="view2" *ngIf="view==2">
-                    <div class="row mx-3 pl-4">
-                        <div class="card shadow-sm text-center mt-3 mx-2 border-warning width45" *ngFor="let assignment of course.assignments">
+                    <div class="row mx-3 pl-4" *ngIf="course.assignments.length>0">
+                        <div class="card shadow text-center mt-3 mx-2 border-warning width45" *ngFor="let assignment of course.assignments">
                             <div class="card-header border-warning">
                                 {{assignment.title}}
                             </div>
@@ -107,14 +116,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="course.assignments.length==0">
+                        <div></div>
+                        <div class="card shadow text-center mt-3 border-info">
+                            <div class="card-body">
+                                <h5 class="card-title">No Assignments.</h5>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
                     <div class="row mx-3 pl-4 fixed-bottom mb-4">
-                        <button class="btn btn-success border-success mx-auto bigButton rounded-circle btn-lg" *ngIf="course.role=='instructor'" data-toggle="modal" data-target="#createAssignmentModal">+</button>
+                        <button class="btn btn-success border-success mx-auto shadow bigButton rounded-circle btn-lg" *ngIf="course.role=='instructor'" data-toggle="modal" data-target="#createAssignmentModal">+</button>
                     </div>
                 </div>
     
                 <div class="view3" *ngIf="view==3">
-                    <div class="row mx-3 pl-4">
-                        <div class="card shadow-sm text-center mt-3 mx-2 border-danger width45" *ngFor="let test of course.tests">
+                    <div class="row mx-3 pl-4" *ngIf="course.tests.length>0">
+                        <div class="card shadow text-center mt-3 mx-2 border-danger width45" *ngFor="let test of course.tests">
                             <div class="card-header border-danger">
                               {{test.testId}}
                             </div>
@@ -129,8 +147,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="course.tests.length==0">
+                        <div></div>
+                        <div class="card shadow text-center mt-3 border-info">
+                            <div class="card-body">
+                                <h5 class="card-title">No Tests.</h5>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
                     <div class="row mx-3 pl-4 fixed-bottom mb-4">
-                        <button class="btn btn-success border-success mx-auto bigButton rounded-circle btn-lg" *ngIf="course.role=='instructor'" data-toggle="modal" data-target="#createTestModal">+</button>
+                        <button class="btn btn-success border-success shadow mx-auto bigButton rounded-circle btn-lg" *ngIf="course.role=='instructor'" data-toggle="modal" data-target="#createTestModal">+</button>
                     </div>
                 </div>
 
@@ -140,7 +167,7 @@
             </div>
             <div class="sideInfo">
                 <div class="text-center">
-                    <div class="card shadow-sm w-75 mx-auto my-3 border-primary">
+                    <div class="card shadow w-75 mx-auto my-3 border-primary">
                         <div class="card-content">
                             <div class="card-header font-weight-bold border-primary">
                                 Instructors
@@ -152,7 +179,7 @@
                     </div>
                 </div>
                 <div class="text-center" *ngIf="course.teachingAssistants.length > 0">
-                    <div class="card shadow-sm w-75 mx-auto my-3 border-primary">
+                    <div class="card shadow w-75 mx-auto my-3 border-primary">
                         <div class="card-content">
                             <div class="card-header font-weight-bold border-primary">
                                 Teaching Assistants
@@ -186,8 +213,8 @@
                         <p class="form-control">Teaching Assistant : {{joiningCodes['teachingAssistant']}}</p>
                         <p class="form-control" *ngFor="let x of joiningCodes['groups']">{{x.groupId}} : {{x.code}}</p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" style="float: right;" data-dismiss="modal">Close</button>
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -210,12 +237,12 @@
                             <input type="file" class="form-control-file" (change)="uploadSubmissionFile($event)">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <div class="text-left">
+                    <div class="modal-footer d-flex flex-row justify-content-around">
+                        <div>
                             <button type="button" class="btn btn-danger"  data-dismiss="modal" style="float: left;">Close</button>
                         </div>
-                        <div class="text-right">
-                            <button type="button" class="btn btn-success" [disabled]="!submitAssignmentForm.valid" style="float: right;" (click)="submitAssignment()">Add</button>
+                        <div>
+                            <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!submitAssignmentForm.valid" style="float: right;" (click)="submitAssignment()">Add</button>
                         </div>
                     </div>
                 </div>
@@ -239,12 +266,12 @@
                             <input type="file" class="form-control-file" (change)="uploadMarksFile($event)">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <div class="text-left">
-                            <button type="button" class="btn btn-danger"  data-dismiss="modal" style="float: left;">Close</button>
+                    <div class="modal-footer d-flex flex-row justify-content-around">
+                        <div>
+                            <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
                         </div>
-                        <div class="text-right">
-                            <button type="button" class="btn btn-success" [disabled]="!uploadMarksForm.valid" style="float: right;" (click)="uploadMarks()">Add</button>
+                        <div>
+                            <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!uploadMarksForm.valid" (click)="uploadMarks()">Add</button>
                         </div>
                     </div>
                 </div>
@@ -272,12 +299,12 @@
                                 <input type="datetime-local" class="form-control" formControlName="newDeadline">
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <div class="text-left">
-                                <button type="button" class="btn btn-danger"  data-dismiss="modal" style="float: left;">Close</button>
+                        <div class="modal-footer d-flex flex-row justify-content-around">
+                            <div>
+                                <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
                             </div>
-                            <div class="text-right">
-                                <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!shiftDeadlineForm.valid" style="float: right;" (click)="shiftDeadline(shiftDeadlineForm.value)">Add</button>
+                            <div>
+                                <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!shiftDeadlineForm.valid" (click)="shiftDeadline(shiftDeadlineForm.value)">Add</button>
                             </div>
                         </div>
                     </form>
@@ -313,7 +340,7 @@
                                     <mat-option *ngFor="let topping of course.groups" [value]="topping">{{topping}}</mat-option>
                                 </mat-select>
                             </div>
-                            <div class="modal-footer d-flex justify-content-around">
+                            <div class="modal-footer d-flex flex-row justify-content-around">
                                 <div>
                                     <button type="button" class="btn btn-danger" id="postModalClose" data-dismiss="modal">Close</button>
                                 </div>
@@ -363,8 +390,13 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" [disabled]='!assignmentForm.valid' style="float: right;" data-dismiss="modal" (click)="createAssignment()">Create</button>
+                    <div class="modal-footer d-flex flex-row justify-content-around">
+                        <div>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-success" [disabled]='!assignmentForm.valid' style="float: right;" data-dismiss="modal" (click)="createAssignment()">Create</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -389,8 +421,13 @@
                                 </quill-editor>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success" [disabled]="!testForm.valid" style="float: right;" data-dismiss="modal" (click)="createTest(testForm.value)">Create</button>
+                        <div class="modal-footer d-flex flex-row justify-content-around">
+                            <div>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!testForm.valid" style="float: right;" data-dismiss="modal" (click)="createTest(testForm.value)">Create</button>
+                            </div>
                         </div>
                     </form>
                 </div>

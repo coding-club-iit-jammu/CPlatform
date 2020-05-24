@@ -6,6 +6,7 @@ export class StoreInfoService {
 
   token:string;
   serverUrl: string = "https://coding-platform-btp.herokuapp.com";
+  // serverUrl: string = "http://localhost:8080";
   role = {
   };
 

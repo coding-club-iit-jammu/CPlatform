@@ -24,13 +24,17 @@
                             </div>
                         </form>
                     </div>
-                    <div class="card-footer">
-                        <button class="btn btn-warning float-left" (click)="reset()">
-                            Reset
-                        </button>
-                        <button class="btn btn-success float-right" (click)="signUp()">
-                            Sign Up
-                        </button>
+                    <div class="card-footer d-flex flex-row justify-content-around">
+                        <div>
+                            <button class="btn btn-warning" (click)="reset()">
+                                Reset
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-success" (click)="signUp()">
+                                Sign Up
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -61,9 +61,9 @@
                                         <button class="btn btn-success btn-sm dropdown-toggle my-3" type="button" id="dropdownMenuMCQ" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Add to
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuMCQ">
-                                            <button class="dropdown-item" type="button" (click)="addToPractice(q._id,'mcq')">Practice</button>
-                                            <button class="dropdown-item" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'mcq')">{{test.title}}</button>
+                                        <div class="dropdown-menu z-10" aria-labelledby="dropdownMenuMCQ">
+                                            <button class="dropdown-item z-10" type="button" (click)="addToPractice(q._id,'mcq')">Practice</button>
+                                            <button class="dropdown-item z-10" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'mcq')">{{test.title}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -106,9 +106,9 @@
                                         <button class="btn btn-success btn-sm dropdown-toggle my-3" type="button" id="dropdownMenuTrueFalse" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Add to
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuTrueFalse">
-                                            <button class="dropdown-item" type="button" (click)="addToPractice(q._id,'trueFalse')">Practice</button>
-                                            <button class="dropdown-item" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'trueFalse')">{{test.title}}</button>
+                                        <div class="dropdown-menu z-10" aria-labelledby="dropdownMenuTrueFalse">
+                                            <button class="dropdown-item z-10" type="button" (click)="addToPractice(q._id,'trueFalse')">Practice</button>
+                                            <button class="dropdown-item z-10" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'trueFalse')">{{test.title}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -156,9 +156,9 @@
                                         <button class="btn btn-success   btn-sm dropdown-toggle my-3" type="button" id="dropdownMenuCoding" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Add to
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuCoding">
-                                            <button class="dropdown-item" type="button" (click)="addToPractice(q._id,'codingQuestion')">Practice</button>
-                                            <button class="dropdown-item" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'codingQuestion')">{{test.testId}}</button>
+                                        <div class="dropdown-menu z-10" aria-labelledby="dropdownMenuCoding">
+                                            <button class="dropdown-item z-10" type="button" (click)="addToPractice(q._id,'codingQuestion')">Practice</button>
+                                            <button class="dropdown-item z-10" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'codingQuestion')">{{test.testId}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -334,9 +334,13 @@
                                 <label for="isCorrect">Is Correct</label>
                                 <input type="checkbox" class="form-control" name="isCorrect" formControlName="isCorrect" required>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" id="postModalClose" data-dismiss="modal" style="float: left;">Close</button>
-                                <button type="button" class="btn btn-success" style="float: right;" data-dismiss="modal" (click)="addOption()">Add</button>
+                            <div class="modal-footer d-flex flex-row justify-content-around">
+                                <div>
+                                    <button type="button" class="btn btn-danger" id="postModalClose" data-dismiss="modal" style="float: left;">Close</button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success" style="float: right;" data-dismiss="modal" (click)="addOption()">Add</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -361,9 +365,13 @@
                                 <label for="isCorrect">Is Correct</label>
                                 <input type="checkbox" class="form-control" name="isCorrect" formControlName="isCorrect" required>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" id="postModalClose" data-dismiss="modal" style="float: left;">Close</button>
-                                <button type="button" class="btn btn-success" style="float: right;" data-dismiss="modal" (click)="setEdittedOption()">Edit</button>
+                            <div class="modal-footer d-flex flex-row justify-content-around">
+                                <div>
+                                    <button type="button" class="btn btn-danger" id="postModalClose" data-dismiss="modal" style="float: left;">Close</button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-success" style="float: right;" data-dismiss="modal" (click)="setEdittedOption()">Edit</button>
+                                </div>
                             </div>
                         </form>
                     </div>
