@@ -13,7 +13,7 @@ export class StoreInfoService {
   name:string;
   branch:string;
   coursesData:any = {};
-  userData:any;
+  userData:any; 
   userType:string;
   selectedCourse:string;
   constructor() { }
