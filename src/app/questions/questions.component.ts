@@ -73,7 +73,7 @@ export class QuestionsComponent implements OnInit {
       }
       this.matComp.openSnackBar(response['body']['message'],3000);
     },error=>{
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],3000);
     }) 
 
     this.showSpinner = false;
@@ -98,7 +98,7 @@ export class QuestionsComponent implements OnInit {
       }
       this.matComp.openSnackBar(response['body']['message'],3000);
     },error=>{
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     }) 
 
     this.showSpinner = false;
@@ -352,10 +352,11 @@ export class QuestionsComponent implements OnInit {
       if(resData['status'] == 200){
         this.download(resData['body'],filename);
       } else {
+        // console.log(resData['body']['message']);
         this.matComp.openSnackBar(resData['body']['message'],2000);  
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -403,7 +404,7 @@ export class QuestionsComponent implements OnInit {
       }
       this.matComp.openSnackBar(response['body']['message'],3000);
     },error=>{
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],3000);
     })
     this.showSpinner = false;
   }
@@ -466,7 +467,7 @@ export class QuestionsComponent implements OnInit {
       console.log(response);
       // this.matComp.openSnackBar(response['body']['message'],3000);
     },error=>{
-      this.matComp.openSnackBar(error,3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     
     this.showSpinner = false;

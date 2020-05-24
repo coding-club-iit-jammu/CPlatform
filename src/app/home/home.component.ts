@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
       }
       
     },(error)=>{
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }

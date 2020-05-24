@@ -165,7 +165,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(data['body']['message'],2000);
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     
   }
@@ -194,7 +194,7 @@ export class CoursehomeComponent implements OnInit {
       } 
       this.matComp.openSnackBar(resData['body']['message'],2000);
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -250,7 +250,7 @@ export class CoursehomeComponent implements OnInit {
         this.resetAssignmentForm();
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
 
     this.showSpinner = false;
@@ -295,7 +295,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(response['body']['message'],2000);
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -325,7 +325,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(resData['body']['message'],3000);
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -348,7 +348,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(resData['body']['message'],2000);
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -371,7 +371,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(resData['body']['message'],2000);  
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -394,7 +394,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(resData['body']['message'],2000);  
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   } 
@@ -417,7 +417,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(resData['body']['message'],2000);
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;  
   }
@@ -473,7 +473,7 @@ export class CoursehomeComponent implements OnInit {
       }
       this.matComp.openSnackBar(resData['body']['message'],2000);
     }, (error) => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
 
     this.showSpinner = false;
@@ -519,7 +519,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(resData['body']['message'],2000);  
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -541,7 +541,7 @@ export class CoursehomeComponent implements OnInit {
         this.matComp.openSnackBar(resData['body']['message'],2000);  
       }
     },error => {
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
@@ -570,7 +570,7 @@ export class CoursehomeComponent implements OnInit {
       }
       this.matComp.openSnackBar(response['body']['message'],2000);
     },(error) =>{
-      this.matComp.openSnackBar(error,2000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
