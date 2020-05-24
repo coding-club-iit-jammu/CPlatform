@@ -62,7 +62,7 @@
                                 <label>Groups</label>
                                 <div class="card shadow py-3 text-center bg-light">
                                     <ng-container formArrayName = "groups">
-                                        <div *ngFor="let control of testForm.get('groups').controls; index as i">
+                                        <div *ngFor="let control of testForm.get('groups')['controls']; index as i">
                                           <ng-container class="form-group mx-auto px-3" [formGroup]="control">
                                               <div class="d-flex flex-column card shadow-sm py-3 my-2 mx-3">
                                                 <div>
@@ -106,7 +106,7 @@
                                 <label>Multiple Choice Questions</label>
                                 <div class="card shadow py-3 text-center bg-light">
                                     <ng-container formArrayName = "mcq">
-                                        <div class="card shadow-sm mx-3 py-3 my-2" *ngFor="let control of testForm.get('mcq').controls; index as i">
+                                        <div class="card shadow-sm mx-3 py-3 my-2" *ngFor="let control of testForm.get('mcq')['controls']; index as i">
                                           <ng-container class="form-group mx-auto px-3" [formGroup]="control">
                                               <div class="d-flex flex-column">
                                                 <div class="d-flex flex-row justify-content-between w-100 px-3">
@@ -136,7 +136,7 @@
                                 <label>True/False Questions</label>
                                 <div class="card shadow py-3 text-center bg-light">
                                     <ng-container formArrayName = "trueFalse">
-                                        <div class="card shadow-sm mx-3 py-3 my-2" *ngFor="let control of testForm.get('trueFalse').controls; index as i">
+                                        <div class="card shadow-sm mx-3 py-3 my-2" *ngFor="let control of testForm.get('trueFalse')['controls']; index as i">
                                           <ng-container class="form-group mx-auto px-3" [formGroup]="control">
                                               <div class="d-flex flex-column">
                                                 <div class="d-flex flex-row justify-content-between w-100 px-3">
@@ -166,7 +166,7 @@
                                 <label>Coding Questions</label>
                                 <div class="card shadow py-3 text-center bg-light">
                                     <ng-container formArrayName = "codingQuestion">
-                                        <div class="card shadow-sm mx-3 py-3 my-2" *ngFor="let control of testForm.get('codingQuestion').controls; index as i">
+                                        <div class="card shadow-sm mx-3 py-3 my-2" *ngFor="let control of testForm.get('codingQuestion')['controls']; index as i">
                                           <ng-container class="form-group mx-auto px-3" [formGroup]="control">
                                               <div class="d-flex flex-column">
                                                 <div class="d-flex flex-row justify-content-between w-100 px-3">

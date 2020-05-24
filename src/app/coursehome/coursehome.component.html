@@ -182,9 +182,9 @@
                         <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
                     </div>
                     <div class="modal-body text-center">
-                        <p class="form-control">Instructor : {{joiningCodes.instructor}}</p>
-                        <p class="form-control">Teaching Assistant : {{joiningCodes.teachingAssistant}}</p>
-                        <p class="form-control" *ngFor="let x of joiningCodes.groups">{{x.groupId}} : {{x.code}}</p>
+                        <p class="form-control">Instructor : {{joiningCodes['instructor']}}</p>
+                        <p class="form-control">Teaching Assistant : {{joiningCodes['teachingAssistant']}}</p>
+                        <p class="form-control" *ngFor="let x of joiningCodes['groups']">{{x.groupId}} : {{x.code}}</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" style="float: right;" data-dismiss="modal">Close</button>

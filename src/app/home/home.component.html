@@ -99,7 +99,7 @@
                     <div class="text-center my-3">
                       <button class="btn btn-primary text-center" (click)="addGroupCode()">Add Group</button>
                       <ng-container formArrayName = "studentCode">
-                        <div class="my-2" *ngFor="let control of addCourseForm.get('studentCode').controls; index as i">
+                        <div class="my-2" *ngFor="let control of addCourseForm.get('studentCode')['controls']; index as i">
                           <ng-container [formGroup]="control">
                             <input type="text" class="form-control" formControlName="code" placeholder="Enter Access Code for Group {{control.value.groupId}}" required>
                           </ng-container>

@@ -56,11 +56,17 @@ export class QuizComponent implements OnInit {
   opened:Boolean;
 
   questions:any;
-  questionType:String;
+  questionType:string;
   current = {
     section: 0,
     question: 0
   }
+
+  headerCode: string;
+  footerCode: string;
+  mainCode: string;
+  problemInput: string;
+  selectedCodingQuestion:any;
 
   constructor(private http: HttpClient, private router: Router,
               private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder,

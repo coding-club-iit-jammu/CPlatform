@@ -280,7 +280,7 @@ export class IdeComponent implements OnInit {
    * @description
    * beautify the editor content, relies on Ace Beautify extension
    */
-  private onBeautifyContent() {
+  public onBeautifyContent() {
     if (this.codeEditor && this.editorBeautify) {
       const session = this.codeEditor.getSession();
       this.editorBeautify.beautify(session);
