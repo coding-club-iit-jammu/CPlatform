@@ -87,6 +87,7 @@ export class IdeComponent implements OnInit {
   public output$: Observable<string>;
   // current editor theme name
   public activatedTheme: string;
+  public running: boolean;
 
   private codeEditor: ace.Ace.Editor;
   private codeHeader: ace.Ace.Editor;
@@ -394,7 +395,7 @@ export class IdeComponent implements OnInit {
     return language.version;
   }
   public onRunCode() {
-    this.showSpinner = true;
+    this.running = true;
     const code = encode(this.getContent());
     const input = encode(this.myInput.nativeElement.value);
     let fields = "stdout,time,memory,compile_output,stderr,token,message,status";
@@ -406,7 +407,7 @@ export class IdeComponent implements OnInit {
       }, input, fields).pipe(
         // returning the output content
         map((response: RunResult) => {
-          this.showSpinner = false;
+          this.running = false;
           if (response.compile_output != null) {
             return decode(response.compile_output);
           } else if (response.stderr != null) {
@@ -415,7 +416,7 @@ export class IdeComponent implements OnInit {
           return decode(response.stdout);
         }),
         catchError((err) => {
-          this.showSpinner = false;
+          this.running = false;
           this.matComp.openSnackBar(err['statusText'],2000);
           return of(DEFAULT_RUN_ERROR_MESSAGE);
         })
