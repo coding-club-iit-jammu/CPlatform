@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +30,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { HttpService } from './services/http/http.service';
 import { ServerHandlerService } from './services/http/server-handler.service';
 import { MaterialComponentService } from './services/material-component.service';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 import { QuillModule } from 'ngx-quill';
 import { QuestionsComponent } from './questions/questions.component';
@@ -96,7 +98,12 @@ import { CreateTestComponent } from './test-settings/create-test.component'
   providers: [
     MaterialComponentService,
     HttpService,
-    ServerHandlerService
+    ServerHandlerService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

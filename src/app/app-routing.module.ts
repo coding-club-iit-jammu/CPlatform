@@ -50,6 +50,10 @@ const routes: Routes = [
   {
     path: 'ide',
     component: IdeComponent
+  },
+  {
+    path: '**', 
+    redirectTo: 'home' 
   }
 ];
 

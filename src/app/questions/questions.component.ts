@@ -43,6 +43,12 @@ export class QuestionsComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
+    
+    if(!this.storeInfo.isSignedIn()){
+      this.router.navigateByUrl('');
+      return;
+    }
+
     this.resetMCQQuestion();
     this.resetAddOptionForm();
     this.resetTrueFalseQuestion();
@@ -59,8 +65,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
 
@@ -84,8 +89,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
 
@@ -109,8 +113,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code.toString())
 
@@ -133,8 +136,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code.toString())
 
@@ -157,8 +159,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code.toString())
 
@@ -180,8 +181,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code.toString())
 
@@ -235,8 +235,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     this.addMCQQuestion['courseCode'] = this.code;
@@ -265,8 +264,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
 
@@ -342,9 +340,6 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       responseType: 'blob' as 'json',
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-      }),
       params : new HttpParams().set('courseCode',this.code).set('codingQuestionId',_id).set('item',item)
     };
     var filename = path.replace(/^.*[\\\/]/, '');
@@ -391,10 +386,7 @@ export class QuestionsComponent implements OnInit {
     }
 
     const options = {
-      observe: 'response' as 'body',
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-      })
+      observe: 'response' as 'body'
     };
     
     await this.http.post(this.storeInfo.serverUrl+url,formData,options).toPromise().then(response=>{
@@ -458,8 +450,7 @@ export class QuestionsComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set("questionId",id).set('courseCode',this.code)
     };

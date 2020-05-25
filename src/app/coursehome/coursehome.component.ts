@@ -87,15 +87,15 @@ export class CoursehomeComponent implements OnInit {
     this.code = this.activatedRoute.snapshot.paramMap.get('courseId');
     let view = parseInt(this.activatedRoute.snapshot.paramMap.get('view'));
     
-    if(!sessionStorage.getItem('token')){
-      this.router.navigateByUrl('/');
+    if(!this.storeInfo.isSignedIn()){
+      this.router.navigateByUrl('');
       return;
     }
+
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code)
     };
@@ -152,8 +152,7 @@ export class CoursehomeComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code)
     };
@@ -172,10 +171,7 @@ export class CoursehomeComponent implements OnInit {
 
   async createPost(data: Object){
     const options = {
-      observe: 'response' as 'body',
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-      })
+      observe: 'response' as 'body'
     };
     data['courseCode'] = this.code;
     this.showSpinner = true;
@@ -230,7 +226,6 @@ export class CoursehomeComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       })
     };
     
@@ -281,8 +276,7 @@ export class CoursehomeComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     data['courseCode'] = this.code;
@@ -312,8 +306,7 @@ export class CoursehomeComponent implements OnInit {
     let options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params : new HttpParams().set('courseCode',this.code)
     };
@@ -335,8 +328,7 @@ export class CoursehomeComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params : new HttpParams().set('courseCode',this.code)
     };
@@ -358,9 +350,6 @@ export class CoursehomeComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       responseType: 'blob' as 'json',
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-      }),
       params : new HttpParams().set('courseCode',this.code).set('assignmentId',assignmentId)
     };
     
@@ -381,9 +370,6 @@ export class CoursehomeComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       responseType: 'blob' as 'json',
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-      }),
       params : new HttpParams().set('courseCode',this.code).set('postId',postId)
     };
     
@@ -404,8 +390,7 @@ export class CoursehomeComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params : new HttpParams().set('courseCode',this.code)
     };
@@ -455,10 +440,7 @@ export class CoursehomeComponent implements OnInit {
     this.showSpinner = true;
     const options = {
       observe: 'response' as 'body',
-      responseType: 'blob' as 'json',
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
-      })
+      responseType: 'blob' as 'json'
     };
 
     let formData: any = new FormData();
@@ -508,7 +490,7 @@ export class CoursehomeComponent implements OnInit {
       observe: 'response' as 'body',
       responseType: 'blob' as 'json',
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        // 'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       }),
       params : new HttpParams().set('courseCode',this.code).set('assignmentId',assignmentId)
     };
@@ -530,7 +512,7 @@ export class CoursehomeComponent implements OnInit {
       observe: 'response' as 'body',
       responseType: 'blob' as 'json',
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        // 'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       }),
       params : new HttpParams().set('courseCode',this.code).set('assignmentId',assignmentId)
     };
@@ -559,7 +541,7 @@ export class CoursehomeComponent implements OnInit {
       observe: 'response' as 'body',
       responseType: 'blob' as 'json',
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        // 'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       })
     };
 
@@ -611,7 +593,7 @@ export class CoursehomeComponent implements OnInit {
       observe: 'response' as 'body',
       responseType: 'blob' as 'json',
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        // 'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       })
     };
 

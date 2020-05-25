@@ -23,6 +23,9 @@ export class CreateTestComponent implements OnInit {
               private matComp: MaterialComponentService, private formBuilder: FormBuilder) { }
 
   async ngOnInit() {
+    if(!this.storeInfo.isSignedIn()){
+      this.router.navigateByUrl('');
+    }
     this.code = this.activatedRoute.snapshot.paramMap.get('courseId');
     this.testId = this.activatedRoute.snapshot.paramMap.get('testId');
     this.resetTestForm();
@@ -140,8 +143,7 @@ export class CreateTestComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code.toString()).set('testId',this.testId.toString())
     };
@@ -163,8 +165,7 @@ export class CreateTestComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     let data = this.testForm.value;
@@ -185,8 +186,7 @@ export class CreateTestComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     let data = {}

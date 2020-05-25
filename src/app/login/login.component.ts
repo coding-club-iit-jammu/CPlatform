@@ -29,14 +29,15 @@ export class LoginComponent implements OnInit {
     }
 
   async ngOnInit() {
+    if(this.storeInfo.isSignedIn()){
+      this.router.navigateByUrl('/home');
+      return;
+    }
     this.showSpinner = true;
     this.form = this.formBuilder.group({
       email : this.formBuilder.control(''),
       password : this.formBuilder.control('')
     });
-    if(sessionStorage.getItem('token')){
-      this.router.navigateByUrl('/home');
-    }
     this.showSpinner = false;
   }
 
@@ -46,16 +47,17 @@ export class LoginComponent implements OnInit {
       this.showSpinner1 = false;
       if(!data["userId"]){
         this.material.openSnackBar(data['message'],2000);
-        // this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/');
         return;
       }
-      sessionStorage.setItem('token',data['token']);
-      sessionStorage.setItem('userId',data['userId']);
-      sessionStorage.setItem('email',data['email']);
+      
+      this.storeInfo.setToken(data['token']);
+      this.storeInfo.setRefreshToken(data['refreshToken']);
+      this.material.openSnackBar("Change Page",2000);
       this.router.navigateByUrl('/home');
     },error =>{
       this.showSpinner1 = false;
-      this.material.openSnackBar(error['message'],3000);
+      this.material.openSnackBar(error['statusText'],3000);
     })
   }
 

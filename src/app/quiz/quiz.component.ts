@@ -78,6 +78,10 @@ export class QuizComponent implements OnInit {
               }
 
   async ngOnInit() {
+    if(!this.storeInfo.isSignedIn()){
+      this.router.navigateByUrl('');
+      return;
+    }
     this.showSpinner = true;
     this.code = this.activatedRoute.snapshot.paramMap.get('courseId');
     this.testId = this.activatedRoute.snapshot.paramMap.get('testId');
@@ -116,8 +120,7 @@ export class QuizComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     let data = this.startTestForm.value;
@@ -151,8 +154,7 @@ export class QuizComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     let data = {}
@@ -194,8 +196,7 @@ export class QuizComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     let data = {
@@ -226,8 +227,7 @@ export class QuizComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
 
@@ -242,7 +242,7 @@ export class QuizComponent implements OnInit {
       langVersion: langVersion,
       test_id: this.test_id
     }
-    // console.log(data);
+    
     await this.http.post(this.storeInfo.serverUrl+'/test/submitQuestion',data,options).toPromise().then(response=>{
       if (response['body']['error']) {
         this.matComp.openSnackBar(response['body']['error']['message'],10000);  
@@ -270,8 +270,7 @@ export class QuizComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code).set('test_id',this.test_id)
     };
@@ -290,8 +289,7 @@ export class QuizComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       }),
       params: new HttpParams().set('courseCode',this.code)
                               .set('userTestRecordId',this.userTestRecordId)
@@ -321,8 +319,7 @@ export class QuizComponent implements OnInit {
     const options = {
       observe: 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     let data = {}

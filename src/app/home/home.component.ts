@@ -42,8 +42,9 @@ export class HomeComponent implements OnInit {
     this.resetJoinCourseForm();
     this.resetAddCourseForm();
   
-    if(!sessionStorage.getItem('token')){
-      this.router.navigateByUrl('/');
+    if(!this.storeInfo.isSignedIn()){
+      this.router.navigateByUrl('');
+      return;
     }
 
     this.fetchUserData();
@@ -52,10 +53,7 @@ export class HomeComponent implements OnInit {
   async addCourse(){
     this.showSpinner = true;
     const options = {
-      observe : 'response' as 'body',
-      headers : new HttpHeaders({
-        'Authorization' : 'Bearer ' + sessionStorage.getItem('token')
-      })
+      observe : 'response' as 'body'
     }
     await this.http.post(this.storeInfo.serverUrl + '/course/add',this.addCourseForm.value,options)
     .toPromise().then((data)=>{
@@ -72,10 +70,7 @@ export class HomeComponent implements OnInit {
   async joinCourse(){
     this.showSpinner = true;
     const options = {
-      observe : 'response' as 'body',
-      headers : new HttpHeaders({
-        'Authorization' : 'Bearer ' + sessionStorage.getItem('token')
-      })
+      observe : 'response' as 'body'
     }
     
     await this.http.post(this.storeInfo.serverUrl + '/course/join',this.joinCourseForm.value,options)
@@ -99,14 +94,12 @@ export class HomeComponent implements OnInit {
     const options = {
       observe : 'response' as 'body',
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        'Content-Type':  'application/json'
       })
     };
     await this.http.get(this.storeInfo.serverUrl + '/user/get',options).toPromise().then((data)=>{
       if(data['status'] == 200){
         this.userData = data['body'];
-        this.storeInfo.userData = data['body'];
       } else {
         this.matComp.openSnackBar(data['body']['message'],2000);
       }
