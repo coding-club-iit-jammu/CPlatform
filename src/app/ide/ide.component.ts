@@ -7,6 +7,7 @@ import { themeModuleMap } from './consts/theme-module-table';
 import { ServerHandlerService } from '../services/http/server-handler.service';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { MaterialComponentService } from '../services/material-component.service';
 
 // Reference: https://github.com/judge0/ide/blob/master/js/ide.js
 function encode(str) {
@@ -34,6 +35,17 @@ import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-beautify';
 import { LanguageTable } from './consts/language-table';
+let DEF_HEADER_CPP = '// header code\n';
+let DEF_CONTENT_CPP = `#include <iostream>
+using namespace std;
+
+int main () {
+    
+    cout << "hello world";
+    return 0;
+}`;
+let DEF_FOOTER_CPP = '// footer code';
+
 let INIT_HEADER_CPP = '// header code\n';
 let INIT_HEADER_JAVA = '// header code\n';
 let INIT_HEADER_PY = '# header code\n';
@@ -75,6 +87,7 @@ export class IdeComponent implements OnInit {
   public output$: Observable<string>;
   // current editor theme name
   public activatedTheme: string;
+  public running: boolean;
 
   private codeEditor: ace.Ace.Editor;
   private codeHeader: ace.Ace.Editor;
@@ -99,7 +112,8 @@ export class IdeComponent implements OnInit {
   public languagesArray$: Observable<Language[]>;
   showSpinner: Boolean = false; 
   constructor(private handler: ServerHandlerService,
-              private cd: ChangeDetectorRef) { }
+              private cd: ChangeDetectorRef,
+              private matComp: MaterialComponentService) { }
 
   // input from parent component
   @Input('headerCode') headerCode: string;
@@ -122,17 +136,11 @@ export class IdeComponent implements OnInit {
     this.setEditorTheme(this.initOptions.theme || DEFAULT_THEME_MODE);
     this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
 
-    // this.codeHeader.setShowFoldWidgets(true);
-    // this.codeEditor.setShowFoldWidgets(true);
-    // this.codeFooter.setShowFoldWidgets(true);
     this.editorBeautify = ace.require('ace/ext/beautify');
 
     this.languagesArray$ = this.pipeSupportedLanguages();
     this.activatedTheme = this.initEditorOptions.theme;
 
-    // let Range = ace.require("ace/range").Range;
-    // let r = new Range(0, 0, 5, 5);
-    // let rangeId = this.codeEditor.getSession().addMarker(r, "readonly-highlight", "fullLine");
     this.codeHeader.setReadOnly(true);
     this.codeFooter.setReadOnly(true);
     this.codeEditor.clearSelection();
@@ -144,7 +152,6 @@ export class IdeComponent implements OnInit {
       const content = this.codeEditor.getValue();
       let linesInContent = content.split(/\r\n|\r|\n/).length;
       let linesInHeader = this.codeHeader.getValue().split(/\r\n|\r|\n/).length;
-      // console.log(linesInContent);
       this.codeFooter.setOption("firstLineNumber", linesInHeader + linesInContent + 1);
     });
 
@@ -155,15 +162,25 @@ export class IdeComponent implements OnInit {
     this.cd.detectChanges();
     if (this.headerCode != null) {
       INIT_HEADER_CPP = this.headerCode;
+    } else {
+      INIT_HEADER_CPP = DEF_HEADER_CPP;
     }
     if (this.footerCode != null) {
       INIT_FOOTER_CPP = this.footerCode;
+    } else {
+      INIT_FOOTER_CPP = DEF_FOOTER_CPP;
     }
     if (this.mainCode != null) {
       INIT_CONTENT_CPP = this.mainCode;
+    } else {
+      INIT_CONTENT_CPP = DEF_CONTENT_CPP;
     }
-    this.setContent(this.mainCode);
-    this.myInput.nativeElement.value = this.problemInput;
+    this.setContent(INIT_CONTENT_CPP);
+    if (this.problemInput != null) {
+      this.myInput.nativeElement.value = this.problemInput;
+    } else {
+      this.myInput.nativeElement.value = "";
+    }
   }
 
   private pipeSupportedLanguages() {
@@ -171,23 +188,18 @@ export class IdeComponent implements OnInit {
     .pipe(
       // reduce the incoming table to languages array
       map((languages: LanguageTable) => {
-        // console.log(languages);
         var res = Array<Language>();
         var languagesNew = <Array<any>>languages;
         for (var i = 0; i < languagesNew.length; ++i) {
           res.push(languagesNew[i][1][0]);
         }
-        // var res = languages.reduce<Language[]>((langsArray, entry) => {
-        //   return langsArray.concat(entry[1]);
-        // }, []);
-        // console.log(res);
         return res;
       }),
       // store the array in a member
       tap((languages: Language[]) => this.languagesArray = languages),
       // console log any error 
       catchError((err) => {
-        console.log(err);
+        this.matComp.openSnackBar(err['statusText'],2000);
         this.cantReachServer = true;
         this.languagesArray = [];
         return of(this.languagesArray);
@@ -205,7 +217,6 @@ export class IdeComponent implements OnInit {
     }
     const extraEditorOptions = {
       enableBasicAutocompletion: true,
-      // enableLiveAutocompletion: true,
     };
     const mergedOptions = Object.assign(basicEditorOptions, extraEditorOptions);
     return mergedOptions;
@@ -245,7 +256,7 @@ export class IdeComponent implements OnInit {
         });
       }
     } catch (error) {
-      console.log(error);
+      this.matComp.openSnackBar(error['statusText'],2000);
     }
   }
 
@@ -268,7 +279,7 @@ export class IdeComponent implements OnInit {
         });
       }
     } catch (error) {
-      console.log(error);
+      this.matComp.openSnackBar(error['statusText'],2000);
     }
   }
 
@@ -293,7 +304,6 @@ export class IdeComponent implements OnInit {
   public getContent() {
     if (this.codeEditor) {
       const code = this.codeHeader.getValue() + "\n" + this.codeEditor.getValue() + "\n" + this.codeFooter.getValue();
-      // console.log(code);
       return code;
     }
   }
@@ -321,7 +331,6 @@ export class IdeComponent implements OnInit {
     }
     // test input value
     let input = this.myInput.nativeElement.value;
-    // console.log(input);
   }
 
   /**
@@ -342,10 +351,7 @@ export class IdeComponent implements OnInit {
     let linesInHeader = this.codeHeader.getValue().split(/\r\n|\r|\n/).length;
     this.codeEditor.setOption("firstLineNumber", linesInHeader + 1);
     let linesInContent = this.codeEditor.getValue().split(/\r\n|\r|\n/).length;
-    // console.log(linesInHeader);
-    // console.log(linesInContent);
     let initialLinesFooter = linesInHeader + linesInContent + 1;
-    // console.log(initialLinesFooter);
     this.codeFooter.setOption("firstLineNumber", initialLinesFooter);
   }
 
@@ -357,7 +363,6 @@ export class IdeComponent implements OnInit {
     this.codeEditor.on('change', (delta) => {
       const content = this.codeEditor.getValue();
       let linesInContent = content.split(/\r\n|\r|\n/).length;
-      // console.log(linesInContent);
       this.codeFooter.setOption("firstLineNumber", linesInContent + 1);
       callback(content, delta);
     });
@@ -390,15 +395,11 @@ export class IdeComponent implements OnInit {
     return language.version;
   }
   public onRunCode() {
-    this.showSpinner = true;
-    // console.log('onRunCode()');
+    this.running = true;
     const code = encode(this.getContent());
-    console.log(code);
     const input = encode(this.myInput.nativeElement.value);
-    // console.log(this.languagesSelect);
     let fields = "stdout,time,memory,compile_output,stderr,token,message,status";
     if (this.languagesSelect && code.length > 0) {
-      // console.log("here");
       const langId = this.getLangId();
       const langVersion = this.getLangVersion();
       this.output$ = this.handler.postCodeToRun(code, {
@@ -406,8 +407,7 @@ export class IdeComponent implements OnInit {
       }, input, fields).pipe(
         // returning the output content
         map((response: RunResult) => {
-          this.showSpinner = false;
-          console.log(response);
+          this.running = false;
           if (response.compile_output != null) {
             return decode(response.compile_output);
           } else if (response.stderr != null) {
@@ -416,8 +416,8 @@ export class IdeComponent implements OnInit {
           return decode(response.stdout);
         }),
         catchError((err) => {
-          this.showSpinner = false;
-          console.log(err);
+          this.running = false;
+          this.matComp.openSnackBar(err['statusText'],2000);
           return of(DEFAULT_RUN_ERROR_MESSAGE);
         })
       );

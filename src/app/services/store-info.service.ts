@@ -19,7 +19,6 @@ export class StoreInfoService {
   selectedCourse:string;
   constructor() {
     this.serverUrl = environment.serverUrl;
-    console.log(this.serverUrl);
    }
 
   setUserDetails(userid: string,name: string,branch: string){

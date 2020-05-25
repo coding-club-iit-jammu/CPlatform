@@ -11,18 +11,15 @@ export class ServerHandlerService {
                 private storeInfo: StoreInfoService) { }
 
     public getAllSupportedLangs() {
-        console.log('getAllSupportedLangs()');
         const queryUrl = this.storeInfo.serverUrl + '/langs/';
         return this.http.get<{langs: LanguageTable}>(queryUrl)
                     .pipe(map(body => body.langs));
     }
     public postCodeToRun(code: string, language: {id: string, version: string}, 
                         input: string, fields: string) {
-        console.log('postCodeToRun()');
         const queryUrl = this.storeInfo.serverUrl + '/run/';
         const requestBody = {program: code, lang: language.id, version: language.version, 
                             input: input, fields: fields};
-        console.log(requestBody);
         return this.http.post<{runResult: any}>(queryUrl, requestBody)
                     .pipe(map(body => body.runResult));
 

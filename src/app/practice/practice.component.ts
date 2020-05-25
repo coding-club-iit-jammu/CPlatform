@@ -64,7 +64,6 @@ export class PracticeComponent implements OnInit {
     };
     await this.http.get(this.storeInfo.serverUrl+'/practice/leaderboard', options).toPromise().then( (response) => {
       if (response['status'] == 200) {
-        // console.log(response['body']);
         // update the LeaderBoard Entries
         let entries = response['body']['message'];
         for (let entry of entries) {
@@ -75,10 +74,8 @@ export class PracticeComponent implements OnInit {
         }
       }
     }, (error) => {
-      console.log(error);
       this.matComp.openSnackBar(error['statusText'],2000);
     })
-    console.log(this.leaderboard);
     this.leaderboard.sort((a, b) => {return b.score - a.score});
     this.showSpinner = false;
   }
@@ -101,7 +98,6 @@ export class PracticeComponent implements OnInit {
         this.title = response['body']['title'];
       }
     },error=>{
-      console.log(error)
       this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
@@ -142,14 +138,12 @@ export class PracticeComponent implements OnInit {
         this.title = response['body']['title'];
       }
     },error=>{
-      console.log(error)
       this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
   }
 
   async setCodingQuestionParameters(question) {
-    // console.log("setting parameters");
     let q = this.codingQuestions[question];
     this.headerCode = q.header;
     this.footerCode = q.footer;
@@ -158,7 +152,6 @@ export class PracticeComponent implements OnInit {
   }
 
   async getCodingQuestion(){
-    console.log("Getting coding questions");
     this.showSpinner = true;
     const options = {
       observe: 'response' as 'body',
@@ -176,7 +169,6 @@ export class PracticeComponent implements OnInit {
         this.title = response['body']['title'];
       }
     },error=>{
-      console.log(error)
       this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
@@ -208,7 +200,6 @@ export class PracticeComponent implements OnInit {
     await this.http.post(this.storeInfo.serverUrl+'/practice/submitMCQ',data,options).toPromise().then(response=>{
       this.matComp.openSnackBar(response['body']['message'],2000);
     },error=>{
-      console.log(error)
       this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
@@ -224,18 +215,15 @@ export class PracticeComponent implements OnInit {
         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       })
     };
-    // console.log(this.trueFalseQuestions[selectedTrueFalse]);
     let data = {
       questionId : this.trueFalseQuestions[selectedTrueFalse]['_id'],
       questionType: 'trueFalse',
       answer: this.trueFalseQuestions[selectedTrueFalse]['response'],
       courseCode: this.code
     }
-    console.log(data);
     await this.http.post(this.storeInfo.serverUrl+'/practice/submitTrueFalse',data,options).toPromise().then(response=>{
       this.matComp.openSnackBar(response['body']['message'],2000);
     },error=>{
-      console.log(error)
       this.matComp.openSnackBar(error['statusText'],2000);
     })
     this.showSpinner = false;
@@ -253,7 +241,6 @@ export class PracticeComponent implements OnInit {
     };
 
     // fetch user code from the child component, passed in function
-    // console.log(submitCode);
     let data = {
       questionId : this.codingQuestions[selectedCodingQuestion]['_id'],
       questionType: 'codingQuestion',
@@ -262,14 +249,12 @@ export class PracticeComponent implements OnInit {
       langId: langId,
       langVersion: langVersion
     }
-    // console.log(data);
     await this.http.post(this.storeInfo.serverUrl+'/practice/submitCodingQuestion',data,options).toPromise().then(response=>{
       if (response['body']['error']) {
         this.matComp.openSnackBar(response['body']['error']['message'],10000);  
       }
       this.matComp.openSnackBar(response['body']['message'],10000);
     },error=>{
-      console.log(error)
       this.matComp.openSnackBar(error['error']['message'],3000);
     })
     
@@ -279,6 +264,10 @@ export class PracticeComponent implements OnInit {
 
 
   setView(view){
+    // if (view == 4) {
+    //   this.router.navigateByUrl(`/ide`);
+    //   return;
+    // }
     this.router.navigateByUrl(`/course/${this.code}/${view}`);
   }
 

@@ -36,13 +36,6 @@ export class CreateTestComponent implements OnInit {
        + 'T' + date.toTimeString().slice(0,5);
   }
 
-  calcTime(time){
-    var d = new Date();
-    var utc = time+(d.getTimezoneOffset()*60000);
-    var nd = new Date(utc+(3600000)*(-5.5));      
-    return this.toDateString(nd);
-  }
-
   addGroup(data){
     let arraay = this.testForm.get('groups') as FormArray; 
     let l = arraay.length;
@@ -182,7 +175,7 @@ export class CreateTestComponent implements OnInit {
         this.matComp.openSnackBar(response['body']['message'],3000);
       }
     },(error)=>{
-      this.matComp.openSnackBar(error,2500);
+      this.matComp.openSnackBar(error['statusText'],2500);
     })
     this.showSpinner = false;
   }
@@ -205,7 +198,7 @@ export class CreateTestComponent implements OnInit {
         this.matComp.openSnackBar(response['body']['message'],3000);
       }
     },(error)=>{
-      this.matComp.openSnackBar(error,2500);
+      this.matComp.openSnackBar(error['statusText'],2500);
     })
     this.showSpinner = false;
   }

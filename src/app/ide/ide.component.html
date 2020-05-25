@@ -76,6 +76,10 @@
 
         <!-- run, clear & beautify buttons -->
         <div class="row justify-content-center mb-4 mx-4 pt-2">
+            <!-- running loader -->
+            <div class="spinner-border" role="status" *ngIf="running">
+                    <span class="sr-only">Loading...</span>
+            </div>
             <!-- run button -->
             <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
                 <button type="button" class="btn btn-dark btn-sm btn-block px-4 mx-2" [ngClass]="{'cant-click' : cantReachServer}"
