@@ -45,9 +45,11 @@
                   <div *ngFor="let item of userData.courses.studying" class="col-sm-4">
                     <div class="card border-dark">
                       <div class="card-body">
-                        <h5 class="card-title">{{item.code.substring(8) | titlecase}}</h5>
-                        <p class="card-text">{{item.title}}</p>
-                        <button class="btn btn-dark" (click)="openCourse(item.code,'student')">Open</button>
+                        <h5 class="card-title">{{item.code.substring(8) | uppercase}}</h5>
+                        <p class="card-text text-center">{{item.title}}</p>
+                        <div class="text-center">
+                          <button class="btn btn-dark" (click)="openCourse(item.code,'student')">Open</button>
+                        </div>
                       </div>
                     </div>
                   </div>

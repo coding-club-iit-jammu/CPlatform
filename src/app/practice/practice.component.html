@@ -103,27 +103,45 @@
             </div>
             <div class="sideInfo bg-transparent px-3">
                 <div>
-                    <div class="my-3 py-3">
-                        <div class="card text-center">
+                    <div class="my-3 mx-auto py-3">
+                        <div class="card mx-auto w-100 text-center">
                             <div class="card-header bg-dark text-light">
                                 LeaderBoard
                             </div>
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Score</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let entry of leaderboard; index as i">
-                                    <th scope="row">{{ i + 1 }}</th>
-                                    <td>{{ entry.name }}</td>
-                                    <td>{{ entry.score | number }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="card-body mx-auto">
+                                <table class="table w-100 mx-auto table-responsive table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Rank</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Score</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let entry of leaderboard.slice(0,5); index as i">
+                                        <th scope="row">{{ entry['rank'] }}</th>
+                                        <td>{{ entry.name }}</td>
+                                        <td>{{ entry.score | number }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <table class="table table-dark table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">{{ userRank['rank'] }}</th>
+                                        <td>{{ userRank['name'] }}</td>
+                                        <td>{{ userRank['score'] | number }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="my-2">
+                                    <button class="btn btn-link" data-toggle="modal" data-target="#leaderboardModal">
+                                        Complete LeaderBoard
+                                    </button>
+                                </div>    
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -131,6 +149,41 @@
         </div>
         <div class="bottom bg-dark py-3 text-light text-center">
             <h3>{{title}}</h3>
+        </div>
+        <div class="modal fade" id="leaderboardModal" role="dialog" *ngIf="role!='student'">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header text-center bg-light px-auto h-100">
+                        <div class="text-center">LeaderBoard</div>
+                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                    </div>
+                    <div class="modal-body text-center mx-auto">
+                        <div class="text-center mx-auto my-3">
+                            <table class="table table-dark mx-auto table-striped table-responsive table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Rank</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Score</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let entry of leaderboard; index as i">
+                                    <th scope="row">{{ entry['rank'] }}</th>
+                                    <td>{{ entry.name }}</td>
+                                    <td>{{ entry.score | number }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-around bg-light">
+                        <div>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="modal fade" id="mcqModal" role="dialog" *ngIf="view==1 && selectedMCQ!=null">
             <div class="modal-dialog modal-dialog-centered">

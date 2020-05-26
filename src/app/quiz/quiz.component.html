@@ -55,6 +55,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="text-center fixed-bottom">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#nextSectionModal" accesskey="b" title="ShortCut: Alt + b">Next Section</button>
+                    </div>
                 </mat-sidenav>
               
                 <mat-sidenav-content>
@@ -76,9 +79,9 @@
                                 <div class="mcqQuestion card shadow my-3 w-50 mx-auto" *ngIf="questionType=='mcq' || questionType=='trueFalse'">
                                 <!-- Show Question here -->
                                     <div class="card-header text-center">
-                                        <div class="question-header align-center" [innerHtml]="questions[current.question].question">
+                                        <div class="align-center mt-3" [innerHtml]="questions[current.question].question">
                                         </div>
-                                        <div class="text-danger">
+                                        <div class="text-danger my-3">
                                             Marks: {{questions[current.question].marks}}
                                         </div>
                                     </div>
@@ -114,7 +117,7 @@
                                     </div>
                                 </div> 
                                 <!-- Coding Question -->
-                                <div *ngIf="questionType=='codingQuestion'">
+                                <div *ngIf="questionType=='codingQuestion'" class="my-3">
                                     <div class="">
                                         <div class="text-center bg-light">
                                             <div class="text-center" [innerHtml]="this.questions[current.question].title"></div>
@@ -144,9 +147,6 @@
                                         </div>
                                     </div>
                                 </div> 
-                                <div class="text-center bottom my-3">
-                                    <button class="btn btn-danger" data-toggle="modal" data-target="#nextSectionModal" accesskey="b" title="ShortCut: Alt + b">Next Section</button>
-                                </div>
                             </div>
                         </div>
                     </div>

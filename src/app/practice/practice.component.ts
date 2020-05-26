@@ -6,7 +6,8 @@ import { StoreInfoService } from '../services/store-info.service';
 
 interface LeaderboardEntry {
   name: string,
-  score: number
+  score: number,
+  rank: number
 }
 
 @Component({
@@ -42,6 +43,11 @@ export class PracticeComponent implements OnInit {
   problemInput: string;
   submitted: Boolean;
   leaderboard: LeaderboardEntry[];
+  userRank = {
+    name:'',
+    rank:'',
+    score:''
+  }
 
   async ngOnInit() {
     if(!this.storeInfo.isSignedIn()){
@@ -69,17 +75,19 @@ export class PracticeComponent implements OnInit {
       if (response['status'] == 200) {
         // update the LeaderBoard Entries
         let entries = response['body']['message'];
+        this.userRank = response['body']['userEntry'];
+        this.leaderboard = [];
         for (let entry of entries) {
-          let leaderboardEntry = {name: "", score: 0};
+          let leaderboardEntry = {name: "", score: 0,rank:1};
           leaderboardEntry.name = entry.name;
           leaderboardEntry.score = entry.score;
+          leaderboardEntry.rank = entry.rank;
           this.leaderboard.push(leaderboardEntry);
         }
       }
     }, (error) => {
       this.matComp.openSnackBar(error['statusText'],2000);
     })
-    this.leaderboard.sort((a, b) => {return b.score - a.score});
     this.showSpinner = false;
   }
 
@@ -198,6 +206,7 @@ export class PracticeComponent implements OnInit {
     }
     await this.http.post(this.storeInfo.serverUrl+'/practice/submitMCQ',data,options).toPromise().then(response=>{
       this.matComp.openSnackBar(response['body']['message'],2000);
+      this.getLeaderBoard();
     },error=>{
       this.matComp.openSnackBar(error['statusText'],2000);
     })
@@ -221,6 +230,7 @@ export class PracticeComponent implements OnInit {
     }
     await this.http.post(this.storeInfo.serverUrl+'/practice/submitTrueFalse',data,options).toPromise().then(response=>{
       this.matComp.openSnackBar(response['body']['message'],2000);
+      this.getLeaderBoard();
     },error=>{
       this.matComp.openSnackBar(error['statusText'],2000);
     })
@@ -252,6 +262,7 @@ export class PracticeComponent implements OnInit {
         this.matComp.openSnackBar(response['body']['error']['message'],10000);  
       }
       this.matComp.openSnackBar(response['body']['message'],10000);
+      this.getLeaderBoard();
     },error=>{
       this.matComp.openSnackBar(error['error']['message'],3000);
     })

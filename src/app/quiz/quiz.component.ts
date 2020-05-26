@@ -304,7 +304,6 @@ export class QuizComponent implements OnInit {
         if(response['body']['ended'] && response['body']['ended']==true){
           this.showSpinner = false;
           this.matComp.openSnackBar(response['body']['message'],5000);
-          this.router.navigateByUrl(`/course/${this.code}/3`);
         } else {
           this.questions = response['body']['questions'];
           this.questionType = response['body']['questionType'];

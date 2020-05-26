@@ -194,25 +194,27 @@
                             </div>
                         </div>
                         <div class="text-center card-footer bg-light">
-                            <button class="btn btn-secondary" (click)="saveTest()">
+                            <button class="btn btn-danger" (click)="saveTest()">
                                 Save
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="w-25 mx-3 bg-secondary text-center d-flex flex-column">
-                <div class="my-3">
-                    <button class="btn btn-danger btn-block" [disabled]="test.startTest" (click)="startTest()">Start Test</button>
-                </div>
-                <div class="my-3">
-                    <button class="btn btn-warning btn-block" [disabled]="!test.startTest" (click)="revealMarks()">Release Marks</button>
-                </div>
-                <div class="my-3">
-                    <button class="btn btn-primary btn-block" [disabled]="!test.startTest">Show Leaderboard</button>
-                </div>
-                <div class="my-3">
-                    <button class="btn btn-primary btn-block" [disabled]="!test.startTest" data-toggle="modal" data-target="#statsModal">Show Stats</button>
+            <div class="w-25 mx-3 bg-secondary py-3 text-center d-flex flex-column">
+                <div class="bg-light rounded-lg">
+                    <div class="my-3 w-75 mx-auto">
+                        <button class="btn btn-danger btn-block btn-sm rounded" [disabled]="test.startTest" (click)="startTest()">Start Test</button>
+                    </div>
+                    <div class="my-3 w-75 mx-auto">
+                        <button class="btn btn-warning btn-block btn-sm rounded" [disabled]="!test.startTest" (click)="revealMarks()">Release Marks</button>
+                    </div>
+                    <div class="my-3 w-75 mx-auto">
+                        <button class="btn btn-primary btn-block btn-sm rounded" [disabled]="!test.startTest">Show Leaderboard</button>
+                    </div>
+                    <div class="my-3 w-75 mx-auto">
+                        <button class="btn btn-primary btn-block btn-sm rounded" [disabled]="!test.startTest" data-toggle="modal" data-target="#statsModal">Show Stats</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -244,7 +246,7 @@
                                 </div>
                                 <div class="w-75 mx-auto">
                                     <div *ngFor="let stu of test['stats']['maxMarks']['students']">
-                                        <input type="text" class="form-control" value="Name of Student Here" readonly>
+                                        <input type="text" class="form-control" value="{{stu['name']}}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -258,7 +260,7 @@
                                 </div>
                                 <div class="w-75 mx-auto">
                                     <div class="my-2" *ngFor="let stu of test['stats']['minMarks']['students']">
-                                        <input type="text" class="form-control" value="Name of Student Here" readonly>
+                                        <input type="text" class="form-control" value="{{stu['name']}}" readonly>
                                     </div>
                                 </div>
                             </div>

@@ -174,6 +174,7 @@ export class CreateTestComponent implements OnInit {
     await this.http.post(this.storeInfo.serverUrl+'/test/saveTestData', data, options).toPromise().then((response)=>{
       if(response['status']==200){
         this.matComp.openSnackBar(response['body']['message'],3000);
+        this.resetTestForm();
         this.getTestData();
       }
     },(error)=>{
@@ -219,6 +220,7 @@ export class CreateTestComponent implements OnInit {
     await this.http.post(this.storeInfo.serverUrl+'/test/revealMarks', data, options).toPromise().then((response)=>{
       if(response['status']==200){
         this.matComp.openSnackBar(response['body']['message'],3000);
+        this.resetTestForm();
         this.getTestData();
       }
     },(error)=>{
