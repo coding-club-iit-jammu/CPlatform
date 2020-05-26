@@ -97,21 +97,20 @@
     margin-left: 10%;
   }
 
-  
-
-  .unattemptedQuestion{
+  .notViewed{
     width: 100%;
-    height: 8vh;
+    min-height: 8vh;
+    height: auto;
     color: black;
     margin-bottom: 1%;
     background-color: white;
   }
 
-  .unattemptedQuestion:hover{
+  .notViewed:hover{
     background-color: lightblue;
   }
 
-  .seenUnattemptedQuestion{
+  .viewedNotSubmitted{
     width: 100%;
     height: 8vh;
     color: black;
@@ -119,16 +118,20 @@
    background-color: #f1f38f !important; 
   }
 
-  .attemptedQuestion{
+  .viewedNotSubmitted{
+    background-color:darkgoldenrod !important; 
+  }
+
+  .submitted{
     width: 100%;
     height: 8vh;
     color: black;
     margin-bottom: 1%;
-    background-color: #92e526 !important;
+    background-color: lightgreen !important;
   }
 
-  .attemptedQuestion:hover{
-    background-color: lightgreen !important;
+  .submitted:hover{
+    background-color: #92e526  !important;
   }
 
   .greenColor{

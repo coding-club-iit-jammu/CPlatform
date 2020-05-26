@@ -53,7 +53,6 @@ export class LoginComponent implements OnInit {
       
       this.storeInfo.setToken(data['token']);
       this.storeInfo.setRefreshToken(data['refreshToken']);
-      this.material.openSnackBar("Change Page",2000);
       this.router.navigateByUrl('/home');
     },error =>{
       this.showSpinner1 = false;

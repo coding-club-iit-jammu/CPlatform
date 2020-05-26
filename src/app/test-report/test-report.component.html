@@ -1,0 +1,148 @@
+<div class="wrapper">
+    <div class="overlay" *ngIf="showSpinner">   
+        <div class="spinner-wrapper">
+            <app-spinner></app-spinner>
+        </div>
+    </div>
+    <div [class.blurred]="!showSpinner">
+        <div class="navBarCss mb-3">
+            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+                <span class="navbar-brand mb-0 h1">{{code.substring(8) | uppercase}}</span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+            
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" (click) = "setView(1)"> Stream</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click) = "setView(2)"> Assignments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click) = "setView(3)"> Tests</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="goToPractice()">Practice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click) = "setView(4)">IDE</a>
+                        </li>
+                    </ul>
+                    <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()">Home</button>
+                    &nbsp;&nbsp;<br>
+                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()">Sign Out</button>
+                </div>
+            </nav>
+        </div>
+        <div class="completeView bg-secondary py-3">
+            <div class="mx-3 w-70 my-3">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-light text-center">
+                        <h3>
+                            {{testId}}
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <!-- Title -->
+                        </div>
+                        <div class="form-group">
+                            <label>Multiple Choice Questions</label>
+                            <div class="card shadow py-3 text-center bg-light">
+                                <ng-container>
+                                    <div class="card shadow-sm mx-3 py-3 my-2">
+                                        <ng-container class="form-group mx-auto px-3">
+                                            <div class="d-flex flex-column">
+                                                <div class="d-flex flex-row justify-content-between w-100 px-3">
+                                                    <!-- Show Question Here -->
+                                                    <!-- <div [innerHtml]="control.get('questionContent').value"></div> -->
+                                                </div>
+                                                <div class="form-group row w-50 mx-auto">
+                                                    <div class="input-group mb-3 w-75 mx-auto">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">Marks</span>
+                                                        </div>
+                                                        <!-- Secured marks/Total Marks -->
+                                                        3/5
+                                                        <!-- <input type="number" class="form-control" formControlName="marks"> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>True/False Questions</label>
+                            <div class="card shadow py-3 text-center bg-light">
+                                <ng-container>
+                                    <div class="card shadow-sm mx-3 py-3 my-2">
+                                        <ng-container class="form-group mx-auto px-3">
+                                            <div class="d-flex flex-column">
+                                            <div class="d-flex flex-row justify-content-between w-100 px-3">
+                                                <!-- Question Content Here.-->
+                                                <!-- <div [innerHtml]="control.get('questionContent').value"></div> -->
+                                            </div>
+                                            <div class="form-group row w-50 mx-auto">
+                                                <div class="input-group mb-3 w-75 mx-auto">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Marks</span>
+                                                    </div>
+                                                    3/5
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </ng-container>
+                                    </div>
+                                    </ng-container>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Coding Questions</label>
+                            <div class="card shadow py-3 text-center bg-light">
+                                <ng-container>
+                                    <div class="card shadow-sm mx-3 py-3 my-2">
+                                        <ng-container class="form-group mx-auto px-3">
+                                            <div class="d-flex flex-column">
+                                            <div class="d-flex flex-row justify-content-between w-100 px-3">
+                                                <!-- <div></div> -->
+                                                <!-- <div [innerHtml]="control.get('title').value"></div> -->
+                                            </div>
+                                            <div class="form-group row w-50 mx-auto">
+                                                <div class="input-group mb-3 w-75 mx-auto">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Marks</span>
+                                                    </div>
+                                                    3/5
+                                                    <!-- <input type="number" class="form-control" formControlName="marks"> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </ng-container>
+                                    </div>
+                                    </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-25 card mx-3 bg-light text-center d-flex flex-column">
+                <div class="my-3">
+                    Your Marks
+                </div>
+                <div class="my-3">
+                    Show Highest Marks
+                </div>
+                <div class="my-3">
+                    Show Lowest Marks
+                </div>
+                <div class="my-3">
+                    Show Average Marks
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ import { IdeComponent } from './ide/ide.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { PracticeComponent } from './practice/practice.component';
 import { CreateTestComponent } from './test-settings/create-test.component';
+import { TestReportComponent } from './test-report/test-report.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path:'course/:courseId/tests/:testId/settings',
     component: CreateTestComponent
+  },
+  {
+    path:'course/:courseId/tests/:testId/report',
+    component: TestReportComponent
   },
   {
     path: 'course/:courseId/:view',

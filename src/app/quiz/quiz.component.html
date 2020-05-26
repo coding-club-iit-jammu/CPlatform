@@ -47,10 +47,10 @@
                             <h3>{{testId}}</h3>
                         </div>
                     </div>
-                    <div class="questions">
-                        <h3 class="text-white">Section {{questionType | titlecase}}</h3>
+                    <div class="questions text-center">
+                        <h3 class="text-white">{{questionType=='mcq'?"MCQs":(questionType=='trueFalse'?"True False":'Coding Questions')}}</h3>
                         <div *ngFor="let q of questions;let i=index;">
-                            <div class="btn btn-secondary" (click)="changeQuestion(i)" [ngClass]="{'attemptedQuestion': questions[current.question].response!='','unattemptedQuestion': questions[current.question].response=='' && !questions[current.question].visited , 'seenUnattemptedQuestion': questions[current.question]['response']=='' && questions[current.question].visited}">
+                            <div class="btn" (click)="changeQuestion(i)" [ngClass]="{'submitted':q['submitted'] == true,'viewedNotSubmitted': q['submitted']==false && q['visited'] == true , 'notViewed':q['submitted']==false && q['visited'] == false }">
                                 Question {{i+1}}
                             </div>
                         </div>
@@ -75,7 +75,12 @@
                                 <!-- MCQ and True False -->
                                 <div class="mcqQuestion card shadow my-3 w-50 mx-auto" *ngIf="questionType=='mcq' || questionType=='trueFalse'">
                                 <!-- Show Question here -->
-                                    <div class="card-header text-center question-header align-center" [innerHtml]="questions[current.question].question">
+                                    <div class="card-header text-center">
+                                        <div class="question-header align-center" [innerHtml]="questions[current.question].question">
+                                        </div>
+                                        <div class="text-danger">
+                                            Marks: {{questions[current.question].marks}}
+                                        </div>
                                     </div>
                                     <!-- Show Options here -->
                                     <div class="card-body">
@@ -139,7 +144,7 @@
                                         </div>
                                     </div>
                                 </div> 
-                                <div class="text-center fixed-bottom my-3">
+                                <div class="text-center bottom my-3">
                                     <button class="btn btn-danger" data-toggle="modal" data-target="#nextSectionModal" accesskey="b" title="ShortCut: Alt + b">Next Section</button>
                                 </div>
                             </div>

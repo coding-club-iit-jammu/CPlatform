@@ -203,18 +203,77 @@
             </div>
             <div class="w-25 mx-3 bg-secondary text-center d-flex flex-column">
                 <div class="my-3">
-                    <button class="btn btn-light btn-block" (click)="startTest()">Start Test</button>
+                    <button class="btn btn-danger btn-block" [disabled]="test.startTest" (click)="startTest()">Start Test</button>
                 </div>
                 <div class="my-3">
-                    <button class="btn btn-light btn-block">Show Leaderboard</button>
+                    <button class="btn btn-warning btn-block" [disabled]="!test.startTest" (click)="revealMarks()">Release Marks</button>
                 </div>
                 <div class="my-3">
-                    <button class="btn btn-light btn-block">Release Marks</button>
+                    <button class="btn btn-primary btn-block" [disabled]="!test.startTest">Show Leaderboard</button>
                 </div>
                 <div class="my-3">
-                    <button class="btn btn-light btn-block">Show Stats</button>
+                    <button class="btn btn-primary btn-block" [disabled]="!test.startTest" data-toggle="modal" data-target="#statsModal">Show Stats</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="statsModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header text-center bg-light">
+                        <div class="text-center">Statistics</div>
+                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="text-center my-3">
+                            <!-- Average Marks -->
+                            <div class="card py-3">
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend bg-warning">
+                                        <span class="input-group-text bg-warning text-dark">Average Marks</span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{test['stats']['avgMarks']}}" readonly>
+                                </div>
+                            </div>
+                            <!-- Max Marks -->
+                            <div class="card py-3">
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend bg-success">
+                                        <span class="input-group-text bg-success text-white">Max Marks</span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{test['stats']['maxMarks']['marks']}}" readonly>
+                                </div>
+                                <div class="w-75 mx-auto">
+                                    <div *ngFor="let stu of test['stats']['maxMarks']['students']">
+                                        <input type="text" class="form-control" value="Name of Student Here" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Min Marks -->
+                            <div class="card py-3">
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend bg-danger">
+                                        <span class="input-group-text bg-danger text-white">Min Marks</span>
+                                    </div>
+                                    <input type="text" class="form-control" value="{{test['stats']['minMarks']['marks']}}" readonly>
+                                </div>
+                                <div class="w-75 mx-auto">
+                                    <div class="my-2" *ngFor="let stu of test['stats']['minMarks']['students']">
+                                        <input type="text" class="form-control" value="Name of Student Here" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-around bg-light">
+                        <div>
+                            <button class="btn btn-link" (click)="navToStatistics()">
+                                Detailed Statistics
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>

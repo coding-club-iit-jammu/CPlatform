@@ -174,6 +174,7 @@ export class CreateTestComponent implements OnInit {
     await this.http.post(this.storeInfo.serverUrl+'/test/saveTestData', data, options).toPromise().then((response)=>{
       if(response['status']==200){
         this.matComp.openSnackBar(response['body']['message'],3000);
+        this.getTestData();
       }
     },(error)=>{
       this.matComp.openSnackBar(error['statusText'],2500);
@@ -201,6 +202,33 @@ export class CreateTestComponent implements OnInit {
       this.matComp.openSnackBar(error['statusText'],2500);
     })
     this.showSpinner = false;
+  }
+
+  async revealMarks(){
+    this.showSpinner = true;
+    const options = {
+      observe: 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    let data = {}
+    data['_id'] = this.testForm.get('_id').value;
+    data['courseCode'] = this.code;
+    
+    await this.http.post(this.storeInfo.serverUrl+'/test/revealMarks', data, options).toPromise().then((response)=>{
+      if(response['status']==200){
+        this.matComp.openSnackBar(response['body']['message'],3000);
+        this.getTestData();
+      }
+    },(error)=>{
+      this.matComp.openSnackBar(error['statusText'],2500);
+    })
+    this.showSpinner = false;
+  }
+
+  navToStatistics(){
+    
   }
 
   moveBack(){
