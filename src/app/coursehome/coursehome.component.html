@@ -39,7 +39,7 @@
                 </div>
             </nav>
         </div>
-        <div class="completeView">
+        <div class="completeView my-3 py-3">
             <div class = "mainClass" >
                 <div class="view1 mt-6 pb-3" *ngIf="view==1">
                     <div class="row mx-3 pl-4" *ngIf="course.posts && course.posts.length>0">
@@ -305,15 +305,23 @@
                     <form [formGroup]="shiftDeadlineForm">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Assignment</label>
-                                <input type="text" class="form-control" readonly formControlName="title" value="{{shiftDeadlineForm.get('title').value}}">
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-dark text-white">Assignment</span>
+                                    </div>
+                                    <input type="text" class="form-control" readonly formControlName="title" value="{{shiftDeadlineForm.get('title').value}}">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <input type="hidden" class="form-control" formControlName="assignmentId">
                             </div>
                             <div class="form-group">
-                                <label>New Deadline</label>
-                                <input type="datetime-local" class="form-control" formControlName="newDeadline">
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-dark text-white">New Deadline</span>
+                                    </div>
+                                    <input type="datetime-local" class="form-control" formControlName="newDeadline">
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer d-flex flex-row justify-content-around">

@@ -7,6 +7,10 @@
     z-index: 10;
   }
 
+  .accordion .card {
+    overflow: inherit;
+  }
+
   .w-10{
     width: 10%;
   }
