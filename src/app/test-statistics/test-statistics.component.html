@@ -1,0 +1,237 @@
+<div class="wrapper">
+    <div class="overlay" *ngIf="showSpinner">   
+        <div class="spinner-wrapper">
+            <app-spinner></app-spinner>
+        </div>
+    </div>
+    <div [class.blurred]="!showSpinner">
+        <div class="navBarCss mb-3">
+            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+                <span class="navbar-brand mb-0 h1">{{code.substring(8) | uppercase}}</span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+            
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" (click) = "setView(1)"> Stream</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click) = "setView(2)"> Assignments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click) = "setView(3)"> Tests</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="goToQuestions()">Questions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="goToPractice()">Practice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" (click) = "setView(4)">IDE</a>
+                        </li>
+                    </ul>
+                    <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()"><i class="fa fa-home"></i> Home</button>
+                    &nbsp;&nbsp;<br>
+                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()"><i class="fa fa-sign-out"></i> Sign Out</button>
+                </div>
+            </nav>
+        </div>
+        <div class="completeView d-flex flex-column py-3">
+            <div class="text-center mx-auto"  >
+                <button class="btn btn-link" (click)="navToTest()">
+                    <h3>{{testId}}</h3>
+                </button>
+            </div>
+            <div class="container my-3 text-center">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="card shadow rounded bg-successs">
+                            <div class="card-header">
+                                Max Marks
+                            </div>
+                            <div class="card-body">
+                                {{stats['maxMarks']}}
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-link" data-toggle="modal" data-target="#maxStudentsModal">
+                                    Students
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card shadow rounded bg-warning">
+                            <div class="card-header">
+                                Avg Marks
+                            </div>
+                            <div class="card-body">
+                                {{stats['avgMarks']}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card shadow rounded bg-danger">
+                            <div class="card-header">
+                                Min Marks
+                            </div>
+                            <div class="card-body">
+                                {{stats['minMarks']}}
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-link text-white" data-toggle="modal" data-target="#minStudentsModal">
+                                    Students
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-3 mx-auto w-50 py-3" style="min-width: 600px;min-height: 500px;" id="chartContainerAll">
+            </div>
+            <div class="my-3">
+                <div class="card shadow-lg w-75 mx-auto my-3" *ngIf="questionStats['mcq'].length > 0">
+                    <div class="card-header bg-secondary">
+                        <div class="text-center text-white">
+                            <h3>
+                                Multiple Choice Questions
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card shadow w-75 mx-auto my-2" *ngFor="let que of questionStats['mcq']">
+                            <div class="card-header bg-infoo">
+                                <div class="text-center" [innerHtml]="que['question']">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend bg-successs text-dark">
+                                        <span class="input-group-text bg-successs">Correctly Answered</span>
+                                    </div>
+                                    <input type="text" class="form-control text-center" readonly value="{{que['right']}}">
+                                </div>
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend bg-warning text-dark">
+                                        <span class="input-group-text bg-warning">Wrongly Answered</span>
+                                    </div>
+                                    <input type="text" class="form-control text-center" readonly value="{{que['wrong']}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow-lg w-75 mx-auto my-3" *ngIf="questionStats['trueFalse'].length > 0">
+                    <div class="card-header bg-secondary">
+                        <div class="text-center text-white">
+                            <h3>
+                                True False Questions
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card shadow w-75 mx-auto my-2" *ngFor="let que of questionStats['trueFalse']">
+                            <div class="card-header bg-infoo">
+                                <div class="text-center" [innerHtml]="que['question']">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend bg-successs text-dark">
+                                        <span class="input-group-text bg-successs">Correctly Answered</span>
+                                    </div>
+                                    <input type="text" class="form-control text-center" readonly value="{{que['right']}}">
+                                </div>
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend bg-warning text-dark">
+                                        <span class="input-group-text bg-warning">Wrongly Answered</span>
+                                    </div>
+                                    <input type="text" class="form-control text-center" readonly value="{{que['wrong']}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow-lg w-75 my-3 mx-auto" *ngIf="questionStats['codingQuestion'].length > 0">
+                    <div class="card-header bg-secondary text-white">
+                        <div class="text-center">
+                            <h3>
+                                Coding Questions
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card shadow my-2 w-75 mx-auto" *ngFor="let que of questionStats['codingQuestion']">
+                            <div class="card-header bg-infoo">
+                                <div class="text-center" [innerHtml]="que['question']">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend text-dark bg-successs">
+                                        <span class="input-group-text bg-successs">Correctly Answered</span>
+                                    </div>
+                                    <input type="text" class="form-control text-center" readonly value="{{que['right']}}">
+                                </div>
+                                <div class="input-group mb-3 w-75 mx-auto">
+                                    <div class="input-group-prepend text-dark bg-successs">
+                                        <span class="input-group-text bg-successs">Wrongly Answered</span>
+                                    </div>
+                                    <input type="text" class="form-control text-center" readonly value="{{que['wrong']}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="minStudentsModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header text-center bg-light px-auto h-100">
+                        <div class="text-center">
+                            <h3>
+                                {{stats['minStudents'].length > 1?'Students':'Student'}} with Minimum marks
+                            </h3>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                    </div>
+                    <div class="modal-body text-center text-wrap">
+                        <div class="text-center">
+                            <ul>
+                                <li *ngFor="let stu of stats['minStudents']">
+                                    {{stu['name']}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="maxStudentsModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header text-center bg-light px-auto h-100">
+                        <div class="text-center">
+                            <h3>
+                                {{stats['maxStudents'].length > 1?'Students':'Student'}} with Maximum marks
+                            </h3>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                    </div>
+                    <div class="modal-body text-center text-wrap">
+                        <div class="text-center">
+                            <ul>
+                                <li *ngFor="let stu of stats['maxStudents']">
+                                    {{stu['name']}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

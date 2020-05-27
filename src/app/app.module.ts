@@ -33,10 +33,13 @@ import { MaterialComponentService } from './services/material-component.service'
 import { TokenInterceptorService } from './services/token-interceptor.service';
 
 import { QuillModule } from 'ngx-quill';
+import { ChartsModule } from 'ng2-charts';
+
 import { QuestionsComponent } from './questions/questions.component';
 import { PracticeComponent } from './practice/practice.component';
 import { CreateTestComponent } from './test-settings/create-test.component';
-import { TestReportComponent } from './test-report/test-report.component'
+import { TestReportComponent } from './test-report/test-report.component';
+import { TestStatisticsComponent } from './test-statistics/test-statistics.component'
 
 @NgModule({
   declarations: [
@@ -52,6 +55,7 @@ import { TestReportComponent } from './test-report/test-report.component'
     PracticeComponent,
     CreateTestComponent,
     TestReportComponent,
+    TestStatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +75,7 @@ import { TestReportComponent } from './test-report/test-report.component'
     MatRadioModule,
     FormsModule,
     MatSidenavModule,
+    ChartsModule,
     QuillModule.forRoot({
       modules: {
         syntax: true,

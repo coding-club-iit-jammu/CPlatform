@@ -1,0 +1,217 @@
+.completeView{
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+  }
+
+  .all{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .bg-successs{
+    background-color: lightgreen;
+  }
+
+  .bg-infoo{
+    background-color: lightblue;
+  }
+
+  .bg-danger{
+    color: white;
+  }
+  
+  .main {
+    margin-left: 25vw;
+    padding-left: 5vw;
+    width: 70vw;
+    /* margin-left: 25vw; Same as the width of the sidebar */
+  }
+
+  .modal-body {
+    overflow: auto !important;
+  }
+
+  .w-80{
+    width: 80%;
+  }
+
+  .w-70{
+    width: 70%;
+  }
+
+  .cardRight {
+    margin: 2%;
+    width: 25vw;
+  }
+
+  .cardRow{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .assignment{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .box{
+    width: 30vw;
+    /* height: auto; */
+    margin: 1%;
+  }
+
+  .wrapper {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .overlay {
+    position: fixed;
+    z-index: 1002;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 100%;
+    height: 100%;
+  }
+
+  .signout{
+    margin-top: 5vh;
+    bottom:   0;
+  }
+  
+  .navBarCss{
+    cursor: hand !important;
+    height: 6vh;
+  }
+
+  .mainClass{
+    padding-top: 2vh;
+    overflow-x: auto;
+    width: 80vw;
+    /* overflow-y: auto; */
+  }
+
+  .width45{
+    width: 45%;
+  }
+
+  .sideInfo{
+    padding-top: 2vh;
+    min-height: 91vh;
+    width: 20vw;
+    overflow-y: unset;
+    z-index: 2;
+  }
+
+  .z-100{
+    z-index: 1000 !important;
+  }
+
+  .z-200{
+    z-index: 1500 !important;
+  }
+
+  .spinner-wrapper {
+    display: fixed;
+    justify-content: center;
+    justify-items: center;
+  }
+  
+  #uploadDiv{
+    display: flex; 
+    flex-direction: row;
+  }
+
+  .bigButton{
+    height: 60px;
+    width: 60px;
+  }
+
+  #createAssignmentModal{
+    height: 100%;
+    /* width: 60vw; */
+  }
+
+  @media only screen and (max-width: 700px) {
+    body {
+      background-color: lightblue;
+    }
+
+    .all{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .completeView{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sideInfo{
+      padding-top: 2vh;
+      min-height: 100%;
+      width: 100vw;
+      overflow-y: unset;
+    }
+
+    .mainClass{
+      padding-top: 2vh;
+      overflow-x: auto;
+      width: 100vw;
+      /* overflow-y: auto; */
+    }
+
+    .main {
+      margin-left: 0;
+      padding-left: 0;
+      width: 100%;
+      position: absolute;
+      margin-top: 35vh;
+      z-index: 0;
+      text-align: center  ;
+    }
+  
+    .width45{
+      width: 90%;
+    }
+
+    .sidenav {
+      height: 30vh;
+      width: 100%;
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      display: block;
+      background-color: #111;
+      overflow-x: hidden;
+      padding-top: 0;
+      color: #f1f1f1;
+      text-align: center;
+    }
+
+    .assignment{
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+
+    .box {
+      width: 80%;
+      align-self: center;
+    }
+
+    #uploadDiv{
+      display: flex; 
+      flex-direction: column;
+      text-align: center;
+    }
+
+    #inputFile{
+      align-self: flex-end
+    }
+
+    #uploadBtn{
+      margin-top: 2.5%;
+    }
+  }

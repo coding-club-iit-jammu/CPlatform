@@ -234,7 +234,7 @@
                                     <div class="input-group-prepend bg-warning">
                                         <span class="input-group-text bg-warning text-dark">Average Marks</span>
                                     </div>
-                                    <input type="text" class="form-control" value="{{test['stats']['avgMarks']}}" readonly>
+                                    <input type="text" class="form-control" value="{{stats['avgMarks']}}" readonly>
                                 </div>
                             </div>
                             <!-- Max Marks -->
@@ -243,10 +243,10 @@
                                     <div class="input-group-prepend bg-success">
                                         <span class="input-group-text bg-success text-white">Max Marks</span>
                                     </div>
-                                    <input type="text" class="form-control" value="{{test['stats']['maxMarks']['marks']}}" readonly>
+                                    <input type="text" class="form-control" value="{{stats['maxMarks']['marks']}}" readonly>
                                 </div>
                                 <div class="w-75 mx-auto">
-                                    <div *ngFor="let stu of test['stats']['maxMarks']['students']">
+                                    <div *ngFor="let stu of stats['maxMarks']['students']">
                                         <input type="text" class="form-control" value="{{stu['name']}}" readonly>
                                     </div>
                                 </div>
@@ -257,10 +257,10 @@
                                     <div class="input-group-prepend bg-danger">
                                         <span class="input-group-text bg-danger text-white">Min Marks</span>
                                     </div>
-                                    <input type="text" class="form-control" value="{{test['stats']['minMarks']['marks']}}" readonly>
+                                    <input type="text" class="form-control" value="{{stats['minMarks']['marks']}}" readonly>
                                 </div>
                                 <div class="w-75 mx-auto">
-                                    <div class="my-2" *ngFor="let stu of test['stats']['minMarks']['students']">
+                                    <div class="my-2" *ngFor="let stu of stats['minMarks']['students']">
                                         <input type="text" class="form-control" value="{{stu['name']}}" readonly>
                                     </div>
                                 </div>
@@ -269,7 +269,7 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-around bg-light">
                         <div>
-                            <button class="btn btn-link" (click)="navToStatistics()">
+                            <button class="btn btn-link" (click)="navToStatistics()" data-dismiss="modal">
                                 Detailed Statistics
                             </button>
                         </div>

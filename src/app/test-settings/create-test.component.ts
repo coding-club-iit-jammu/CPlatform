@@ -17,7 +17,21 @@ export class CreateTestComponent implements OnInit {
   showSpinner:Boolean = false;
   fetchingLeaderboard:Boolean = false;
 
-  test:any;
+  test:any = {
+    startTest:false,
+    revealMarks:false
+  };
+  stats:any = {
+    maxMarks:{
+      marks:0,
+      students:[{}]
+    },
+    avgMarks:0,
+    minMarks:{
+      marks:0,
+      students:[{}]
+    }
+  }
   testForm:FormGroup;
   leaderboard=[];
   leaderboardKeys = {
@@ -130,7 +144,7 @@ export class CreateTestComponent implements OnInit {
     for(let x of data['questions']['codingQuestion']){
       this.addCodingQuestion(x);
     }
-    console.log(this.testForm.value);
+    
   }
 
   resetTestForm(){
@@ -158,6 +172,7 @@ export class CreateTestComponent implements OnInit {
     await this.http.get(this.storeInfo.serverUrl+'/test/getTestData',options).toPromise().then((response)=>{
       if(response['status']==200){
         this.test = response['body'];
+        this.stats = response['body']['stats'];
         this.fillTestForm(response['body']);
       }
     },error=>{
@@ -287,7 +302,7 @@ export class CreateTestComponent implements OnInit {
   }
 
   navToStatistics(){
-    
+    this.router.navigateByUrl(`/course/${this.code}/tests/${this.testId}/stats`);
   }
 
   moveBack(){
