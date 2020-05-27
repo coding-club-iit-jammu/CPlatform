@@ -33,13 +33,13 @@
                             <a class="nav-link" (click)="setView(4)">IDE</a>
                         </li>
                     </ul>
-                    <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()">Home</button>
+                    <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()"> <i class="fa fa-home"></i> Home</button>
                     &nbsp;&nbsp;<br>
-                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()">Sign Out</button>
+                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()"><i class="fa fa-sign-out"></i> Sign Out</button>
                 </div>
             </nav>
         </div>
-        <div class="completeView my-3 py-3">
+        <div class="completeView py-3">
             <div class = "mainClass" >
                 <div class="view1 mt-6 pb-3" *ngIf="view==1">
                     <div class="row mx-3 pl-4" *ngIf="course.posts && course.posts.length>0">

@@ -33,9 +33,9 @@
                             <a class="nav-link" (click) = "setView(4)">IDE</a>
                         </li>
                     </ul>
-                    <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()">Home</button>
+                    <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()"><i class="fa fa-home"></i> Home</button>
                     &nbsp;&nbsp;<br>
-                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()">Sign Out</button>
+                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()"><i class="fa fa-sign-out"></i> Sign Out</button>
                 </div>
             </nav>
         </div>
@@ -73,7 +73,8 @@
                                                         <input type="{{control.get('showPassword').value?'text':'password'}}" class="form-control" formControlName="password">
                                                         <div class="input-group-append">
                                                             <button class="btn btn-secondary" (click)="control.get('showPassword').value=!control.get('showPassword').value">
-                                                                {{control.get('showPassword').value?'Hide':'Show'}}
+                                                                <i class='fa' [ngClass]="{'fa-eye':!control.get('showPassword').value,'fa-eye-slash':control.get('showPassword').value}"></i>
+                                                                <!-- {{control.get('showPassword').value?'Hide':'Show'}} -->
                                                             </button>
                                                         </div>
                                                     </div>
@@ -207,10 +208,10 @@
                         <button class="btn btn-danger btn-block btn-sm rounded" [disabled]="test.startTest" (click)="startTest()">Start Test</button>
                     </div>
                     <div class="my-3 w-75 mx-auto">
-                        <button class="btn btn-warning btn-block btn-sm rounded" [disabled]="!test.startTest" (click)="revealMarks()">Release Marks</button>
+                        <button class="btn btn-warning btn-block btn-sm rounded" [disabled]="!test.startTest || test.revealMarks" (click)="revealMarks()">Release Marks</button>
                     </div>
                     <div class="my-3 w-75 mx-auto">
-                        <button class="btn btn-primary btn-block btn-sm rounded" [disabled]="!test.startTest">Show Leaderboard</button>
+                        <button class="btn btn-primary btn-block btn-sm rounded" [disabled]="!test.startTest" (click)="getLeaderBoard()" data-toggle="modal" data-target="#leaderboardModal">Show Leaderboard</button>
                     </div>
                     <div class="my-3 w-75 mx-auto">
                         <button class="btn btn-primary btn-block btn-sm rounded" [disabled]="!test.startTest" data-toggle="modal" data-target="#statsModal">Show Stats</button>
@@ -271,6 +272,58 @@
                             <button class="btn btn-link" (click)="navToStatistics()">
                                 Detailed Statistics
                             </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="leaderboardModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header text-center bg-light px-auto h-100">
+                        <div class="text-center">
+                            <h3>
+                                LeaderBoard
+                            </h3>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                    </div>
+                    <div class="modal-body text-center text-wrap">
+                        <div *ngIf="fetchingLeaderboard">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="text-center" *ngIf="!fetchingLeaderboard">
+                            <table class="table table-responsive w-100 table-dark table-striped table-hover">
+                                <thead class="mx-auto">
+                                <tr>
+                                    <th scope="col">Rank</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Marks</th>
+                                    <th scope="col" *ngFor = "let mcq of leaderboardKeys.mcq">{{mcq}}</th>
+                                    <th scope="col" *ngFor = "let mcq of leaderboardKeys.trueFalse">{{mcq}}</th>
+                                    <th scope="col" *ngFor = "let mcq of leaderboardKeys.codingQuestion">{{mcq}}</th>
+                                </tr>
+                                </thead>
+                                <tbody class="mx-auto">
+                                <tr *ngFor="let entry of leaderboard; index as i">
+                                    <th scope="row">{{ entry['rank'] }}</th>
+                                    <td>{{ entry.name | titlecase }}</td>
+                                    <td>{{ entry.email | lowercase }}</td>
+                                    <td>{{ entry.marks | number }}</td>
+                                    <td *ngFor = "let mcq of leaderboardKeys.mcq">{{entry[mcq]}}</td>
+                                    <td *ngFor = "let mcq of leaderboardKeys.trueFalse">{{entry[mcq]}}</td>
+                                    <td *ngFor = "let mcq of leaderboardKeys.codingQuestion">{{entry[mcq]}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-around bg-light">
+                        <div>
+                            <button type="button" class="btn btn-link" data-dismiss="modal" (click)="generateCSV()">Download CSV</button>
                         </div>
                     </div>
                 </div>

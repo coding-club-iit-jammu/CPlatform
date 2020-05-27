@@ -33,13 +33,13 @@
                             <a class="nav-link" (click) = "setView(4)">IDE</a>
                         </li>
                     </ul>
-                    <a class="btn btn-warning mr-2 my-sm-0" (click)="moveBack()">Home</a>
+                    <a class="btn btn-warning mr-2 my-sm-0" (click)="moveBack()"><i class="fa fa-home"></i> Home</a>
                     &nbsp;&nbsp;<br>
-                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()">Sign Out</button>
+                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()"><i class="fa fa-sign-out"></i> Sign Out</button>
                 </div>
             </nav>
         </div>
-        <div class="completeView my-3 py-3">
+        <div class="completeView py-3">
             <div class = "mainClass" >
                 <mat-tab-group class="mx-auto text-dark justify-content-between">
                     <mat-tab label="MCQ">
@@ -82,7 +82,7 @@
                     </mat-tab>
                     <mat-tab label="Coding Questions">
                         <div class="w-75 mx-auto my-4" *ngIf="codingQuestions && codingQuestions.length > 0">
-                            <div class="card border-secondary" *ngFor="let q of codingQuestions; let i=index;">
+                            <div class="card border-secondary" *ngFor="let q of codingQuestions; let i=index;" [ngClass]="{'border-success':q.isSolved}">
                                 <div class="card-header" id="headingOne">
                                     <div class="w-100 text-center" [innerHtml]='q.title'></div>
                                     <div class="text-center" >
@@ -120,7 +120,7 @@
                                     <tbody>
                                     <tr *ngFor="let entry of leaderboard.slice(0,5); index as i">
                                         <th scope="row">{{ entry['rank'] }}</th>
-                                        <td>{{ entry.name }}</td>
+                                        <td>{{ entry.name | titlecase}}</td>
                                         <td>{{ entry.score | number }}</td>
                                     </tr>
                                     </tbody>
@@ -131,7 +131,7 @@
                                     <tbody>
                                     <tr>
                                         <th scope="row">{{ userRank['rank'] }}</th>
-                                        <td>{{ userRank['name'] }}</td>
+                                        <td>{{ userRank['name'] | titlecase }}</td>
                                         <td>{{ userRank['score'] | number }}</td>
                                     </tr>
                                     </tbody>
@@ -174,7 +174,7 @@
                                 <tbody>
                                 <tr *ngFor="let entry of leaderboard; index as i">
                                     <th scope="row">{{ entry['rank'] }}</th>
-                                    <td>{{ entry.name }}</td>
+                                    <td>{{ entry.name | titlecase }}</td>
                                     <td>{{ entry.score | number }}</td>
                                 </tr>
                                 </tbody>

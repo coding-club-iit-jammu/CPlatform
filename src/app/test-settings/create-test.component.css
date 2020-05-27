@@ -16,6 +16,10 @@
     /* margin-left: 25vw; Same as the width of the sidebar */
   }
 
+  .modal-body {
+    overflow: auto !important;
+  }
+
   .w-80{
     width: 80%;
   }

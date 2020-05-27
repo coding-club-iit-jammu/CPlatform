@@ -4,6 +4,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { StoreInfoService } from '../services/store-info.service';
 import { MaterialComponentService } from '../services/material-component.service';
 import { FormGroup,FormBuilder,FormControl, FormArray } from '@angular/forms';
+
 @Component({
   selector: 'app-create-test',
   templateUrl: './create-test.component.html',
@@ -14,10 +15,16 @@ export class CreateTestComponent implements OnInit {
   code: String;
   testId: String;
   showSpinner:Boolean = false;
+  fetchingLeaderboard:Boolean = false;
 
   test:any;
   testForm:FormGroup;
-
+  leaderboard=[];
+  leaderboardKeys = {
+    mcq:[],
+    trueFalse:[],
+    codingQuestion:[]
+  }
   constructor(private router:Router, private activatedRoute: ActivatedRoute,
               private http: HttpClient, private storeInfo: StoreInfoService,
               private matComp: MaterialComponentService, private formBuilder: FormBuilder) { }
@@ -202,6 +209,56 @@ export class CreateTestComponent implements OnInit {
     },(error)=>{
       this.matComp.openSnackBar(error['statusText'],2500);
     })
+    this.showSpinner = false;
+  }
+
+  async getLeaderBoard() {
+    
+    const options = {
+      observe: 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      params: new HttpParams().set('courseCode', this.code.toString()).set('test_id',this.test['_id'])
+    };
+    this.fetchingLeaderboard = true;
+    await this.http.get(this.storeInfo.serverUrl+'/test/leaderboard', options).toPromise().then( (response) => {
+      if (response['status'] == 200) {
+        this.leaderboard = response['body']['entries'];
+        this.leaderboardKeys.mcq = response['body']['mcq'];
+        this.leaderboardKeys.trueFalse = response['body']['trueFalse'];
+        this.leaderboardKeys.codingQuestion = response['body']['codingQuestion'];
+        this.fetchingLeaderboard = false;
+      }
+    }, (error) => {
+      this.matComp.openSnackBar(error['statusText'],2000);
+    })
+  }
+
+  async generateCSV(){
+    const data = this.leaderboard;
+
+    let csv = '';
+    let header = Object.keys(data[0]).join(',');
+    let values = data.map(o => Object.values(o).join(',')).join('\n');
+    csv += header + '\n' + values;
+    console.log(csv)
+    this.download(csv)
+  }
+
+  download(data){
+
+    this.showSpinner = true;
+    let dataType = data.type;
+    let binaryData = [];
+    binaryData.push(data);
+    let downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(new Blob(binaryData,{type : dataType}));
+    downloadLink.target = "_blank";
+    downloadLink.download = `${this.testId}.csv`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
     this.showSpinner = false;
   }
 
