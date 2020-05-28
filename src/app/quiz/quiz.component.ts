@@ -48,7 +48,7 @@ export class QuizComponent implements OnInit {
   endTime:any = new Date();
 
   startTestForm:FormGroup;
-
+  submitting:Boolean = false;
   showSideNav:Boolean = true;
   showSpinner:Boolean = false;
   submitted:Boolean = false;
@@ -61,13 +61,7 @@ export class QuizComponent implements OnInit {
     section: 0,
     question: 0
   }
-
   instructions:string = '';
-  headerCode: string;
-  footerCode: string;
-  mainCode: string;
-  problemInput: string;
-  selectedCodingQuestion:any;
 
   constructor(private http: HttpClient, private router: Router,
               private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder,
@@ -199,7 +193,8 @@ export class QuizComponent implements OnInit {
   }
 
   async submitQuestion(currentQuestion,questionType){
-    this.showSpinner = true;
+    this.submitting = true;
+    this.questions[currentQuestion]['submitted'] = false; 
     let answer = [];
     let resAnswer;
 
@@ -213,7 +208,8 @@ export class QuizComponent implements OnInit {
     } else if(questionType == 'trueFalse'){
       resAnswer = this.questions[currentQuestion]['response'];
     } else {
-      this.showSpinner = false;
+      // submit coding question handled separately
+      this.submitting = false;
       return;
     }
     
@@ -246,11 +242,12 @@ export class QuizComponent implements OnInit {
       console.log(error)
       this.matComp.openSnackBar(error['statusText'],2000);
     })
-    this.showSpinner = false;
+    this.submitting = false;
   }
 
   async submitCodingQuestion(selectedCodingQuestion, submitCode, langId, langVersion) {
-    this.showSpinner = true;
+    this.submitting = true;
+    this.questions[selectedCodingQuestion]['submitted'] = false;
     this.submitted = true;
     const options = {
       observe: 'response' as 'body',
@@ -259,8 +256,6 @@ export class QuizComponent implements OnInit {
       })
     };
 
-    // fetch user code from the child component, passed in function
-    // console.log(submitCode);
     let data = {
       questionId : this.questions[selectedCodingQuestion]['questionId'],
       questionType: 'codingQuestion',
@@ -268,20 +263,26 @@ export class QuizComponent implements OnInit {
       submitCode: submitCode,
       langId: langId,
       langVersion: langVersion,
-      test_id: this.test_id
+      test_id: this.test_id,
+      userTestRecordId: this.userTestRecordId,
     }
     
     await this.http.post(this.storeInfo.serverUrl+'/test/submitQuestion',data,options).toPromise().then(response=>{
-      if (response['body']['error']) {
-        this.matComp.openSnackBar(response['body']['error']['message'],10000);  
+      this.matComp.openSnackBar(response['body']['message'],2000);
+      if(response['body']['ended'] && response['body']['ended']==true){
+        this.showSpinner = false;
+        this.matComp.openSnackBar("Test Ended.",5000);
+        this.router.navigateByUrl(`/course/${this.code}/`);
+      } else {
+        if(response['status'] == 200){
+          this.questions[selectedCodingQuestion]['submitted'] = true; 
+        }
       }
-      this.matComp.openSnackBar(response['body']['message'],10000);
     },error=>{
       console.log(error)
-      this.matComp.openSnackBar(error['error']['message'],3000);
+      this.matComp.openSnackBar(error['statusText'],2000);
     })
-    
-    this.showSpinner = false;
+    this.submitting = false;
     this.submitted = false;
   }
   
@@ -366,8 +367,9 @@ export class QuizComponent implements OnInit {
           await this.getQuestions();
         } else {
           this.showSpinner = false;
-          this.matComp.openSnackBar("Test Ended.",5000);
-          this.router.navigateByUrl(`/course/${this.code}/`);
+          this.matComp.openSnackBar("Test Complete. Please End Test.",5000);
+          this.questions = [];
+          // this.router.navigateByUrl(`/course/${this.code}/`);
         }
       }
     },(error)=>{

@@ -98,6 +98,14 @@
                                         <div class="my-3 border-success card text-success" *ngIf="questions[current.question].submitted">
                                             Submitted
                                         </div>
+                                        <div *ngIf="submitting">
+                                            <div>
+                                                Submitting...
+                                            </div>
+                                            <div class="spinner-border mt-2 text-success" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- Show Options here -->
                                     <div class="card-body">
@@ -132,10 +140,25 @@
                                 </div> 
                                 <!-- Coding Question -->
                                 <div *ngIf="questionType=='codingQuestion'" class="my-3">
-                                    <div class="">
-                                        <div class="text-center bg-light">
-                                            <div class="text-center" [innerHtml]="this.questions[current.question].title"></div>
+                                    <div class="card-header text-center">
+                                        <div class="align-center mt-3" [innerHtml]="questions[current.question].title">
                                         </div>
+                                        <div class="text-danger my-3">
+                                            Marks: {{questions[current.question].marks}}
+                                        </div>
+                                        <div class="my-3 border-success card text-success" *ngIf="questions[current.question].submitted">
+                                            Submitted
+                                        </div>
+                                        <div *ngIf="submitting" class="card my-3 border-warning text-warning text-center">
+                                            <div>
+                                                Submitting...
+                                            </div>
+                                            <div class="spinner-border mt-2 mx-auto text-warning text-center" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
                                         <div class="">
                                             <div class="my-3 w-100" [innerHtml]="this.questions[current.question].description">
                                             </div>
@@ -150,15 +173,20 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <app-ide [headerCode]="headerCode" [footerCode]="footerCode" [mainCode]="mainCode" [problemInput]="problemInput" #codeEditor>
+                                        <app-ide [headerCode]="this.questions[current.question].headerCode" 
+                                                [footerCode]="this.questions[current.question].footerCode" 
+                                                [mainCode]="this.questions[current.question].mainCode" 
+                                                [problemInput]="this.questions[current.question].sampleInput" #codeEditor>
                                         </app-ide>
-                                        <div class="d-flex justify-content-around bg-light">
-                                            <button class="btn btn-success my-3" (click)="submitCodingQuestion(selectedCodingQuestion, codeEditor.getContent(),
+                                    </div>
+                                     <div class="card-footer d-flex flex-row justify-content-around ">
+                                        <button class="btn btn-warning" [disabled]="current.question == 0" (click)="previousQuestion()" accesskey="p" title="ShortCut: Alt + p">Previous</button>
+                                        <button class="btn btn-success" (click)="submitCodingQuestion(current.question, codeEditor.getContent(),
                                                                                         codeEditor.getLangId(), codeEditor.getLangVersion())">Submit</button>
-                                            <div class="spinner-border" role="status" *ngIf="submitted">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
+                                        <div class="spinner-border" role="status" *ngIf="submitted">
+                                            <span class="sr-only">Loading...</span>
                                         </div>
+                                        <button class="btn btn-warning" [disabled]="current.question == questions.length-1" (click)="nextQuestion()" accesskey="n" title="ShortCut: Alt + n">Next</button>
                                     </div>
                                 </div> 
                                 <div class="text-center bottom mb-3" style="margin-top: 10vh;">

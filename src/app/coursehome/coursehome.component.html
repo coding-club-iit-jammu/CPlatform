@@ -192,9 +192,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="bottom text-center" *ngIf="course.role=='instructor'">
-                    <button class="btn btn-primary my-2"  data-toggle="modal" data-target="#accessCodesModal">Access Codes</button>
-                    <button class="btn btn-primary my-2" (click)="getCombinedReport()" data-toggle="modal" data-target="#reportModal">Course Report</button>
+                <div class="bottom text-center d-flex flex-column" *ngIf="course.role=='instructor'">
+                    <div>
+                        <button class="btn btn-primary my-2"  data-toggle="modal" data-target="#accessCodesModal">Access Codes</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary my-2" (click)="getCombinedReport()" data-toggle="modal" data-target="#reportModal">Course Report</button>
+                    </div>
                 </div>
             </div>
         </div>

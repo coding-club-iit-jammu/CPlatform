@@ -158,7 +158,7 @@
                                         </button>
                                         <div class="dropdown-menu z-10" aria-labelledby="dropdownMenuCoding">
                                             <button class="dropdown-item z-10" type="button" (click)="addToPractice(q._id,'codingQuestion')">Practice</button>
-                                            <button class="dropdown-item z-10" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'codingQuestion')">{{test.testId}}</button>
+                                            <button class="dropdown-item z-10" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'codingQuestion')">{{test.title}}</button>
                                         </div>
                                     </div>
                                 </div>
