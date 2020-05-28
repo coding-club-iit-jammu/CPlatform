@@ -16,6 +16,18 @@
     /* margin-left: 25vw; Same as the width of the sidebar */
   }
 
+  .bg-successs{
+    background-color: lightgreen;
+  }
+
+  .bg-infoo{
+    background-color: lightblue;
+  }
+
+  .bg-danger{
+    color: white;
+  }
+  
   .w-70{
       width: 70%;
   }

@@ -15,6 +15,19 @@ export class TestReportComponent implements OnInit {
   test_id: string;
   code: string;
 
+  stats = {
+    maxMarks:0,
+    minMarks:0,
+    avgMarks:0
+  }
+  marks:Number = 0;
+  userTestRecord:any = {
+    mcq:[],
+    trueFalse:[],
+    codingQuestion:[],
+    securedMarks:0
+  }
+
   showSpinner:boolean = false;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
@@ -42,10 +55,12 @@ export class TestReportComponent implements OnInit {
     await this.http.get(this.storeInfo.serverUrl+'/test/checkRevealMarks',options).toPromise().then((response)=>{
       if(response['status'] == 200){
         this.test_id = response['body']['test_id'];
-        // if(response['body']['revealMarks'] == false){
-        //   this.matComp.openSnackBar('Marks not released for this test.',2000);
-        //   this.setView(3);
-        // }
+        if(response['body']['revealMarks'] == false){
+          this.matComp.openSnackBar('Marks not released for this test.',2000);
+          this.setView(3);
+        } else {
+          this.getUserTestRecord();
+        }
       }
     },error=>{
       this.matComp.openSnackBar(error['statusText'],2000);
@@ -63,11 +78,13 @@ export class TestReportComponent implements OnInit {
     await this.http.get(this.storeInfo.serverUrl+'/test/getUserTestRecord',options).toPromise().then((response)=>{
       console.log(response);
       if(response['status'] == 200){
-        // this.test_id = response['body']['test_id'];
-        // if(response['body']['revealMarks'] == false){
-        //   this.matComp.openSnackBar('Marks not released for this test.',2000);
-        //   this.setView(3);
-        // }
+        this.test_id = response['body']['test_id'];
+        this.stats = response['body']['stats'];
+        this.marks = response['body']['userTestRecord']['securedMarks'];
+        this.userTestRecord.mcq = response['body']['userTestRecord']['mcq']['problems'];
+        this.userTestRecord.trueFalse = response['body']['userTestRecord']['trueFalse']['problems'];
+        this.userTestRecord.codingQuestion = response['body']['userTestRecord']['codingQuestion']['problems'];
+        this.userTestRecord.securedMarks = response['body']['userTestRecord']['securedMarks'];
       }
     },error=>{
       this.matComp.openSnackBar(error['statusText'],2000);

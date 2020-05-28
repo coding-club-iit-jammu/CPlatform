@@ -144,7 +144,8 @@
                             </div>
 
                             <div class="card-footer border-danger text-muted">
-                                <button class="btn btn-outline-primary" *ngIf="course.role=='student'" (click)="startTest(test.testId,test._id)">Start</button>
+                                <button class="btn btn-outline-primary" *ngIf="course.role=='student' && test.startTest && !test.revealMarks" (click)="startTest(test.testId,test._id)">Start</button>
+                                <button class="btn btn-outline-primary" *ngIf="course.role=='student' && test.revealMarks" (click)="navToTestReports(test.testId)">Report</button>
                                 <button class="btn btn-outline-primary" *ngIf="course.role!='student'" (click)="openTest(test.testId,test._id)">Settings</button>
                             </div>
                         </div>

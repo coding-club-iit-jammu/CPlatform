@@ -30,117 +30,167 @@
                             <a class="nav-link" (click) = "setView(4)">IDE</a>
                         </li>
                     </ul>
-                    <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()"><i class="fa fa-home"></i>Home</button>
+                    <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()"><i class="fa fa-home"></i> Home</button>
                     &nbsp;&nbsp;<br>
                     <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()"><i class="fa fa-sign-out"></i> Sign Out</button>
                 </div>
             </nav>
         </div>
-        <div class="completeView bg-secondary py-3">
-            <div class="mx-3 w-70 my-3">
-                <div class="card shadow-lg">
-                    <div class="card-header bg-light text-center">
-                        <h3>
-                            {{testId}}
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <!-- Title -->
-                        </div>
-                        <div class="form-group">
-                            <label>Multiple Choice Questions</label>
-                            <div class="card shadow py-3 text-center bg-light">
-                                <ng-container>
-                                    <div class="card shadow-sm mx-3 py-3 my-2">
-                                        <ng-container class="form-group mx-auto px-3">
-                                            <div class="d-flex flex-column">
-                                                <div class="d-flex flex-row justify-content-between w-100 px-3">
-                                                    <!-- Show Question Here -->
-                                                    <!-- <div [innerHtml]="control.get('questionContent').value"></div> -->
-                                                </div>
-                                                <div class="form-group row w-50 mx-auto">
-                                                    <div class="input-group mb-3 w-75 mx-auto">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">Marks</span>
-                                                        </div>
-                                                        <!-- Secured marks/Total Marks -->
-                                                        3/5
-                                                        <!-- <input type="number" class="form-control" formControlName="marks"> -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                </ng-container>
+        <div class="completeView d-flex flex-column bg-secondary py-3">
+            <div class="container my-3 text-center">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="card shadow rounded bg-successs">
+                            <div class="card-header">
+                                Max Marks
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label>True/False Questions</label>
-                            <div class="card shadow py-3 text-center bg-light">
-                                <ng-container>
-                                    <div class="card shadow-sm mx-3 py-3 my-2">
-                                        <ng-container class="form-group mx-auto px-3">
-                                            <div class="d-flex flex-column">
-                                            <div class="d-flex flex-row justify-content-between w-100 px-3">
-                                                <!-- Question Content Here.-->
-                                                <!-- <div [innerHtml]="control.get('questionContent').value"></div> -->
-                                            </div>
-                                            <div class="form-group row w-50 mx-auto">
-                                                <div class="input-group mb-3 w-75 mx-auto">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">Marks</span>
-                                                    </div>
-                                                    3/5
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </ng-container>
-                                    </div>
-                                    </ng-container>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Coding Questions</label>
-                            <div class="card shadow py-3 text-center bg-light">
-                                <ng-container>
-                                    <div class="card shadow-sm mx-3 py-3 my-2">
-                                        <ng-container class="form-group mx-auto px-3">
-                                            <div class="d-flex flex-column">
-                                            <div class="d-flex flex-row justify-content-between w-100 px-3">
-                                                <!-- <div></div> -->
-                                                <!-- <div [innerHtml]="control.get('title').value"></div> -->
-                                            </div>
-                                            <div class="form-group row w-50 mx-auto">
-                                                <div class="input-group mb-3 w-75 mx-auto">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">Marks</span>
-                                                    </div>
-                                                    3/5
-                                                    <!-- <input type="number" class="form-control" formControlName="marks"> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </ng-container>
-                                    </div>
-                                    </ng-container>
+                            <div class="card-body">
+                                {{stats['maxMarks']}}
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm">
+                        <div class="card shadow rounded bg-warning">
+                            <div class="card-header">
+                                Avg Marks
+                            </div>
+                            <div class="card-body">
+                                {{stats['avgMarks']}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card shadow rounded bg-danger">
+                            <div class="card-header">
+                                Min Marks
+                            </div>
+                            <div class="card-body">
+                                {{stats['minMarks']}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <div class="card shadow rounded bg-infoo">
+                            <div class="card-header">
+                                Secured Marks
+                            </div>
+                            <div class="card-body">
+                                {{userTestRecord['securedMarks']}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm"></div>
                 </div>
             </div>
-            <div class="w-25 card mx-3 bg-light text-center d-flex flex-column">
-                <div class="my-3">
-                    Your Marks
-                </div>
-                <div class="my-3">
-                    Show Highest Marks
-                </div>
-                <div class="my-3">
-                    Show Lowest Marks
-                </div>
-                <div class="my-3">
-                    Show Average Marks
+            <div class="mx-auto w-75 my-3">
+                <div class="card shadow-lg">
+                    <div class="my-3">
+                        <div class="card shadow-lg w-75 mx-auto my-3" *ngIf="userTestRecord['mcq'].length > 0">
+                            <div class="card-header bg-secondary">
+                                <div class="text-center text-white">
+                                    <h3>
+                                        Multiple Choice Questions
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card shadow w-75 mx-auto my-2" *ngFor="let que of userTestRecord['mcq']">
+                                    <div class="card-header bg-infoo">
+                                        <div class="text-center" [innerHtml]='que["question"]["question"]'>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3 w-75 mx-auto">
+                                            <div class="input-group-prepend bg-infoo text-dark">
+                                                <span class="input-group-text bg-infoo">Secured Marks</span>
+                                            </div>
+                                            <input type="text" class="form-control text-center" readonly value="{{que['securedMarks']}}/{{que['marks']}}">
+                                        </div>
+                                        <div class="card w-50 border-warning mx-auto text-center text-warning" *ngIf="!que['submitted']">
+                                            Unattempted
+                                        </div>
+                                        <div class="card w-50 border-success mx-auto text-center text-success" *ngIf="que['marks']==que['securedMarks']">
+                                            Correct
+                                        </div>
+                                        <div class="card w-50 border-danger mx-auto text-center text-danger" *ngIf="que['securedMarks'] == 0 && que['submitted']">
+                                            Wrong
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg w-75 mx-auto my-3" *ngIf="userTestRecord['trueFalse'].length > 0">
+                            <div class="card-header bg-secondary">
+                                <div class="text-center text-white">
+                                    <h3>
+                                        True False Questions
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card shadow w-75 mx-auto my-2" *ngFor="let que of userTestRecord['trueFalse']">
+                                    <div class="card-header bg-infoo">
+                                        <div class="text-center" [innerHtml]='que["question"]["question"]'>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3 w-75 mx-auto">
+                                            <div class="input-group-prepend bg-infoo text-dark">
+                                                <span class="input-group-text bg-infoo">Secured Marks</span>
+                                            </div>
+                                            <input type="text" class="form-control text-center" readonly value="{{que['securedMarks']}}/{{que['marks']}}">
+                                        </div>
+                                        <div class="card w-50 border-warning mx-auto text-center text-warning" *ngIf="!que['submitted']">
+                                            Unattempted
+                                        </div>
+                                        <div class="card w-50 border-success mx-auto text-center text-success" *ngIf="que['marks']==que['securedMarks']">
+                                            Correct
+                                        </div>
+                                        <div class="card w-50 border-danger mx-auto text-center text-danger" *ngIf="que['securedMarks'] == 0 && que['submitted']">
+                                            Wrong
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg w-75 my-3 mx-auto" *ngIf="userTestRecord['codingQuestion'].length > 0">
+                            <div class="card-header bg-secondary text-white">
+                                <div class="text-center">
+                                    <h3>
+                                        Coding Questions
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card shadow w-75 mx-auto my-2" *ngFor="let que of userTestRecord['codingQuestion']">
+                                    <div class="card-header bg-infoo">
+                                        <div class="text-center" [innerHtml]='que["question"]["title"]'>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3 w-75 mx-auto">
+                                            <div class="input-group-prepend bg-infootext-dark">
+                                                <span class="input-group-text bg-infoo">Secured Marks</span>
+                                            </div>
+                                            <input type="text" class="form-control text-center" readonly value="{{que['securedMarks']}}/{{que['marks']}}">
+                                        </div>
+                                        <div class="card w-50 border-warning mx-auto text-center text-warning" *ngIf="!que['submitted']">
+                                            Unattempted
+                                        </div>
+                                        <div class="card w-50 border-success mx-auto text-center text-success" *ngIf="que['marks']==que['securedMarks']">
+                                            Correct
+                                        </div>
+                                        <div class="card w-50 border-danger mx-auto text-center text-danger" *ngIf="que['securedMarks'] == 0 && que['submitted']">
+                                            Wrong
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

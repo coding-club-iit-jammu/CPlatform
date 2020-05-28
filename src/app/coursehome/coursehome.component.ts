@@ -522,6 +522,10 @@ export class CoursehomeComponent implements OnInit {
     this.router.navigateByUrl('/');
   }
 
+  navToTestReports(testId){
+    this.router.navigateByUrl(`/course/${this.code}/tests/${testId}/report`);
+  }
+
   checkStatus(date: string){
     let dd = new Date(date);
     return dd.getTime() > new Date().getTime();
