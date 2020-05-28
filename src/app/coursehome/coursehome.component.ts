@@ -29,6 +29,9 @@ export class CoursehomeComponent implements OnInit {
   teachingAssistants:Array<String> =[];
   joiningCode = {};
   showSpinner:boolean = false;
+  fetchingReport = false;
+  report:any;
+  reportKeys:any = [];
   code:string="";
   role:string;
   joiningCodes: Object = {
@@ -166,6 +169,59 @@ export class CoursehomeComponent implements OnInit {
     },error => {
       this.matComp.openSnackBar(error['statusText'],2000);
     })
+    
+  }
+
+  downloadCSV(data){
+
+    this.showSpinner = true;
+    let dataType = data.type;
+    let binaryData = [];
+    binaryData.push(data);
+    let downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(new Blob(binaryData,{type : dataType}));
+    downloadLink.target = "_blank";
+    downloadLink.download = `${this.code.substring(8)}_Report.csv`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    this.showSpinner = false;
+  }
+
+  async generateCSV(){
+    const data = this.report;
+
+    let csv = '';
+    let header = Object.keys(data[0]).join(',');
+    let values = data.map(o => Object.values(o).join(',')).join('\n');
+    csv += header + '\n' + values;
+    console.log(csv)
+    this.downloadCSV(csv)
+  }
+
+  async getCombinedReport(){
+    this.fetchingReport = true;
+    const options = {
+      observe: 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      }),
+      params: new HttpParams().set('courseCode',this.code)
+    };
+    
+    await this.http.get(this.storeInfo.serverUrl+'/course/getCombinedReport', options).toPromise().then(data=>{
+      if(data['status']==200){
+        this.report = Object.values(data['body']);
+        if(this.report[0]){
+          this.reportKeys = Object.keys(this.report[0]).filter((e)=>{
+            return e.trim()!='email'
+          });
+        }
+      }
+    },error => {
+      this.matComp.openSnackBar(error['statusText'],2000);
+    })
+    this.fetchingReport = false;
     
   }
 

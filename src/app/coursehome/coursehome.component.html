@@ -192,8 +192,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bottom text-center">
-                    <button class="btn btn-primary" *ngIf="course.role=='instructor'" data-toggle="modal" data-target="#accessCodesModal">Access Codes</button>
+                <div class="bottom text-center" *ngIf="course.role=='instructor'">
+                    <button class="btn btn-primary my-2"  data-toggle="modal" data-target="#accessCodesModal">Access Codes</button>
+                    <button class="btn btn-primary my-2" (click)="getCombinedReport()" data-toggle="modal" data-target="#reportModal">Combined Report</button>
                 </div>
             </div>
         </div>
@@ -203,6 +204,48 @@
 
 
         <!-- Modals -->
+        <div class="modal fade" id="reportModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header text-center bg-light px-auto h-100">
+                        <div class="text-center">
+                            <h3>
+                                Course Report
+                            </h3>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                    </div>
+                    <div class="modal-body text-center text-wrap">
+                        <div *ngIf="fetchingReport">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="text-center" *ngIf="!fetchingReport">
+                            <table class="table table-responsive w-100 table-dark table-striped table-hover">
+                                <thead class="mx-auto">
+                                <tr>
+                                    <th scope="col">Email</th>
+                                    <th scope="col" *ngFor = "let que of reportKeys">{{que}}</th>
+                                </tr>
+                                </thead>
+                                <tbody class="mx-auto">
+                                <tr *ngFor="let entry of report; index as i">
+                                    <td>{{ entry['email'] }}</td>
+                                    <td *ngFor = "let que of reportKeys">{{entry[que]}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-around bg-light">
+                        <div>
+                            <button type="button" class="btn btn-link" data-dismiss="modal" (click)="generateCSV()">Download CSV</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="accessCodesModal" role="dialog" *ngIf="course.role=='instructor'">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
