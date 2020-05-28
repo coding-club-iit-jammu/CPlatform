@@ -24,6 +24,30 @@
     width: 80%;
   }
 
+  .bg-successs{
+    background-color: lightgreen;
+  }
+
+  .bg-infoo{
+    background-color: lightblue;
+  }
+
+  .bg-danger{
+    color: white;
+  }
+
+  .bg-dangerr{
+    background-color: lightcoral;
+  }
+
+  .bg-dark{
+    color: white;
+  }
+
+  .bg-warningg{
+    background-color: lightyellow;
+  }
+
   .w-70{
     width: 70%;
   }

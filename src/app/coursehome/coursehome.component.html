@@ -194,7 +194,7 @@
                 </div>
                 <div class="bottom text-center" *ngIf="course.role=='instructor'">
                     <button class="btn btn-primary my-2"  data-toggle="modal" data-target="#accessCodesModal">Access Codes</button>
-                    <button class="btn btn-primary my-2" (click)="getCombinedReport()" data-toggle="modal" data-target="#reportModal">Combined Report</button>
+                    <button class="btn btn-primary my-2" (click)="getCombinedReport()" data-toggle="modal" data-target="#reportModal">Course Report</button>
                 </div>
             </div>
         </div>
@@ -225,12 +225,14 @@
                             <table class="table table-responsive w-100 table-dark table-striped table-hover">
                                 <thead class="mx-auto">
                                 <tr>
+                                    <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col" *ngFor = "let que of reportKeys">{{que}}</th>
                                 </tr>
                                 </thead>
                                 <tbody class="mx-auto">
                                 <tr *ngFor="let entry of report; index as i">
+                                    <td>{{ entry['name'] | titlecase }}</td>
                                     <td>{{ entry['email'] }}</td>
                                     <td *ngFor = "let que of reportKeys">{{entry[que]}}</td>
                                 </tr>

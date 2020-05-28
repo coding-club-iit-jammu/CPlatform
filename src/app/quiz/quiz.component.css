@@ -118,8 +118,13 @@
    background-color: #f1f38f !important; 
   }
 
-  .viewedNotSubmitted{
+  .margin-t-10{
+    margin-top: 10vh !important;
+  }
+
+  .viewedNotSubmitted:hover{
     background-color:darkgoldenrod !important; 
+    color: white;
   }
 
   .submitted{

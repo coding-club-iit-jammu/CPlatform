@@ -214,7 +214,7 @@ export class CoursehomeComponent implements OnInit {
         this.report = Object.values(data['body']);
         if(this.report[0]){
           this.reportKeys = Object.keys(this.report[0]).filter((e)=>{
-            return e.trim()!='email'
+            return e.trim()!='email' && e.trim()!='name' 
           });
         }
       }

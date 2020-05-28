@@ -62,6 +62,7 @@ export class QuizComponent implements OnInit {
     question: 0
   }
 
+  instructions:string = '';
   headerCode: string;
   footerCode: string;
   mainCode: string;
@@ -72,8 +73,8 @@ export class QuizComponent implements OnInit {
               private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder,
               private storeInfo: StoreInfoService, private matComp: MaterialComponentService) {
                 setInterval(() => {
-                  let t = this.getTimeRemaining(this.endTime.toLocaleString('en-In'));
-                  this.time = t.days + " : " + t.hours + " : " + t.minutes + " : " + t.seconds;
+                  let t = this.getTimeRemaining(this.endTime.toString());
+                  this.time = t.days + " D : " + t.hours + " H : " + t.minutes + " M : " + t.seconds + ' S';
                 }, 500);
               }
 
@@ -86,8 +87,7 @@ export class QuizComponent implements OnInit {
     this.code = this.activatedRoute.snapshot.paramMap.get('courseId');
     this.testId = this.activatedRoute.snapshot.paramMap.get('testId');
     this.groupId = this.activatedRoute.snapshot.paramMap.get('groupId');
-
-    console.log(this.code,this.testId,this.groupId);
+    this.fetchInstructions();
     this.resetStartTestForm();
     this.showSpinner = false;
   }
@@ -115,6 +115,25 @@ export class QuizComponent implements OnInit {
     })
   }
 
+  async fetchInstructions(){
+    this.showSpinner = true;
+    const options = {
+      observe: 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      }),
+      params: new HttpParams().set('courseCode',this.code).set('testId',this.testId)
+    };
+    await this.http.get(this.storeInfo.serverUrl+'/test/getInstructions', options).toPromise().then(async (response)=>{
+      if(response['status'] == 200){
+        this.instructions = response['body']['instructions'];
+      }
+    },(error)=>{
+      this.matComp.openSnackBar("Something\'s is wrong. Try Again.",2500);
+    })
+    this.showSpinner = false;
+  }
+
   async joinTest(){
     this.showSpinner = true;
     const options = {
@@ -132,6 +151,7 @@ export class QuizComponent implements OnInit {
           this.userTestRecordId = response['body']['userTestRecord'];
           this.test_id = response['body']['test_id'];
           this.endTime = response['body']['endTime'];
+          this.instructions = response['body']['instructions'];
           await this.getQuestions();
           this.view = true;
         } else {
@@ -146,6 +166,7 @@ export class QuizComponent implements OnInit {
 
   changeQuestion(q:number){
     this.current.question = q;
+    this.questions[q].visited = true;
   }
 
   async endTest(){
@@ -171,6 +192,10 @@ export class QuizComponent implements OnInit {
       this.matComp.openSnackBar("Something\'s is wrong. Try Again.",2500);
     })
     this.showSpinner = false;
+  }
+
+  showInstructions(){
+    document.getElementById('instructionBtn').click();
   }
 
   async submitQuestion(currentQuestion,questionType){
@@ -303,10 +328,15 @@ export class QuizComponent implements OnInit {
       if(response['status']==200 ){
         if(response['body']['ended'] && response['body']['ended']==true){
           this.showSpinner = false;
+          this.current.question = 0;
+          this.questions = [];
           this.matComp.openSnackBar(response['body']['message'],5000);
         } else {
           this.questions = response['body']['questions'];
           this.questionType = response['body']['questionType'];
+          if(this.questions && this.questions.length>0){
+            this.questions[0].visited = true;
+          }
           this.current.question = 0;
         }
       }
