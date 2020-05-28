@@ -162,21 +162,33 @@
                                         <div class="">
                                             <div class="my-3 w-100" [innerHtml]="this.questions[current.question].description">
                                             </div>
-                                            <div class="my-3 w-100">
-                                                Sample Input
-                                                <div class="card" [innerHtml]="this.questions[current.question].sampleInput">
+                                             <div class="row mt-4">
+                                                <div class="col">
+                                                    <div class="label-box border">
+                                                        <span class="mx-4 font-weight-light">Sample Input</span>
+                                                    </div>
+                                                    <textarea class="form-control sampleInput" [rows]="this.questions[current.question].sampleInput.split('\n').length"
+                                                    disabled="true" aria-label="sampleInput-textarea" 
+                                                    [value]="this.questions[current.question].sampleInput">
+                                                </textarea>
                                                 </div>
                                             </div>
-                                            <div class="my-3 w-100">
-                                                Sample Output
-                                                <div class="card" [innerHtml]="this.questions[current.question].sampleOutput">
+                                            <div class="row mt-4">
+                                                <div class="col">
+                                                    <div class="label-box border">
+                                                        <span class="mx-4 font-weight-light">Sample Output</span>
+                                                    </div>
+                                                    <textarea class="form-control sampleOutput" [rows]="this.questions[current.question].sampleOutput.split('\n').length"
+                                                    disabled="true" aria-label="sampleOutput-textarea" 
+                                                    [value]="this.questions[current.question].sampleOutput">
+                                                </textarea>
                                                 </div>
                                             </div>
                                         </div>
-                                        <app-ide [headerCode]="this.questions[current.question].headerCode" 
-                                                [footerCode]="this.questions[current.question].footerCode" 
-                                                [mainCode]="this.questions[current.question].mainCode" 
-                                                [problemInput]="this.questions[current.question].sampleInput" #codeEditor>
+                                        <app-ide [headerCode]="this.headerCode"
+                                        [footerCode]="this.footerCode"
+                                        [mainCode]="this.mainCode"
+                                        [problemInput]="this.problemInput" #codeEditor>
                                         </app-ide>
                                     </div>
                                      <div class="card-footer d-flex flex-row justify-content-around ">

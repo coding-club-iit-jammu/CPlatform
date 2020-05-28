@@ -54,6 +54,11 @@ export class QuizComponent implements OnInit {
   submitted:Boolean = false;
   view:Boolean = false; //False for First View and True for Second View.
   opened:Boolean;
+  // app-ide related
+  headerCode: string;
+  footerCode: string;
+  mainCode: string;
+  problemInput: string;
 
   questions:any;
   questionType:string;
@@ -158,8 +163,11 @@ export class QuizComponent implements OnInit {
     this.showSpinner = false;    
   }
 
-  changeQuestion(q:number){
+  async changeQuestion(q:number){
     this.current.question = q;
+    if (this.questionType == "codingQuestion") {
+      await this.setCodingQuestionParameters(q);
+    }
     this.questions[q].visited = true;
   }
 
@@ -286,12 +294,12 @@ export class QuizComponent implements OnInit {
     this.submitted = false;
   }
   
-  nextQuestion(){
-    this.changeQuestion(this.current.question+1)
+  async nextQuestion(){
+    await this.changeQuestion(this.current.question+1)
   }
 
-  previousQuestion(){
-    this.changeQuestion(this.current.question-1)
+  async previousQuestion(){
+    await this.changeQuestion(this.current.question-1)
   }
 
   async getEndTime(){
@@ -313,6 +321,15 @@ export class QuizComponent implements OnInit {
     this.showSpinner = false;
   }
 
+  async setCodingQuestionParameters(question) {
+    let q = this.questions[question];
+    console.log(q);
+    this.headerCode = q.headerCode;
+    this.footerCode = q.footerCode;
+    this.mainCode = q.mainCode;
+    this.problemInput = q.sampleInput;
+  }
+  
   async getQuestions(){
     this.showSpinner = true;
     const options = {
@@ -339,6 +356,7 @@ export class QuizComponent implements OnInit {
             this.questions[0].visited = true;
           }
           this.current.question = 0;
+          await this.setCodingQuestionParameters(0);
         }
       }
     },(error)=>{

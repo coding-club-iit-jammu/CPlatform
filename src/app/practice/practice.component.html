@@ -268,14 +268,26 @@
                     <div class="modal-body">
                         <div class="my-3 w-100" [innerHtml]="this.codingQuestions[selectedCodingQuestion].description">
                         </div>
-                        <div class="my-3 w-100">
-                            Sample Input
-                            <div class="card" [innerHtml]="this.codingQuestions[selectedCodingQuestion].sampleInput">
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="label-box border">
+                                    <span class="mx-4 font-weight-light">Sample Input</span>
+                                </div>
+                                <textarea class="form-control sampleInput" [rows]="this.codingQuestions[selectedCodingQuestion].sampleInput.split('\n').length"
+                                disabled="true" aria-label="sampleInput-textarea" 
+                                [value]="this.codingQuestions[selectedCodingQuestion].sampleInput">
+                            </textarea>
                             </div>
                         </div>
-                        <div class="my-3 w-100">
-                            Sample Output
-                            <div class="card" [innerHtml]="this.codingQuestions[selectedCodingQuestion].sampleOutput">
+                        <div class="row mt-4">
+                            <div class="col">
+                                <div class="label-box border">
+                                    <span class="mx-4 font-weight-light">Sample Output</span>
+                                </div>
+                                <textarea class="form-control sampleOutput" [rows]="this.codingQuestions[selectedCodingQuestion].sampleOutput.split('\n').length"
+                                disabled="true" aria-label="sampleOutput-textarea" 
+                                [value]="this.codingQuestions[selectedCodingQuestion].sampleOutput">
+                            </textarea>
                             </div>
                         </div>
                     </div>
