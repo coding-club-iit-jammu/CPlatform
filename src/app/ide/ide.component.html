@@ -58,7 +58,7 @@
         <!-- the code editor header -->
         <div class="row">
             <div class="col">
-                <div class="code-editor-header" #codeEditorHeader></div>
+                <div class="code-editor-header" #codeEditorHeader [hidden]="!this.codeHeaderPresent"></div>
             </div>
         </div>
         <!-- the code editor -->
@@ -70,7 +70,7 @@
         <!-- the code editor footer -->
         <div class="row">
             <div class="col">
-                <div class="code-editor-footer" #codeEditorFooter></div>
+                <div class="code-editor-footer" #codeEditorFooter [hidden]="!this.codeFooterPresent"></div>
             </div>
         </div>
 

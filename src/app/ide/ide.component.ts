@@ -6,7 +6,7 @@ import { Language } from 'src/models/languages/languages';
 import { themeModuleMap } from './consts/theme-module-table';
 import { ServerHandlerService } from '../services/http/server-handler.service';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, timeout } from 'rxjs/operators';
 import { MaterialComponentService } from '../services/material-component.service';
 
 // Reference: https://github.com/judge0/ide/blob/master/js/ide.js
@@ -88,7 +88,8 @@ export class IdeComponent implements OnInit {
   // current editor theme name
   public activatedTheme: string;
   public running: boolean;
-
+  public codeHeaderPresent: boolean;
+  public codeFooterPresent: boolean;
   private codeEditor: ace.Ace.Editor;
   private codeHeader: ace.Ace.Editor;
   private codeFooter: ace.Ace.Editor;
@@ -124,35 +125,29 @@ export class IdeComponent implements OnInit {
   async ngOnInit() {
     ace.require('ace/ext/language_tools');
     const editorMain = this.codeEditorElmRef.nativeElement;
-    const header = this.codeEditorHeadElmRef.nativeElement;
-    const footer = this.codeEditorFootElmRef.nativeElement;
     const editorOptions = this.getEditorOptions();
-
     this.codeEditor = ace.edit(editorMain, editorOptions);
-    this.codeHeader = ace.edit(header, editorOptions);
-    this.codeFooter = ace.edit(footer, editorOptions);
 
     this.setLanguageMode(this.initOptions.languageMode || DEFAULT_LANG_MODE);
     this.setEditorTheme(this.initOptions.theme || DEFAULT_THEME_MODE);
     this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
 
     this.editorBeautify = ace.require('ace/ext/beautify');
-
     this.languagesArray$ = this.pipeSupportedLanguages();
     this.activatedTheme = this.initEditorOptions.theme;
 
-    this.codeHeader.setReadOnly(true);
-    this.codeFooter.setReadOnly(true);
     this.codeEditor.clearSelection();
-
-    this.codeHeader.setHighlightActiveLine(false);
-    this.codeFooter.setHighlightActiveLine(false);
 
     this.codeEditor.on("change", (delta) => {
       const content = this.codeEditor.getValue();
       let linesInContent = content.split(/\r\n|\r|\n/).length;
-      let linesInHeader = this.codeHeader.getValue().split(/\r\n|\r|\n/).length;
-      this.codeFooter.setOption("firstLineNumber", linesInHeader + linesInContent + 1);
+      let linesInHeader = 0;
+      if (this.codeHeader) {
+        linesInHeader = this.codeHeader.getValue().split(/\r\n|\r|\n/).length;
+      }
+      if (this.codeFooter) {
+        this.codeFooter.setOption("firstLineNumber", linesInHeader + linesInContent + 1);
+      }
     });
 
   }
@@ -160,14 +155,32 @@ export class IdeComponent implements OnInit {
   async ngAfterViewInit() {
     this.cantReachServer = false;
     this.cd.detectChanges();
-    if (this.headerCode != null) {
+    await this.ngOnChanges();
+  }
+  
+  async ngOnChanges() {
+    const editorOptions = this.getEditorOptions();
+    // update header code, footer code, initial content
+    if (this.headerCode != null && this.headerCode != "") {
       INIT_HEADER_CPP = this.headerCode;
+      this.codeHeaderPresent = true;
+      const header = this.codeEditorHeadElmRef.nativeElement;
+      this.codeHeader = ace.edit(header, editorOptions);
+      this.codeHeader.setReadOnly(true);
+      this.codeHeader.setHighlightActiveLine(false);
     } else {
+      this.codeHeaderPresent = false;
       INIT_HEADER_CPP = DEF_HEADER_CPP;
     }
-    if (this.footerCode != null) {
+    if (this.footerCode != null && this.footerCode != "") {
+      this.codeFooterPresent = true;
       INIT_FOOTER_CPP = this.footerCode;
+      const footer = this.codeEditorFootElmRef.nativeElement;
+      this.codeFooter = ace.edit(footer, editorOptions);
+      this.codeFooter.setReadOnly(true);
+      this.codeFooter.setHighlightActiveLine(false);
     } else {
+      this.codeFooterPresent = false;
       INIT_FOOTER_CPP = DEF_FOOTER_CPP;
     }
     if (this.mainCode != null) {
@@ -175,14 +188,20 @@ export class IdeComponent implements OnInit {
     } else {
       INIT_CONTENT_CPP = DEF_CONTENT_CPP;
     }
+    this.setLanguageMode(this.initOptions.languageMode || DEFAULT_LANG_MODE);
+    this.setEditorTheme(this.initOptions.theme || DEFAULT_THEME_MODE);
     this.setContent(INIT_CONTENT_CPP);
+    this.activatedTheme = this.initEditorOptions.theme;
+    // sample input
     if (this.problemInput != null) {
       this.myInput.nativeElement.value = this.problemInput;
     } else {
       this.myInput.nativeElement.value = "";
     }
+    // sample output
+    this.output$ = Observable.create((observer) => { observer.next(''); });
   }
-
+  
   private pipeSupportedLanguages() {
     return this.handler.getAllSupportedLangs()
     .pipe(
@@ -235,23 +254,23 @@ export class IdeComponent implements OnInit {
           this.currentConfig.langMode = langMode;
           if (langMode == 'cpp14') {
             this.codeEditor.setValue(INIT_CONTENT_CPP);
-            this.codeHeader.setValue(INIT_HEADER_CPP);
-            this.codeFooter.setValue(INIT_FOOTER_CPP);
+            if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_CPP);
+            if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_CPP);
           } else if (langMode == 'java') {
             this.codeEditor.setValue(INIT_CONTENT_JAVA);
-            this.codeHeader.setValue(INIT_HEADER_JAVA);
-            this.codeFooter.setValue(INIT_FOOTER_JAVA);
+            if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_JAVA);
+            if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_JAVA);
           } else if (langMode == 'python3') {
             this.codeEditor.setValue(INIT_CONTENT_PY);
-            this.codeHeader.setValue(INIT_HEADER_PY);
-            this.codeFooter.setValue(INIT_FOOTER_PY);
+            if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_PY);
+            if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_PY);
           }
           this.codeEditor.clearSelection();
         });
-        this.codeHeader.getSession().setMode(languageModulePath, () => {
+        if (this.codeHeader) this.codeHeader.getSession().setMode(languageModulePath, () => {
           this.currentConfig.langMode = langMode;
         });
-        this.codeFooter.getSession().setMode(languageModulePath, () => {
+        if (this.codeFooter) this.codeFooter.getSession().setMode(languageModulePath, () => {
           this.currentConfig.langMode = langMode;
         });
       }
@@ -271,10 +290,10 @@ export class IdeComponent implements OnInit {
         this.codeEditor.setTheme(themePath, () => {
           this.currentConfig.editorTheme = theme;
         });
-        this.codeHeader.setTheme(themePath, () => {
+        if (this.codeHeader) this.codeHeader.setTheme(themePath, () => {
           this.currentConfig.editorTheme = theme;
         });
-        this.codeFooter.setTheme(themePath, () => {
+        if (this.codeFooter) this.codeFooter.setTheme(themePath, () => {
           this.currentConfig.editorTheme = theme;
         });
       }
@@ -302,8 +321,17 @@ export class IdeComponent implements OnInit {
    * @returns - the current editor's content.
    */
   public getContent() {
-    if (this.codeEditor) {
+    if (this.codeHeader && this.codeEditor && this.codeFooter) {
       const code = this.codeHeader.getValue() + "\n" + this.codeEditor.getValue() + "\n" + this.codeFooter.getValue();
+      return code;
+    } else if (this.codeHeader && this.codeEditor) {
+      const code = this.codeHeader.getValue() + "\n" + this.codeEditor.getValue();
+      return code;
+    } else if (this.codeEditor && this.codeFooter) {
+      const code = this.codeEditor.getValue() + "\n" + this.codeFooter.getValue();
+      return code;
+    } else {
+      const code = this.codeEditor.getValue();
       return code;
     }
   }
@@ -316,16 +344,16 @@ export class IdeComponent implements OnInit {
     if (this.codeEditor) {
       if (this.currentConfig.langMode == 'cpp14') {
         this.codeEditor.setValue(INIT_CONTENT_CPP);
-        this.codeHeader.setValue(INIT_HEADER_CPP);
-        this.codeFooter.setValue(INIT_FOOTER_CPP);
+        if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_CPP);
+        if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_CPP);
       } else if (this.currentConfig.langMode == 'java') {
         this.codeEditor.setValue(INIT_CONTENT_JAVA);
-        this.codeHeader.setValue(INIT_HEADER_JAVA);
-        this.codeFooter.setValue(INIT_FOOTER_JAVA);
+        if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_JAVA);
+        if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_JAVA);
       } else if (this.currentConfig.langMode == 'python3') {
         this.codeEditor.setValue(INIT_CONTENT_PY);
-        this.codeHeader.setValue(INIT_HEADER_PY);
-        this.codeFooter.setValue(INIT_FOOTER_PY);
+        if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_PY);
+        if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_PY);
       }
       this.codeEditor.clearSelection();
     }
@@ -348,11 +376,13 @@ export class IdeComponent implements OnInit {
     }
 
     // set line numbers appropriately
-    let linesInHeader = this.codeHeader.getValue().split(/\r\n|\r|\n/).length;
-    this.codeEditor.setOption("firstLineNumber", linesInHeader + 1);
-    let linesInContent = this.codeEditor.getValue().split(/\r\n|\r|\n/).length;
+    let linesInHeader = 0;
+    if (this.codeHeader) linesInHeader = this.codeHeader.getValue().split(/\r\n|\r|\n/).length;
+    if (this.codeEditor) this.codeEditor.setOption("firstLineNumber", linesInHeader + 1);
+    let linesInContent = 0;
+    if (this.codeEditor) linesInContent = this.codeEditor.getValue().split(/\r\n|\r|\n/).length;
     let initialLinesFooter = linesInHeader + linesInContent + 1;
-    this.codeFooter.setOption("firstLineNumber", initialLinesFooter);
+    if (this.codeFooter) this.codeFooter.setOption("firstLineNumber", initialLinesFooter)
   }
 
   /**

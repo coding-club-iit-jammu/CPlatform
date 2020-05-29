@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MaterialComponentService } from '../services/material-component.service';
 import { HttpClient, HttpHeaders, HttpParams, HttpHandler } from '@angular/common/http';
 import { StoreInfoService } from '../services/store-info.service';
+import { IdeComponent } from '../ide/ide.component';
 
 interface LeaderboardEntry {
   name: string,

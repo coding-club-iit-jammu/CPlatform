@@ -323,7 +323,7 @@ export class QuizComponent implements OnInit {
 
   async setCodingQuestionParameters(question) {
     let q = this.questions[question];
-    console.log(q);
+    // console.log(q);
     this.headerCode = q.headerCode;
     this.footerCode = q.footerCode;
     this.mainCode = q.mainCode;
