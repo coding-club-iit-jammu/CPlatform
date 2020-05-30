@@ -566,6 +566,27 @@ export class CoursehomeComponent implements OnInit {
     this.showSpinner = false;
   }
 
+  async applyPlagiarismCheck(assignmentId) {
+    this.showSpinner = true;
+    const options = {
+      observer: 'response' as 'body',
+      headers: new HttpHeaders({
+      }),
+      params: new HttpParams().set('courseCode', this.code).set('assignmentId', assignmentId)
+    }
+    await this.http.get(this.storeInfo.serverUrl+'/assignment/applyPlagiarismCheck', options).toPromise()
+                  .then( (resData) => {
+      if (resData['message']) {
+        this.matComp.openSnackBar(resData['message'], 20000);
+      } else {
+        this.matComp.openSnackBar("Unknown Error", 2000);
+      }
+    }, (error) => {
+      this.matComp.openSnackBar(error['statusText'], 2000);
+    })
+    this.showSpinner = false;
+  }
+  
   async downloadAllSubmissions(assignmentId) {
     this.showSpinner = true;
     const options = {

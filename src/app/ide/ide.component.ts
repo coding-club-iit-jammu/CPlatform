@@ -228,7 +228,7 @@ export class IdeComponent implements OnInit {
   private getEditorOptions(): Partial<ace.Ace.EditorOptions> & { enableBasicAutoCompletion?: boolean;} {
     const basicEditorOptions: Partial<ace.Ace.EditorOptions> = {
       highlightActiveLine: true,
-      minLines: 5,
+      minLines: 7,
       maxLines: 20,
       fontSize: 18,
       autoScrollEditorIntoView: true,

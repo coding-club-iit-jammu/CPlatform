@@ -100,8 +100,13 @@
                                         <button class="btn btn-secondary" (click)="downloadSubmission(assignment._id)">Download Submission</button>
                                     </div>
                                 </div>
-                                <div class="my-auto mx-auto text-center" *ngIf="course.role=='instructor' || course.role=='teachingAssistant'">
+                                <div *ngIf="course.role=='instructor' || course.role=='teachingAssistant'" class="d-flex flex-row justify-content-around">
+                                  <div>
                                     <button class="btn btn-info" (click)="downloadAllSubmissions(assignment._id)">Download Submissions</button>
+                                  </div>
+                                  <div>
+                                    <button class="btn btn-info" (click)="applyPlagiarismCheck(assignment._id)">Apply MOSS</button>
+                                  </div>
                                 </div>
                             </div>
                             <div *ngIf="assignment.requiresSubmission" class="card-footer text-muted border-warning">

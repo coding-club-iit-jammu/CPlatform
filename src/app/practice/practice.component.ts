@@ -248,6 +248,10 @@ export class PracticeComponent implements OnInit {
       })
     };
 
+    let headerExists = false;
+    if (this.headerCode != null && this.headerCode != "") {
+      headerExists = true;
+    }
     // fetch user code from the child component, passed in function
     let data = {
       questionId : this.codingQuestions[selectedCodingQuestion]['_id'],
@@ -255,7 +259,8 @@ export class PracticeComponent implements OnInit {
       courseCode: this.code,
       submitCode: submitCode,
       langId: langId,
-      langVersion: langVersion
+      langVersion: langVersion,
+      headerExists: headerExists
     }
     
     await this.http.post(this.storeInfo.serverUrl+'/practice/submitCodingQuestion',data,options).toPromise().then(response=>{
