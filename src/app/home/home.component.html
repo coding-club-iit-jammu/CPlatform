@@ -4,151 +4,172 @@
         <app-spinner></app-spinner>
       </div>
     </div>
-    <div class="all" [class.blurred]="showSpinner">
-        <div class="sidenav">
-            <h2>{{userData.name | titlecase}}</h2>
-            <h5>{{userData.email | lowercase}}</h5>
-            <h5>Department: {{userData.branch | titlecase}}</h5>
-            <button class="btn btn-block btn-warning gap" data-toggle="modal" data-target="#createCourseModal">Create Course</button>
-            <br>
-            <button class="btn btn-block btn-success gap" data-toggle="modal" data-target="#joinCourseModal">Join Course</button>
-            <br>
-            <button class="btn btn-block btn-danger gap" (click)="signOut()">Sign out</button>
-            <br>
-            <br>
-        </div>
-        <br>
-        <div class="main">
-            <div *ngIf="userData.courses.teaching.length > 0">
-                <h3 align="center"><b>Teaching</b></h3>
-                <hr class="border-dark">
-                <br>
-                <div class="row" >
-                    <div *ngFor="let item of userData.courses.teaching" class="col-sm-4">
-                      <div class="card border-dark" *ngIf="item.code">
-                        <div class="card-body text-center">
-                          <h5 class="card-title">{{item.code.substring(8) | titlecase}}</h5>
-                          <p class="card-text">{{item.title}}</p>
-                          <button class="btn btn-dark btn-block" (click)="openCourse(item.code,'instructor')">Open</button>
-                        </div>
-                      </div>
-                    </div>
+    <div [class.blurred]="showSpinner">
+      <nav class="navbar mb-3 sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <span class="navbar-brand mb-0 h1">Coding Platform</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Add Course
+                </a>
+                <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                  <div class="text-center mx-2">
+                    <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#createCourseModal">Create Course</button>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  <div class="text-center mx-2">
+                    <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#joinCourseModal">Join Course</button>
+                  </div>  
                 </div>
-                <br>
-            </div>
-            <br>
-            <div *ngIf="userData.courses.studying.length > 0">
-              <h3 align="center"><b>Studying</b></h3>
-              <hr class="border-dark">
-              <br>
-              <div class="row">
-                  <div *ngFor="let item of userData.courses.studying" class="col-sm-4">
-                    <div class="card border-dark">
-                      <div class="card-body">
-                        <h5 class="card-title">{{item.code.substring(8) | uppercase}}</h5>
-                        <p class="card-text text-center">{{item.title}}</p>
-                        <div class="text-center">
-                          <button class="btn btn-dark" (click)="openCourse(item.code,'student')">Open</button>
-                        </div>
-                      </div>
-                    </div>
+              </li>
+            </ul>
+            <div class ='navbar-nav text-white'>
+              <div class="nav-item dropdown">
+                <a class="dropdown-toggle text-white" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{userData.email | lowercase}}
+                </a>
+                <div class="dropdown-menu bg-light text-center" aria-labelledby="navbarDropdown1">
+                  <span class="mx-3">{{userData.name | titlecase}}</span>
+                  <div class="dropdown-divider"></div>
+                  <span class="mx-3">{{userData.branch | titlecase}}</span>
+                  <div class="dropdown-divider"></div>
+                  <div class="text-center mx-3">
+                    <button class="btn btn-danger btn-block" (click)="signOut()">Sign Out</button>
                   </div>
+                </div>
               </div>
-              <br>
             </div>
-            <br>
-            <div *ngIf="userData.courses.teachingAssistant.length > 0">
-              <h3 align="center"><b>Teaching Assistant</b></h3>
-              <hr class="border-dark">
-              <br>
-              <div class="row">
-                  <div *ngFor="let item of userData.courses.teachingAssistant" class="col-sm-4">
-                    <div class="card border-dark">
-                      <div class="card-body">
-                        <h5 class="card-title">{{item.code.substring(8) | titlecase}}</h5>
-                        <p class="card-text">{{item.title}}</p>
-                        <button class="btn btn-dark" (click)="openCourse(item.code,'teachingAssistant')">Open</button>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-              <br>
-            </div>
-            <br>
         </div>
-        
-        
-        <div class="modal fade" id="createCourseModal" role="dialog">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h4 class="modal-title">Add Course</h4>
-                      <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+      </nav>
+      <div class="py-3">
+        <div>
+          <div class="row text-center mx-auto">
+            <div class="col-lg shadow mx-auto mb-3 bg-light" style="max-width: 600px;" *ngIf="userData.courses.studying.length > 0">
+              <h4>
+                Student
+              </h4>
+              <div class="row my-3 px-2">
+                <div *ngFor="let item of userData.courses.studying" class="w-100">
+                  <div class="card border-dark">
+                    <div class="card-body">
+                      <h5 class="card-title">{{item.code.substring(8) | uppercase}}</h5>
+                      <p class="card-text text-center">{{item.title}}</p>
+                      <div class="text-center">
+                        <button class="btn btn-dark btn-block" (click)="openCourse(item.code,'student')">Open</button>
+                      </div>
+                    </div>
                   </div>
-                  <div class="modal-body">
-                  <form [formGroup]="addCourseForm">
-                    <label for="code" >Course Code</label>
-                    <input type="text" class="form-control" name="code" formControlName="code" placeholder="Enter Course Code Here"  required>
-                    <br>
-                    <label for="title">Course Title</label>
-                    <input type="text" class="form-control" name="title" formControlName="title" placeholder="Enter Course Title Here" required>
-                    <br>
-                    <label>Access Code</label>
-                    <input type="text" class="form-control" formControlName="instructorCode" placeholder="Enter Access Code for Instructor" required>
-                    <br>
-                    <input type="text" class="form-control" formControlName="teachingAssistantCode" placeholder="Enter Access Code for Teaching Assistants" required>
-                    <br>
-                    <div class="text-center my-3">
-                      <button class="btn btn-primary text-center" (click)="addGroupCode()">Add Group</button>
-                      <ng-container formArrayName = "studentCode">
-                        <div class="my-2" *ngFor="let control of addCourseForm.get('studentCode')['controls']; index as i">
-                          <ng-container [formGroup]="control">
-                            <input type="text" class="form-control" formControlName="code" placeholder="Enter Access Code for Group {{control.value.groupId}}" required>
-                          </ng-container>
-                        </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-lg shadow mx-auto mb-3 bg-light" style="max-width: 600px;" *ngIf="userData.courses.teaching.length > 0">
+              <h4>
+                Instructor
+              </h4>
+              <div class="my-3 row px-2" *ngFor="let item of userData.courses.teaching">
+                <div class="card border-dark w-100 " *ngIf="item.code">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">{{item.code.substring(8) | titlecase}}</h5>
+                    <p class="card-text">{{item.title}}</p>
+                    <button class="btn btn-dark btn-block" (click)="openCourse(item.code,'instructor')">Open</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg shadow mx-auto mb-3 bg-light" style="max-width: 600px;" *ngIf="userData.courses.teachingAssistant.length > 0">
+              <h4>
+                Teaching Assistant
+              </h4>
+              <div class="row my-3 px-2">
+                <div *ngFor="let item of userData.courses.teachingAssistant">
+                  <div class="card border-dark">
+                    <div class="card-body">
+                      <h5 class="card-title">{{item.code.substring(8) | titlecase}}</h5>
+                      <p class="card-text">{{item.title}}</p>
+                      <button class="btn btn-dark btn-block" (click)="openCourse(item.code,'teachingAssistant')">Open</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="createCourseModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add Course</h4>
+                <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="addCourseForm">
+                <label for="code" >Course Code</label>
+                <input type="text" class="form-control" name="code" formControlName="code" placeholder="Enter Course Code Here"  required>
+                <br>
+                <label for="title">Course Title</label>
+                <input type="text" class="form-control" name="title" formControlName="title" placeholder="Enter Course Title Here" required>
+                <br>
+                <label>Access Code</label>
+                <input type="text" class="form-control" formControlName="instructorCode" placeholder="Enter Access Code for Instructor" required>
+                <br>
+                <input type="text" class="form-control" formControlName="teachingAssistantCode" placeholder="Enter Access Code for Teaching Assistants" required>
+                <br>
+                <div class="text-center my-3">
+                  <ng-container formArrayName = "studentCode">
+                    <div class="my-2" *ngFor="let control of addCourseForm.get('studentCode')['controls']; index as i">
+                      <ng-container [formGroup]="control">
+                        <input type="text" class="form-control" formControlName="code" placeholder="Enter Access Code for Group {{control.value.groupId}}" required>
                       </ng-container>
                     </div>
-                    <div class="modal-footer footerModal d-flex flex-row justify-content-around">
-                      <div>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                      </div>
-                      <div>
-                        <button type="submit" class="btn btn-primary" [disabled]="!addCourseForm.valid" (click)="addCourse()" data-dismiss="modal">Add</button>
-                      </div>
-                    </div>
-                  </form>
+                  </ng-container>
+                  <button class="btn btn-primary text-center" (click)="addGroupCode()">Add Group</button>
                 </div>
-              </div>
-          </div>
-        </div>
-
-        <div class="modal fade" id="joinCourseModal" role="dialog">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h4 class="modal-title">Join Course</h4>
-                      <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                <div class="modal-footer footerModal d-flex flex-row justify-content-around">
+                  <div>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                   </div>
-                  <div class="modal-body">
-                  <form [formGroup] = "joinCourseForm">
-                    <label for="code">Course Code</label>
-                    <input type="text" class="form-control" name="code" placeholder="Enter Course Code Here" formControlName="code" required>
-                    <br>
-                    <label for="joiningCode">Access Code</label>
-                    <input type="text" class="form-control" name="joiningCode" placeholder="Enter Access Code Here" formControlName="joiningCode" required>
-                    <div class="modal-footer">
-                      <div>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                      </div>
-                      <div>
-                        <button type="submit" class="btn btn-primary" (click)="joinCourse()" data-dismiss="modal">Join</button>
-                      </div>
-                    </div>
-                  </form>
+                  <div>
+                    <button type="submit" class="btn btn-primary" [disabled]="!addCourseForm.valid" (click)="addCourse()" data-dismiss="modal">Add</button>
+                  </div>
                 </div>
-              </div>
+              </form>
+            </div>
           </div>
         </div>
-    
+      </div>
+
+      <div class="modal fade" id="joinCourseModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Join Course</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                </div>
+                <div class="modal-body">
+                <form [formGroup] = "joinCourseForm">
+                  <label for="code">Course Code</label>
+                  <input type="text" class="form-control" name="code" placeholder="Enter Course Code Here" formControlName="code" required>
+                  <br>
+                  <label for="joiningCode">Access Code</label>
+                  <input type="text" class="form-control" name="joiningCode" placeholder="Enter Access Code Here" formControlName="joiningCode" required>
+                  <div class="modal-footer">
+                    <div>
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                    <div>
+                      <button type="submit" class="btn btn-primary" (click)="joinCourse()" data-dismiss="modal">Join</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+      </div>
     </div>
 </div>

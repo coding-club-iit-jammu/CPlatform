@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
                                 <p class="card-text text-left my-2" [innerHtml]="assignment.description"></p>
-                                <div>
+                                <div *ngIf="assignment.file">
                                     <button class="btn btn-outline-secondary my-2" (click)="getAssignmentDoc(assignment._id)">Resourses</button>
                                 </div>  
                                 <div class="my-auto mx-auto text-center" *ngIf="course.role=='student'">
@@ -97,10 +97,10 @@
                                         <button class="btn btn-info" data-toggle="modal" data-target="#submitAssignmentModal" (click)="setSubmissionAssignment(assignment._id,assignment.title)">Submit</button>
                                     </div>
                                     <div *ngIf="assignment.submissionTime" class="my-2">
-                                        <button class="btn btn-secondary" (click)="downloadSubmission(assignment._id)">Download Submission</button>
+                                        <button class="btn btn-link" (click)="downloadSubmission(assignment._id)">Download Submission</button>
                                     </div>
                                 </div>
-                                <div *ngIf="course.role=='instructor' || course.role=='teachingAssistant'" class="d-flex flex-row justify-content-around">
+                                <div *ngIf="(course.role=='instructor' || course.role=='teachingAssistant') && !checkStatus(assignment.deadline) && assignment.requiresSubmission" class="d-flex flex-row justify-content-around">
                                   <div>
                                     <button class="btn btn-info" (click)="downloadAllSubmissions(assignment._id)">Download Submissions</button>
                                   </div>
@@ -116,7 +116,7 @@
                                   <div>
                                     <button class="btn btn-warning" data-toggle="modal" data-target="#shiftDeadlineModal" (click)="setShiftDeadline(assignment._id,assignment.title)">Shift Deadline</button>
                                   </div>
-                                  <div>
+                                  <div *ngIf="!checkStatus(assignment.deadline)">
                                     <button class="btn btn-success" data-toggle="modal" data-target="#uploadMarksModal" (click)="setUploadMarksForm(assignment._id,assignment.title)">Upload Marks</button>
                                   </div>
                               </div>
@@ -417,7 +417,7 @@
                             <div>
                                 <label class="my-2" for="audience">Audience</label>
                                 <mat-select formControlName="audience" multiple>
-                                    <mat-option *ngFor="let topping of course.groups" [value]="topping">{{topping}}</mat-option>
+                                    <mat-option *ngFor="let grp of course.groups" [value]="grp">{{grp}}</mat-option>
                                 </mat-select>
                             </div>
                             <div class="modal-footer d-flex flex-row justify-content-around">

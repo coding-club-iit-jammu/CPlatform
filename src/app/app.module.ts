@@ -33,7 +33,6 @@ import { MaterialComponentService } from './services/material-component.service'
 import { TokenInterceptorService } from './services/token-interceptor.service';
 
 import { QuillModule } from 'ngx-quill';
-import { ChartsModule } from 'ng2-charts';
 
 import { QuestionsComponent } from './questions/questions.component';
 import { PracticeComponent } from './practice/practice.component';
@@ -75,7 +74,6 @@ import { TestStatisticsComponent } from './test-statistics/test-statistics.compo
     MatRadioModule,
     FormsModule,
     MatSidenavModule,
-    ChartsModule,
     QuillModule.forRoot({
       modules: {
         syntax: true,

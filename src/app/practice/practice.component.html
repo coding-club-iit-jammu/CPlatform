@@ -63,7 +63,7 @@
                     </mat-tab>
                     <mat-tab label="True/False">
                         <div class="w-75 mx-auto my-4" *ngIf="trueFalseQuestions && trueFalseQuestions.length>0">
-                            <div class="card border-secondary" *ngFor="let q of trueFalseQuestions; let i=index;" [ngClass]="{'border-success':q.isSolved}">
+                            <div class="card border-secondary my-2" *ngFor="let q of trueFalseQuestions; let i=index;" [ngClass]="{'border-success':q.isSolved}">
                                 <div class="card-header" id="headingOne">
                                     <div class="w-100 text-center" [innerHtml]='q.question'></div>
                                     <div class="text-center" >
@@ -82,7 +82,7 @@
                     </mat-tab>
                     <mat-tab label="Coding Questions">
                         <div class="w-75 mx-auto my-4" *ngIf="codingQuestions && codingQuestions.length > 0">
-                            <div class="card border-secondary" *ngFor="let q of codingQuestions; let i=index;" [ngClass]="{'border-success':q.isSolved}">
+                            <div class="card border-secondary my-2" *ngFor="let q of codingQuestions; let i=index;" [ngClass]="{'border-success':q.isSolved}">
                                 <div class="card-header" id="headingOne">
                                     <div class="w-100 text-center" [innerHtml]='q.title'></div>
                                     <div class="text-center" >
@@ -150,7 +150,7 @@
         <div class="bottom bg-dark py-3 text-light text-center">
             <h3>{{title}}</h3>
         </div>
-        <div class="modal fade" id="leaderboardModal" role="dialog" *ngIf="role!='student'">
+        <div class="modal fade" id="leaderboardModal" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header text-center bg-light px-auto h-100">
