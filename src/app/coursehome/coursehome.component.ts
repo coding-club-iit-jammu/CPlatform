@@ -684,7 +684,7 @@ export class CoursehomeComponent implements OnInit {
     formData.append("courseCode", this.code);
     
     await this.http.post(this.storeInfo.serverUrl+'/assignment/uploadMarks', formData, options).toPromise().then(async (resData)=>{
-      if(resData['status'] == 201){
+      if(resData['status'] == 200){
         this.resetUploadMarksForm();
       }
       this.matComp.openSnackBar(resData['body']['message'],2000);
