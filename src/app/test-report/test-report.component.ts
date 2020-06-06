@@ -14,6 +14,7 @@ export class TestReportComponent implements OnInit {
   testId: string;
   test_id: string;
   code: string;
+  notFound:boolean = false;
 
   stats = {
     maxMarks:0,
@@ -76,15 +77,20 @@ export class TestReportComponent implements OnInit {
     }
 
     await this.http.get(this.storeInfo.serverUrl+'/test/getUserTestRecord',options).toPromise().then((response)=>{
-      console.log(response);
       if(response['status'] == 200){
-        this.test_id = response['body']['test_id'];
         this.stats = response['body']['stats'];
-        this.marks = response['body']['userTestRecord']['securedMarks'];
-        this.userTestRecord.mcq = response['body']['userTestRecord']['mcq']['problems'];
-        this.userTestRecord.trueFalse = response['body']['userTestRecord']['trueFalse']['problems'];
-        this.userTestRecord.codingQuestion = response['body']['userTestRecord']['codingQuestion']['problems'];
-        this.userTestRecord.securedMarks = response['body']['userTestRecord']['securedMarks'];
+        if(response['body']['userTestRecord']){
+          this.test_id = response['body']['test_id'];
+          this.marks = response['body']['userTestRecord']['securedMarks'];
+          this.userTestRecord.mcq = response['body']['userTestRecord']['mcq']['problems'];
+          this.userTestRecord.trueFalse = response['body']['userTestRecord']['trueFalse']['problems'];
+          this.userTestRecord.codingQuestion = response['body']['userTestRecord']['codingQuestion']['problems'];
+          this.userTestRecord.securedMarks = response['body']['userTestRecord']['securedMarks'];
+          this.notFound = false;
+        } else {
+          this.notFound = true;
+          this.marks = 0;
+        }
       }
     },error=>{
       this.matComp.openSnackBar(error['statusText'],2000);

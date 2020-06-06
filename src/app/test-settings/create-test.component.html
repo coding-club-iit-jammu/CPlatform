@@ -33,10 +33,10 @@
                             <a class="nav-link" (click) = "setView(4)">IDE</a>
                         </li>
                     </ul>
-                    <button class="btn btn-danger mr-2" *ngIf="!test.startTest" (click)="startTest()">Start Test</button>
-                    <button class="btn btn-warning mr-2" *ngIf="test.startTest && !test.revealMarks" (click)="revealMarks()">Publish Marks</button>
+                    <button class="btn btn-danger mr-2" *ngIf="!test.startTest" (click)="startTest()"><i class="fa fa-play"></i> Start Test</button>
+                    <button class="btn btn-warning mr-2" *ngIf="test.startTest && !test.revealMarks" (click)="revealMarks()"><i class="fa fa-newspaper-o"></i> Publish Marks</button>
                     <button class="btn btn-info mr-2 my-sm-0" *ngIf="test.startTest" (click)="getLeaderBoard()" data-toggle="modal" data-target="#leaderboardModal"><i class="fa fa-trophy"></i> Leaderboard</button>
-                    <button class="btn btn-info mr-2 my-sm-0" *ngIf="test.startTest && test.revealMarks" data-toggle="modal" data-target="#statsModal">Statistics</button>
+                    <button class="btn btn-info mr-2 my-sm-0" *ngIf="test.startTest && test.revealMarks" data-toggle="modal" data-target="#statsModal"><i class="fa fa-bar-chart"></i> Statistics</button>
                     <button class="btn btn-warning mr-2 my-sm-0" type="button" (click)="moveBack()"><i class="fa fa-home"></i> Home</button>
                     <button class="btn btn-danger my-sm-0" type="button" (click)="signOut()"><i class="fa fa-sign-out"></i> Sign Out</button>
                 </div>
@@ -97,16 +97,16 @@
                                                 <div>
                                                     <div class="form-group w-75 mx-auto">
                                                         <div class="input-group mx-auto">
-                                                            <div class="input-group-prepend bg-warningg">
-                                                                <span class="input-group-text bg-warningg">Start Time</span>
+                                                            <div class="input-group-prepend bg-light">
+                                                                <span class="input-group-text bg-light">Start Time&nbsp;<i class="fa fa-clock-o"></i></span>
                                                             </div>
                                                             <input type="datetime-local" class="form-control" formControlName="startTime" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group w-75 mx-auto">
                                                         <div class="input-group mx-auto">
-                                                            <div class="input-group-prepend bg-warningg">
-                                                                <span class="input-group-text bg-warningg">End Time</span>
+                                                            <div class="input-group-prepend bg-light">
+                                                                <span class="input-group-text bg-light">End Time&nbsp;<i class="fa fa-clock-o"></i></span>
                                                             </div>
                                                             <input type="datetime-local" class="form-control" formControlName="endTime" required>
                                                         </div>
@@ -222,7 +222,7 @@
                         <div class="text-center card-footer bg-light">
                             <div>
                                 <button class="btn btn-danger" *ngIf="!test.revealMarks" (click)="saveTest()">
-                                    Save
+                                    <i class="fa fa-save"></i> Save
                                 </button>
                             </div>
                         </div>
@@ -281,7 +281,7 @@
                     <div class="modal-footer d-flex justify-content-around bg-light">
                         <div>
                             <button class="btn btn-link" (click)="navToStatistics()" data-dismiss="modal">
-                                Detailed Statistics
+                                <i class="fa fa-pie-chart"></i> Detailed Statistics
                             </button>
                         </div>
                     </div>

@@ -88,6 +88,9 @@
             <div class="mx-auto w-75 my-3">
                 <div class="card shadow-lg">
                     <div class="my-3">
+                        <div class="text-center text-danger" *ngIf="notFound">
+                            Looks like you didn't took the test.
+                        </div>
                         <div class="card shadow-lg w-75 mx-auto my-3" *ngIf="userTestRecord['mcq'].length > 0">
                             <div class="card-header bg-secondary">
                                 <div class="text-center text-white">
@@ -113,10 +116,10 @@
                                             Unattempted
                                         </div>
                                         <div class="card w-50 border-success mx-auto text-center text-success" *ngIf="que['marks']==que['securedMarks']">
-                                            Correct
+                                            Correct&nbsp;<i class="fa fa-check" aria-hidden="true"></i>
                                         </div>
                                         <div class="card w-50 border-danger mx-auto text-center text-danger" *ngIf="que['securedMarks'] == 0 && que['submitted']">
-                                            Wrong
+                                            Wrong&nbsp;<i class="fa fa-close" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -147,10 +150,10 @@
                                             Unattempted
                                         </div>
                                         <div class="card w-50 border-success mx-auto text-center text-success" *ngIf="que['marks']==que['securedMarks']">
-                                            Correct
+                                            Correct&nbsp;<i class="fa fa-check" aria-hidden="true"></i>
                                         </div>
                                         <div class="card w-50 border-danger mx-auto text-center text-danger" *ngIf="que['securedMarks'] == 0 && que['submitted']">
-                                            Wrong
+                                            Wrong&nbsp;<i class="fa fa-close" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -181,10 +184,10 @@
                                             Unattempted
                                         </div>
                                         <div class="card w-50 border-success mx-auto text-center text-success" *ngIf="que['marks']==que['securedMarks']">
-                                            Correct
+                                            Correct&nbsp;<i class="fa fa-check" aria-hidden="true"></i>
                                         </div>
                                         <div class="card w-50 border-danger mx-auto text-center text-danger" *ngIf="que['securedMarks'] == 0 && que['submitted']">
-                                            Wrong
+                                            Wrong&nbsp;<i class="fa fa-close" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                 </div>

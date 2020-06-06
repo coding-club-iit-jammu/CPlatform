@@ -84,13 +84,13 @@
             <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
                 <button type="button" class="btn btn-dark btn-sm btn-block px-4 mx-2" [ngClass]="{'cant-click' : cantReachServer}"
                     [disabled]="cantReachServer" (click)="onRunCode()">
-                    Run
+                    <i class="fa fa-play"></i> Run
                 </button>
             </div>
             <!-- clear button -->
             <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
                 <button type="button" class="btn btn-primary btn-sm btn-block px-4 mx-2" (click)="onClearContent()">
-                    Clear
+                    <i class="fa fa-eraser"></i> Clear
                 </button>
             </div>
             <!-- beautify button -->

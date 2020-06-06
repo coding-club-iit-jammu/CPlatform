@@ -20,19 +20,19 @@
                             <label for="psw" class="my-2"><b>Password</b></label>
                             <input type="password" class="form-control" placeholder="Enter Password" name="psw" required formControlName = "password">
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary btn-block mt-3 mx-auto" [disabled]="!form.valid" (click)="login()">Login</button>
+                                <button type="submit" class="btn btn-primary btn-block mt-3 mx-auto" [disabled]="!form.valid" (click)="login()"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</button>
                             </div>
                         </form>
                     </div>
                     <div class="card-footer d-flex flex-row justify-content-around">
                         <div>
                             <button class="btn btn-warning" (click)="reset()">
-                                Reset
+                                <i class="fa fa-eraser"></i> Reset
                             </button>
                         </div>
                         <div>
                             <button class="btn btn-success" (click)="signUp()">
-                                Sign Up
+                                <i class="fa fa-user-plus"></i> Sign Up
                             </button>
                         </div>
                     </div>

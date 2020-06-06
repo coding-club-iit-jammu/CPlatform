@@ -51,7 +51,7 @@
                                 <h5 class="card-title">{{post.title}}</h5>
                                 <p class="card-text text-left" [innerHtml]="post.description"></p>
                                 <div *ngIf="post.file">
-                                    <button class="btn btn-outline-primary my-2" (click)="getPostResource(post._id)">Resourse</button>
+                                    <button class="btn btn-link my-2" (click)="getPostResource(post._id)"><i class="fa fa-download"></i> Resourse</button>
                                 </div>  
                             </div>
                             <div class="card-footer border-info text-muted">
@@ -59,14 +59,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="!course.posts || course.posts.length==0">
-                        <div></div>
-                        <div class="card shadow text-center mt-3 border-info">
+                    <div class="row mx-3" *ngIf="!course.posts || course.posts.length==0">
+                        <div class="col"></div>
+                        <div class="col card shadow text-center mt-3 border-info">
                             <div class="card-body">
                                 <h5 class="card-title">No Posts.</h5>
                             </div>
                         </div>
-                        <div></div>
+                        <div class="col"></div>
                     </div>
                     <div class="row mx-3 pl-4 fixed-bottom mb-4">
                         <button class="btn btn-success border-success shadow mx-auto bigButton rounded-circle btn-lg" data-toggle="modal" data-target="#createPostModal">+</button>
@@ -90,22 +90,22 @@
                                 </div>
                                 <p class="card-text text-left my-2" [innerHtml]="assignment.description"></p>
                                 <div *ngIf="assignment.file">
-                                    <button class="btn btn-outline-secondary my-2" (click)="getAssignmentDoc(assignment._id)">Resourses</button>
+                                    <button class="btn btn-link my-2" (click)="getAssignmentDoc(assignment._id)"><i class="fa fa-download"></i> Resourses</button>
                                 </div>  
                                 <div class="my-auto mx-auto text-center" *ngIf="course.role=='student'">
                                     <div *ngIf="checkStatus(assignment.deadline) && assignment.requiresSubmission" class="mx-auto my-2 text-center">
                                         <button class="btn btn-info" data-toggle="modal" data-target="#submitAssignmentModal" (click)="setSubmissionAssignment(assignment._id,assignment.title)">Submit</button>
                                     </div>
                                     <div *ngIf="assignment.submissionTime" class="my-2">
-                                        <button class="btn btn-link" (click)="downloadSubmission(assignment._id)">Download Submission</button>
+                                        <button class="btn btn-link" (click)="downloadSubmission(assignment._id)"><i class="fa fa-download"></i> Submission</button>
                                     </div>
                                 </div>
                                 <div *ngIf="(course.role=='instructor' || course.role=='teachingAssistant') && !checkStatus(assignment.deadline) && assignment.requiresSubmission" class="d-flex flex-row justify-content-around">
                                   <div>
-                                    <button class="btn btn-info" (click)="downloadAllSubmissions(assignment._id)">Download Submissions</button>
+                                    <button class="btn btn-info" (click)="downloadAllSubmissions(assignment._id)"> <i class="fa fa-download"></i> Submissions</button>
                                   </div>
                                   <div>
-                                    <button class="btn btn-info" (click)="applyPlagiarismCheck(assignment._id)">Apply MOSS</button>
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#mossModal" (click)="applyPlagiarismCheck(assignment._id)">Apply MOSS</button>
                                   </div>
                                 </div>
                             </div>
@@ -114,23 +114,23 @@
                               <p *ngIf="course.role=='student' && assignment.submissionTime">Last Submission: {{assignment.submissionTime | date:'medium'}}</p>
                               <div *ngIf="course.role!='student'" class="d-flex flex-row justify-content-around">
                                   <div>
-                                    <button class="btn btn-warning" data-toggle="modal" data-target="#shiftDeadlineModal" (click)="setShiftDeadline(assignment._id,assignment.title)">Shift Deadline</button>
+                                    <button class="btn btn-warning" data-toggle="modal" data-target="#shiftDeadlineModal" (click)="setShiftDeadline(assignment._id,assignment.title)"><i class="fa fa-clock-o"></i> Shift Deadline</button>
                                   </div>
                                   <div *ngIf="!checkStatus(assignment.deadline)">
-                                    <button class="btn btn-success" data-toggle="modal" data-target="#uploadMarksModal" (click)="setUploadMarksForm(assignment._id,assignment.title)">Upload Marks</button>
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#uploadMarksModal" (click)="setUploadMarksForm(assignment._id,assignment.title)"><i class="fa fa-upload"></i> Marks</button>
                                   </div>
                               </div>
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="!course.assignments || course.assignments.length==0">
-                        <div></div>
-                        <div class="card shadow text-center mt-3 border-info">
+                    <div class="row mx-3" *ngIf="!course.assignments || course.assignments.length==0">
+                        <div class="col"></div>
+                        <div class="col card shadow text-center mt-3 border-info">
                             <div class="card-body">
                                 <h5 class="card-title">No Assignments.</h5>
                             </div>
                         </div>
-                        <div></div>
+                        <div class="col"></div>
                     </div>
                     <div class="row mx-3 pl-4 fixed-bottom mb-4">
                         <button class="btn btn-success border-success mx-auto shadow bigButton rounded-circle btn-lg" *ngIf="course.role=='instructor'" data-toggle="modal" data-target="#createAssignmentModal">+</button>
@@ -149,20 +149,20 @@
                             </div>
 
                             <div class="card-footer border-danger text-muted">
-                                <button class="btn btn-outline-primary" *ngIf="course.role=='student' && test.startTest && !test.revealMarks" (click)="startTest(test.testId,test._id)">Start</button>
-                                <button class="btn btn-outline-primary" *ngIf="course.role=='student' && test.revealMarks" (click)="navToTestReports(test.testId)">Report</button>
-                                <button class="btn btn-outline-primary" *ngIf="course.role!='student'" (click)="openTest(test.testId,test._id)">Settings</button>
+                                <button class="btn btn-outline-primary" *ngIf="course.role=='student' && test.startTest && !test.revealMarks" (click)="startTest(test.testId,test._id)"><i class="fa fa-play"></i> Start</button>
+                                <button class="btn btn-outline-success" *ngIf="course.role=='student' && test.revealMarks" (click)="navToTestReports(test.testId)"><i class="fa fa-file"></i> Report</button>
+                                <button class="btn btn-outline-info" *ngIf="course.role!='student'" (click)="openTest(test.testId,test._id)"><i class="fa fa-gear"></i> Settings</button>
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-row justify-content-around mx-auto pl-4" *ngIf="!course.tests || course.tests.length==0">
-                        <div></div>
-                        <div class="card shadow text-center mt-3 border-info">
+                    <div class="row mx-3" *ngIf="!course.tests || course.tests.length==0">
+                        <div class="col"></div>
+                        <div class="card col shadow text-center mt-3 border-info">
                             <div class="card-body">
                                 <h5 class="card-title">No Tests.</h5>
                             </div>
                         </div>
-                        <div></div>
+                        <div class="col"></div>
                     </div>
                     <div class="row mx-3 pl-4 fixed-bottom mb-4">
                         <button class="btn btn-success border-success shadow mx-auto bigButton rounded-circle btn-lg" *ngIf="course.role=='instructor'" data-toggle="modal" data-target="#createTestModal">+</button>
@@ -178,7 +178,7 @@
                     <div class="card shadow w-75 mx-auto my-3 border-primary">
                         <div class="card-content">
                             <div class="card-header font-weight-bold border-primary">
-                                Instructors
+                                <i class="fa fa-user-o"></i> Instructors
                             </div>
                             <div class="card-body" *ngFor="let instructor of course.instructors">
                                 <p>{{instructor.name | titlecase}}</p>
@@ -190,7 +190,7 @@
                     <div class="card shadow w-75 mx-auto my-3 border-primary">
                         <div class="card-content">
                             <div class="card-header font-weight-bold border-primary">
-                                Teaching Assistants
+                                <i class="fa fa-user-o"></i> Teaching Assistants
                             </div>
                             <div class="card-body" *ngFor="let instructor of course.teachingAssistants">
                                 <p>{{instructor.name | titlecase}}</p>
@@ -203,7 +203,7 @@
                         <button class="btn btn-primary my-2"  data-toggle="modal" data-target="#accessCodesModal">Access Codes</button>
                     </div>
                     <div>
-                        <button class="btn btn-primary my-2" (click)="getCombinedReport()" data-toggle="modal" data-target="#reportModal">Course Report</button>
+                        <button class="btn btn-primary my-2" (click)="getCombinedReport()" data-toggle="modal" data-target="#reportModal"><i class="fa fa-file"></i> Course Report</button>
                     </div>
                 </div>
             </div>
@@ -252,8 +252,37 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-around bg-light">
                         <div>
-                            <button type="button" class="btn btn-link" data-dismiss="modal" (click)="generateCSV()">Download CSV</button>
+                            <button type="button" class="btn btn-link" data-dismiss="modal" (click)="generateCSV()"><i class="fa fa-download"></i> CSV</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="mossModal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header text-center bg-light px-auto h-100">
+                        <div class="text-center">
+                            <h3>
+                                Moss Result
+                            </h3>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                    </div>
+                    <div class="modal-body text-center text-wrap">
+                        <div *ngIf="fetchingMoss">
+                            <div class="spinner-grow text-danger" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        <div *ngIf="!fetchingMoss" class="input-group">
+                            <input type="text" class="form-control" value="{{mossLink}}">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" (click)="textToClipboard(mossLink)">
+                                    <i class="fa fa-clipboard"></i>
+                                </button>
+                            </div>
+                          </div>
                     </div>
                 </div>
             </div>
@@ -311,10 +340,10 @@
                     </div>
                     <div class="modal-footer d-flex flex-row justify-content-around">
                         <div>
-                            <button type="button" class="btn btn-danger"  data-dismiss="modal" style="float: left;">Close</button>
+                            <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!submitAssignmentForm.valid" style="float: right;" (click)="submitAssignment()">Add</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!submitAssignmentForm.valid" (click)="submitAssignment()"><i class="fa fa-upload"></i> Submit</button>
                         </div>
                     </div>
                 </div>
@@ -343,7 +372,7 @@
                             <button type="button" class="btn btn-danger"  data-dismiss="modal">Close</button>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!uploadMarksForm.valid" (click)="uploadMarks()">Add</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!uploadMarksForm.valid" (click)="uploadMarks()"><i class="fa fa-upload"></i> Upload</button>
                         </div>
                     </div>
                 </div>
