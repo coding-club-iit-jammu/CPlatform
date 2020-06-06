@@ -1,370 +1,752 @@
 <div class="wrapper">
-    <div class="overlay" *ngIf="showSpinner">   
-        <div class="spinner-wrapper">
-            <app-spinner></app-spinner>
-        </div>
+  <div class="overlay" *ngIf="showSpinner">
+    <div class="spinner-wrapper">
+      <app-spinner></app-spinner>
     </div>
-    <div [class.blurred]="!showSpinner">
-        <div class="navBarCss">
-            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-                <span class="navbar-brand mb-0 h1">{{code.substring(8)}}</span>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+  </div>
+  <div [class.blurred]="!showSpinner">
+    <div class="navBarCss">
+      <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <span class="navbar-brand mb-0 h1">{{ code.substring(8) }}</span>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" (click)="setView(1)">Stream</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="setView(2)">Assignments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="setView(3)">Tests</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" (click)="goToQuestions()">Questions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="goToPractice()">Practice</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="setView(4)">IDE</a>
+            </li>
+          </ul>
+          <a class="btn btn-warning mr-2 my-sm-0" (click)="moveBack()"
+            ><i class="fa fa-home"></i> Home</a
+          >
+          &nbsp;&nbsp;<br />
+          <button
+            class="btn btn-danger my-2 my-sm-0"
+            type="button"
+            (click)="signOut()"
+          >
+            <i class="fa fa-sign-out"></i> Sign Out
+          </button>
+        </div>
+      </nav>
+    </div>
+    <div class="completeView py-3">
+      <div class="mainClass">
+        <mat-tab-group class="mx-auto text-dark justify-content-between">
+          <mat-tab label="MCQ">
+            <div
+              class="accordion w-75 mx-auto my-4"
+              id="accordionExample"
+              *ngIf="mcqQuestions && mcqQuestions.length > 0"
+            >
+              <div
+                class="card border-dark"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="Click to Expand."
+                *ngFor="let q of mcqQuestions; let i = index"
+              >
+                <div
+                  class="card-header border-dark d-flex flex-column"
+                  id="headingOne"
+                  data-toggle="collapse"
+                  [attr.data-target]="'#collapseMCQ' + i"
+                  aria-expanded="false"
+                  [attr.aria-controls]="'#collapseMCQ' + i"
+                >
+                  <div class="d-flex flex-row">
+                    <div
+                      class="w-75 text-center"
+                      [innerHtml]="q.question"
+                    ></div>
+                    <div class="w-25">
+                      <button
+                        class="btn btn-danger btn-sm float-right rounded-circle rounded-sm"
+                        [disabled]="q.used"
+                        (click)="deleteQuestion(q._id, 'mcq')"
+                      >
+                        <i class="fa h-100 w-100 fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="dropdown text-center">
+                    <button
+                      class="btn btn-success btn-sm dropdown-toggle my-3"
+                      type="button"
+                      id="dropdownMenuMCQ"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <i class="fa fa-plus"></i>
+                    </button>
+                    <div
+                      class="dropdown-menu z-10"
+                      aria-labelledby="dropdownMenuMCQ"
+                    >
+                      <button
+                        class="dropdown-item z-10"
+                        type="button"
+                        (click)="addToPractice(q._id, 'mcq')"
+                      >
+                        Practice
+                      </button>
+                      <button
+                        class="dropdown-item z-10"
+                        type="button"
+                        *ngFor="let test of tests"
+                        (click)="addToTest(q._id, test._id, 'mcq')"
+                      >
+                        {{ test.title }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  id="{{ 'collapseMCQ' + i }}"
+                  class="collapse"
+                  aria-labelledby="headingOne"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    <div
+                      class="card my-3 d-flex flex-row text-center"
+                      *ngFor="let opt of q.options"
+                      [ngClass]="{
+                        'border-success': opt.isCorrect == true,
+                        'border-warning': opt.isCorrect != true
+                      }"
+                    >
+                      <div class="w-10 py-3">
+                        {{ opt.code }}
+                      </div>
+                      <div
+                        class="w-90 py-3 px-3 text-left"
+                        [innerHtml]="opt.option"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="card my-3 w-75 text-center text-wrap mx-auto"
+              *ngIf="!mcqQuestions || mcqQuestions.length == 0"
+            >
+              <div class="card-body">
+                <h3>No Question Found.</h3>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="True/False">
+            <div
+              class="accordion w-75 mx-auto my-4"
+              id="accordionExample"
+              *ngIf="trueFalseQuestions && trueFalseQuestions.length > 0"
+            >
+              <div
+                class="card border-dark"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="Click to Expand."
+                *ngFor="let q of trueFalseQuestions; let i = index"
+              >
+                <div
+                  class="card-header border-dark d-flex flex-column"
+                  id="headingOne"
+                  data-toggle="collapse"
+                  [attr.data-target]="'#collapseTrueFalse' + i"
+                  aria-expanded="false"
+                  [attr.aria-controls]="'#collapseTrueFalse' + i"
+                >
+                  <div class="d-flex flex-row">
+                    <div
+                      class="w-75 text-center"
+                      [innerHtml]="q.question"
+                    ></div>
+                    <div class="w-25">
+                      <button
+                        class="btn btn-danger btn-sm float-right rounded-circle rounded-sm"
+                        [disabled]="q.used"
+                        (click)="deleteQuestion(q._id, 'truefalse')"
+                      >
+                        <i class="fa h-100 w-100 fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="dropdown text-center">
+                    <button
+                      class="btn btn-success btn-sm dropdown-toggle my-3"
+                      type="button"
+                      id="dropdownMenuTrueFalse"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <i class="fa fa-plus"></i>
+                    </button>
+                    <div
+                      class="dropdown-menu z-10"
+                      aria-labelledby="dropdownMenuTrueFalse"
+                    >
+                      <button
+                        class="dropdown-item z-10"
+                        type="button"
+                        (click)="addToPractice(q._id, 'trueFalse')"
+                      >
+                        Practice
+                      </button>
+                      <button
+                        class="dropdown-item z-10"
+                        type="button"
+                        *ngFor="let test of tests"
+                        (click)="addToTest(q._id, test._id, 'trueFalse')"
+                      >
+                        {{ test.title }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  id="{{ 'collapseTrueFalse' + i }}"
+                  class="collapse w-100"
+                  aria-labelledby="headingOne"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body d-flex flex-row">
+                    <div
+                      class="card my-3 text-center border-success w-80"
+                      [ngClass]="{
+                        'border-success': q.answer,
+                        'border-warning': !q.answer
+                      }"
+                    >
+                      <div class="py-3">
+                        <div *ngIf="q.answer">
+                          True
+                        </div>
+                        <div *ngIf="!q.answer">
+                          False
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="card my-3 w-75 text-center text-wrap mx-auto"
+              *ngIf="!trueFalseQuestions || trueFalseQuestions.length == 0"
+            >
+              <div class="card-body">
+                <h3>No Question Found.</h3>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Coding Questions">
+            <div class="accordion w-75 mx-auto my-4" id="accordionExample">
+              <div
+                class="card border-dark"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="Click to Expand."
+                *ngFor="let q of codingQuestions; let i = index"
+              >
+                <div
+                  class="card-header border-dark d-flex flex-column"
+                  id="headingOne"
+                  data-toggle="collapse"
+                  [attr.data-target]="'#collapseCoding' + i"
+                  aria-expanded="false"
+                  [attr.aria-controls]="'#collapseCoding' + i"
+                >
+                  <div class="d-flex flex-row">
+                    <div class="w-75 text-center" [innerHtml]="q.title"></div>
+                    <div class="w-25">
+                      <button
+                        class="btn btn-warning btn-sm float-right rounded-circle rounded-sm"
+                        (click)="setEditCodingQuestion(i)"
+                      >
+                        <i class="fa h-100 w-100 fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm float-right rounded-circle rounded-sm"
+                        [disabled]="q.used"
+                        (click)="deleteQuestion(q._id, 'codingQuestion')"
+                      >
+                        <i class="fa h-100 w-100 fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="dropdown text-center">
+                    <button
+                      class="btn btn-success btn-sm dropdown-toggle my-3"
+                      type="button"
+                      id="dropdownMenuCoding"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <i class="fa fa-plus"></i>
+                    </button>
+                    <div
+                      class="dropdown-menu z-10"
+                      aria-labelledby="dropdownMenuCoding"
+                    >
+                      <button
+                        class="dropdown-item z-10"
+                        type="button"
+                        (click)="addToPractice(q._id, 'codingQuestion')"
+                      >
+                        Practice
+                      </button>
+                      <button
+                        class="dropdown-item z-10"
+                        type="button"
+                        *ngFor="let test of tests"
+                        (click)="addToTest(q._id, test._id, 'codingQuestion')"
+                      >
+                        {{ test.title }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  id="{{ 'collapseCoding' + i }}"
+                  class="collapse"
+                  aria-labelledby="headingOne"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body d-block">
+                    <div
+                      class="my-3 text-center w-100"
+                      [innerHtml]="q.description"
+                    ></div>
+                    <div class="my-3 w-100">
+                      Sample Input
+                      <div class="card" [innerHtml]="q.sampleInput"></div>
+                    </div>
+                    <div class="my-3 w-100">
+                      Sample Output
+                      <div class="card" [innerHtml]="q.sampleOutput"></div>
+                    </div>
+                    <div class="d-flex flex-row my-3">
+                      <div class="w-100 text-center">
+                        <button
+                          class="btn btn-primary btn-sm"
+                          (click)="
+                            downloadItem(q._id, q.testcases, 'testcases')
+                          "
+                        >
+                          <i class="fa fa-download"></i>TestCases
+                        </button>
+                      </div>
+                      <div class="w-100 text-center" *ngIf="q.header">
+                        <button
+                          class="btn btn-primary btn-sm"
+                          (click)="downloadItem(q._id, q.header, 'header')"
+                        >
+                          <i class="fa fa-download"></i>Header
+                        </button>
+                      </div>
+                      <div class="w-100 text-center" *ngIf="q.footer">
+                        <button
+                          class="btn btn-primary btn-sm"
+                          (click)="downloadItem(q._id, q.footer, 'footer')"
+                        >
+                          <i class="fa fa-download"></i>Footer
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="card my-3 w-75 text-center text-wrap mx-auto"
+              *ngIf="!codingQuestions || codingQuestions.length == 0"
+            >
+              <div class="card-body">
+                <h3>No Question Found.</h3>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <div class="sideInfo bg-transparent px-3">
+        <div>
+          <div class="">
+            <div class="dropdown text-center">
+              <button
+                class="btn btn-secondary dropdown-toggle my-3"
+                type="button"
+                id="dropdownMenu2"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Create Question
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button" (click)="view = 1">
+                  MCQ
                 </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" (click) = "setView(1)">Stream</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" (click) = "setView(2)">Assignments</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" (click) = "setView(3)">Tests</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" (click)="goToQuestions()">Questions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" (click)="goToPractice()">Practice</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" (click) = "setView(4)">IDE</a>
-                        </li>
-                    </ul>
-                    <a class="btn btn-warning mr-2 my-sm-0" (click)="moveBack()"><i class="fa fa-home"></i> Home</a>
-                    &nbsp;&nbsp;<br>
-                    <button class="btn btn-danger my-2 my-sm-0" type="button" (click)="signOut()"><i class="fa fa-sign-out"></i> Sign Out</button>
-                </div>
-            </nav>
-        </div>
-        <div class="completeView py-3">
-            <div class = "mainClass" >
-                <mat-tab-group class="mx-auto text-dark justify-content-between">
-                    <mat-tab label="MCQ">
-                        <div class="accordion w-75 mx-auto my-4" id="accordionExample" *ngIf="mcqQuestions && mcqQuestions.length > 0">
-                            <div class="card border-dark" data-toggle="tooltip" data-placement="right" title="Click to Expand." *ngFor="let q of mcqQuestions; let i=index;">
-                                <div class="card-header border-dark d-flex flex-column" id="headingOne" data-toggle="collapse" [attr.data-target]="'#collapseMCQ'+i" aria-expanded="false" [attr.aria-controls]="'#collapseMCQ'+i">
-                                    <div class="d-flex flex-row">
-                                        <div class="w-75 text-center" [innerHtml]='q.question'></div>
-                                        <div class="w-25">
-                                            <button class="btn btn-danger btn-sm float-right rounded-circle rounded-sm" [disabled]='q.used' (click)="deleteQuestion(q._id,'mcq')">
-                                                <i class="fa h-100 w-100 fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown text-center">
-                                        <button class="btn btn-success btn-sm dropdown-toggle my-3" type="button" id="dropdownMenuMCQ" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                        <div class="dropdown-menu z-10" aria-labelledby="dropdownMenuMCQ">
-                                            <button class="dropdown-item z-10" type="button" (click)="addToPractice(q._id,'mcq')">Practice</button>
-                                            <button class="dropdown-item z-10" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'mcq')">{{test.title}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                          
-                                <div id="{{'collapseMCQ'+i}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        <div class="card my-3 d-flex flex-row text-center" *ngFor="let opt of q.options;" [ngClass]="{'border-success':opt.isCorrect==true, 'border-warning':opt.isCorrect!=true}">
-                                            <div class="w-10 py-3">
-                                                {{opt.code}}
-                                            </div>
-                                            <div class=" w-90 py-3 px-3 text-left" [innerHtml]='opt.option'>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="!mcqQuestions || mcqQuestions.length==0">
-                            <div class="card-body">
-                                <h3>No Question Found.</h3>
-                            </div>
-                        </div>
-                    </mat-tab>
-                    <mat-tab label="True/False">
-                        <div class="accordion w-75 mx-auto my-4" id="accordionExample" *ngIf="trueFalseQuestions && trueFalseQuestions.length>0">
-                            <div class="card border-dark" data-toggle="tooltip" data-placement="right" title="Click to Expand." *ngFor="let q of trueFalseQuestions; let i=index;">
-                                <div class="card-header border-dark d-flex flex-column" id="headingOne" data-toggle="collapse" [attr.data-target]="'#collapseTrueFalse'+i" aria-expanded="false" [attr.aria-controls]="'#collapseTrueFalse'+i">
-                                    <div class="d-flex flex-row">
-                                        <div class="w-75 text-center" [innerHtml]='q.question'></div>
-                                        <div class="w-25">
-                                            <button class="btn btn-danger btn-sm float-right rounded-circle rounded-sm" [disabled]='q.used' (click)="deleteQuestion(q._id,'truefalse')">
-                                                <i class="fa h-100 w-100 fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown text-center">
-                                        <button class="btn btn-success btn-sm dropdown-toggle my-3" type="button" id="dropdownMenuTrueFalse" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                        <div class="dropdown-menu z-10" aria-labelledby="dropdownMenuTrueFalse">
-                                            <button class="dropdown-item z-10" type="button" (click)="addToPractice(q._id,'trueFalse')">Practice</button>
-                                            <button class="dropdown-item z-10" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'trueFalse')">{{test.title}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="{{'collapseTrueFalse'+i}}" class="collapse w-100" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                    <div class="card-body d-flex flex-row">
-                                        <div class="card my-3 text-center border-success w-80" [ngClass]="{'border-success':q.answer, 'border-warning':!q.answer}">
-                                            <div class="py-3">
-                                                <div *ngIf='q.answer'>
-                                                    True
-                                                </div>
-                                                <div *ngIf='!q.answer'>
-                                                    False
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="!trueFalseQuestions || trueFalseQuestions.length==0">
-                            <div class="card-body">
-                                <h3>No Question Found.</h3>
-                            </div>
-                        </div>
-                    </mat-tab>
-                    <mat-tab label="Coding Questions">
-                        <div class="accordion w-75 mx-auto my-4" id="accordionExample">
-                            <div class="card border-dark" data-toggle="tooltip" data-placement="right" title="Click to Expand." *ngFor="let q of codingQuestions; let i=index;">
-                                <div class="card-header border-dark d-flex flex-column" id="headingOne" data-toggle="collapse" [attr.data-target]="'#collapseCoding'+i" aria-expanded="false" [attr.aria-controls]="'#collapseCoding'+i">
-                                    <div class="d-flex flex-row">
-                                        <div class="w-75 text-center" [innerHtml]='q.title'></div>
-                                        <div class="w-25">
-                                            <button class="btn btn-warning btn-sm float-right rounded-circle rounded-sm" (click)="setEditCodingQuestion(i)">
-                                                <i class="fa h-100 w-100 fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-danger btn-sm float-right rounded-circle rounded-sm " [disabled]='q.used' (click)="deleteQuestion(q._id,'codingQuestion')">
-                                                <i class="fa h-100 w-100 fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown text-center">
-                                        <button class="btn btn-success   btn-sm dropdown-toggle my-3" type="button" id="dropdownMenuCoding" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                        <div class="dropdown-menu z-10" aria-labelledby="dropdownMenuCoding">
-                                            <button class="dropdown-item z-10" type="button" (click)="addToPractice(q._id,'codingQuestion')">Practice</button>
-                                            <button class="dropdown-item z-10" type="button" *ngFor="let test of tests" (click)="addToTest(q._id,test._id,'codingQuestion')">{{test.title}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                          
-                                <div id="{{'collapseCoding'+i}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                    <div class="card-body d-block">
-                                        <div class="my-3 text-center w-100" [innerHtml]="q.description">
-                                        </div>
-                                        <div class="my-3 w-100">
-                                            Sample Input
-                                            <div class="card" [innerHtml]="q.sampleInput">
-                                            </div>
-                                        </div>
-                                        <div class="my-3 w-100">
-                                            Sample Output
-                                            <div class="card" [innerHtml]="q.sampleOutput">
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-row my-3">
-                                            <div class="w-100 text-center">
-                                                <button class="btn btn-primary btn-sm" (click)="downloadItem(q._id,q.testcases,'testcases')"><i class="fa fa-download"></i>TestCases</button>
-                                            </div>
-                                            <div class="w-100 text-center" *ngIf="q.header">
-                                                <button class="btn btn-primary btn-sm" (click)="downloadItem(q._id,q.header,'header')"><i class="fa fa-download"></i>Header</button>
-                                            </div>
-                                            <div class="w-100 text-center" *ngIf="q.footer">
-                                                <button class="btn btn-primary btn-sm" (click)="downloadItem(q._id,q.footer,'footer')"><i class="fa fa-download"></i>Footer</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card my-3 w-75 text-center text-wrap mx-auto" *ngIf="!codingQuestions || codingQuestions.length==0">
-                            <div class="card-body">
-                                <h3>No Question Found.</h3>
-                            </div>
-                        </div>
-                    </mat-tab>
-                </mat-tab-group>
+                <button class="dropdown-item" type="button" (click)="view = 2">
+                  True/ False
+                </button>
+                <button
+                  class="dropdown-item"
+                  type="button"
+                  (click)="resetAddCodingQuestion(); view = 3"
+                >
+                  Coding
+                </button>
+              </div>
             </div>
-            <div class="sideInfo bg-transparent px-3">
+            <!-- For MCQ -->
+            <div *ngIf="view == 1">
+              <h3 class="text-center">Add MCQ</h3>
+              <form [formGroup]="mcqQuestion">
                 <div>
-                    <div class="">
-                        <div class="dropdown text-center">
-                            <button class="btn btn-secondary dropdown-toggle my-3" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Create Question
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <button class="dropdown-item" type="button" (click)="view = 1">MCQ</button>
-                                <button class="dropdown-item" type="button" (click)="view = 2">True/ False</button>
-                                <button class="dropdown-item" type="button" (click)="resetAddCodingQuestion();view = 3">Coding</button>
-                            </div>
-                        </div>
-                        <!-- For MCQ -->
-                        <div *ngIf="view==1">
-                            <h3 class="text-center">Add MCQ</h3>
-                            <form [formGroup]="mcqQuestion">
-                                <div>
-                                    <label>Question</label>
-                                    <quill-editor placeholder="Enter Question Here" formControlName="question">
-                                    </quill-editor>
-                                </div>
-                                <div class="text-center my-3">
-                                    <div class="card my-3 d-flex flex-row flex-wrap text-center min-H-5" *ngFor="let option of addMCQQuestion.options; let i = index">
-                                            <div class="w-10 min-H-5 py-3" [ngClass]="{'bg-success':option.isCorrect==true, 'bg-warning':option.isCorrect!=true}">
-                                                {{option.code}}
-                                            </div>
-                                            <div class="min-H-5 w-75 py-3 mx-auto text-left" [innerHtml]='option.option'>
-                                            </div>
-                                            <div class="min-H-5 mr-2 py-3">
-                                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#editOptionModal" (click)="editOption(i)"><i class="fa fa-edit"></i></button>
-                                            </div>
-                                    </div>
-                                    <div class="my-3">
-                                        <button class="btn btn-primary btn-sm" data-target="#addOptionModal" data-toggle="modal"><i class="fa fa-plus"></i> Option</button>
-                                    </div>
-                                </div>
-                                <div class="text-right bottom">
-                                    <button class="btn btn-success my-3" (click)="saveMCQQuestion()"><i class="fa fa-save"></i> Save</button>
-                                </div>
-                            </form>
-                        </div>
-                        <!-- For True/False -->
-                        <div *ngIf="view==2">
-                            <h3 class="text-center">Add True/False Question</h3>
-                            <form [formGroup]="addTrueFalseQuestion">
-                                <div>
-                                    <label>Question</label>
-                                    <quill-editor placeholder="Enter Question Here" formControlName="question">
-                                    </quill-editor>
-                                </div>
-                                <div class="my-3 form-group text-center w-50 mx-auto">
-                                    <label for="answer">Answer</label>
-                                    <select formControlName="answer" class="form-control text-center">
-                                        <option value="true" selected>True</option>
-                                        <option value="false">False</option>
-                                    </select>
-                                </div>
-                                <div class="text-right bottom">
-                                    <button class="btn btn-success my-3" (click)="saveTrueFalseQuestion()"><i class="fa fa-save"></i> Save</button>
-                                </div>
-                            </form>
-                        </div>
-                        <!-- For Coding Q -->
-                        <div *ngIf="view==3">
-                            <form [formGroup]="addCodingQuestion">
-                                <div class="form-group">
-                                    <label>Title</label>
-                                    <input type="text" placeholder="Enter Title Here" class="form-control" formControlName="title" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Question</label>
-                                    <quill-editor placeholder="Enter Question Here" formControlName="question" required>
-                                    </quill-editor>
-                                </div>
-                                <div class="form-group">
-                                    <label>Sample Input</label>
-                                    <textarea placeholder="Sample Input" class="form-control" rows="3" formControlName="sampleInput" required>
-                                    </textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Sample Output</label>
-                                    <textarea placeholder="Sample Output" class="form-control" rows="3" formControlName="sampleOutput" required>
-                                    </textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Test Cases</label>
-                                    <input type="file" class="form-control-file my-2" (change)="setTestCases($event)" accept="zip">
-                                </div>
-                                <div class="form-group">
-                                    <label>Header Code</label>
-                                    <input type="file" class="form-control-file my-2" (change)="setHeaderCode($event)">
-                                </div>
-                                <div class="form-group">
-                                    <label>Main Code</label>
-                                    <input type="file" class="form-control-file my-2" (change)="setMainCode($event)">
-                                </div>
-                                <div class="form-group">
-                                    <label>Footer Code</label>
-                                    <input type="file" class="form-control-file my-2" (change)="setFooterCode($event)">
-                                </div>
-                                <div class="text-right bottom">
-                                    <button class="btn btn-success my-3" (click)="saveCodingQuestion()"><i class="fa fa-save"></i> Save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                  <label>Question</label>
+                  <quill-editor
+                    placeholder="Enter Question Here"
+                    formControlName="question"
+                  >
+                  </quill-editor>
                 </div>
-            </div>
-        </div>
-        <div class="bottom bg-dark py-3 text-light text-center">
-            <h3>{{courseTitle}}</h3>
-        </div>
-        
-        <div class="modal fade" id="addOptionModal" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add Option</h4>
-                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
+                <div class="text-center my-3">
+                  <div
+                    class="card my-3 d-flex flex-row flex-wrap text-center min-H-5"
+                    *ngFor="let option of addMCQQuestion.options; let i = index"
+                  >
+                    <div
+                      class="w-10 min-H-5 py-3"
+                      [ngClass]="{
+                        'bg-success': option.isCorrect == true,
+                        'bg-warning': option.isCorrect != true
+                      }"
+                    >
+                      {{ option.code }}
                     </div>
-                    <div class="modal-body">
-                        <form [formGroup]="addOptionForm">
-                            <div>
-                                <quill-editor placeholder="Enter Text" name="option" formControlName="option">
-                                </quill-editor>
-                            </div>
-                            <div class="form-group my-3 text-center">
-                                <label for="isCorrect">Is Correct</label>
-                                <input type="checkbox" class="form-control" name="isCorrect" formControlName="isCorrect" required>
-                            </div>
-                            <div class="modal-footer d-flex flex-row justify-content-around">
-                                <div>
-                                    <button type="button" class="btn btn-danger" id="postModalClose" data-dismiss="modal" style="float: left;">Close</button>
-                                </div>
-                                <div>
-                                    <button type="button" class="btn btn-success" style="float: right;" data-dismiss="modal" (click)="addOption()">Add</button>
-                                </div>
-                            </div>
-                        </form>
+                    <div
+                      class="min-H-5 w-75 py-3 mx-auto text-left"
+                      [innerHtml]="option.option"
+                    ></div>
+                    <div class="min-H-5 mr-2 py-3">
+                      <button
+                        class="btn btn-info btn-sm"
+                        data-toggle="modal"
+                        data-target="#editOptionModal"
+                        (click)="editOption(i)"
+                      >
+                        <i class="fa fa-edit"></i>
+                      </button>
                     </div>
+                  </div>
+                  <div class="my-3">
+                    <button
+                      class="btn btn-primary btn-sm"
+                      data-target="#addOptionModal"
+                      data-toggle="modal"
+                    >
+                      <i class="fa fa-plus"></i> Option
+                    </button>
+                  </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="editOptionModal" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit Option</h4>
-                        <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form [formGroup]="addOptionForm">
-                            <div>
-                                <quill-editor placeholder="Enter Text" name="option" formControlName="option">
-                                </quill-editor>
-                            </div>
-                            <div class="form-group my-3 text-center">
-                                <label for="isCorrect">Is Correct</label>
-                                <input type="checkbox" class="form-control" name="isCorrect" formControlName="isCorrect" required>
-                            </div>
-                            <div class="modal-footer d-flex flex-row justify-content-around">
-                                <div>
-                                    <button type="button" class="btn btn-danger" id="postModalClose" data-dismiss="modal" style="float: left;">Close</button>
-                                </div>
-                                <div>
-                                    <button type="button" class="btn btn-success" style="float: right;" data-dismiss="modal" (click)="setEdittedOption()"><i class="fa fa-edit"></i> Edit</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div class="text-right bottom">
+                  <button
+                    class="btn btn-success my-3"
+                    (click)="saveMCQQuestion()"
+                  >
+                    <i class="fa fa-save"></i> Save
+                  </button>
                 </div>
+              </form>
             </div>
+            <!-- For True/False -->
+            <div *ngIf="view == 2">
+              <h3 class="text-center">Add True/False Question</h3>
+              <form [formGroup]="addTrueFalseQuestion">
+                <div>
+                  <label>Question</label>
+                  <quill-editor
+                    placeholder="Enter Question Here"
+                    formControlName="question"
+                  >
+                  </quill-editor>
+                </div>
+                <div class="my-3 form-group text-center w-50 mx-auto">
+                  <label for="answer">Answer</label>
+                  <select
+                    formControlName="answer"
+                    class="form-control text-center"
+                  >
+                    <option value="true" selected>True</option>
+                    <option value="false">False</option>
+                  </select>
+                </div>
+                <div class="text-right bottom">
+                  <button
+                    class="btn btn-success my-3"
+                    (click)="saveTrueFalseQuestion()"
+                  >
+                    <i class="fa fa-save"></i> Save
+                  </button>
+                </div>
+              </form>
+            </div>
+            <!-- For Coding Q -->
+            <div *ngIf="view == 3">
+              <form [formGroup]="addCodingQuestion">
+                <div class="form-group">
+                  <label>Title</label>
+                  <input
+                    type="text"
+                    placeholder="Enter Title Here"
+                    class="form-control"
+                    formControlName="title"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Question</label>
+                  <quill-editor
+                    placeholder="Enter Question Here"
+                    formControlName="question"
+                    required
+                  >
+                  </quill-editor>
+                </div>
+                <div class="form-group">
+                  <label>Sample Input</label>
+                  <textarea
+                    placeholder="Sample Input"
+                    class="form-control"
+                    rows="3"
+                    formControlName="sampleInput"
+                    required
+                  >
+                  </textarea>
+                </div>
+                <div class="form-group">
+                  <label>Sample Output</label>
+                  <textarea
+                    placeholder="Sample Output"
+                    class="form-control"
+                    rows="3"
+                    formControlName="sampleOutput"
+                    required
+                  >
+                  </textarea>
+                </div>
+                <div class="form-group">
+                  <label>Test Cases</label>
+                  <input
+                    type="file"
+                    class="form-control-file my-2"
+                    (change)="setTestCases($event)"
+                    accept="zip"
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    title="Upload a zip file that extracts folder named testCases, input files named with in(say in00) and output files named with out(say out00)."
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Header Code</label>
+                  <input
+                    type="file"
+                    class="form-control-file my-2"
+                    (change)="setHeaderCode($event)"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Main Code</label>
+                  <input
+                    type="file"
+                    class="form-control-file my-2"
+                    (change)="setMainCode($event)"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Footer Code</label>
+                  <input
+                    type="file"
+                    class="form-control-file my-2"
+                    (change)="setFooterCode($event)"
+                  />
+                </div>
+                <div class="text-right bottom">
+                  <button
+                    class="btn btn-success my-3"
+                    (click)="saveCodingQuestion()"
+                  >
+                    <i class="fa fa-save"></i> Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+    <div class="bottom bg-dark py-3 text-light text-center">
+      <h3>{{ courseTitle }}</h3>
+    </div>
+
+    <div class="modal fade" id="addOptionModal" role="dialog">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Option</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              style="float: right;"
+            >
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="addOptionForm">
+              <div>
+                <quill-editor
+                  placeholder="Enter Text"
+                  name="option"
+                  formControlName="option"
+                >
+                </quill-editor>
+              </div>
+              <div class="form-group my-3 text-center">
+                <label for="isCorrect">Is Correct</label>
+                <input
+                  type="checkbox"
+                  class="form-control"
+                  name="isCorrect"
+                  formControlName="isCorrect"
+                  required
+                />
+              </div>
+              <div class="modal-footer d-flex flex-row justify-content-around">
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    id="postModalClose"
+                    data-dismiss="modal"
+                    style="float: left;"
+                  >
+                    Close
+                  </button>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    style="float: right;"
+                    data-dismiss="modal"
+                    (click)="addOption()"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="editOptionModal" role="dialog">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Option</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              style="float: right;"
+            >
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="addOptionForm">
+              <div>
+                <quill-editor
+                  placeholder="Enter Text"
+                  name="option"
+                  formControlName="option"
+                >
+                </quill-editor>
+              </div>
+              <div class="form-group my-3 text-center">
+                <label for="isCorrect">Is Correct</label>
+                <input
+                  type="checkbox"
+                  class="form-control"
+                  name="isCorrect"
+                  formControlName="isCorrect"
+                  required
+                />
+              </div>
+              <div class="modal-footer d-flex flex-row justify-content-around">
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    id="postModalClose"
+                    data-dismiss="modal"
+                    style="float: left;"
+                  >
+                    Close
+                  </button>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    style="float: right;"
+                    data-dismiss="modal"
+                    (click)="setEdittedOption()"
+                  >
+                    <i class="fa fa-edit"></i> Edit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
