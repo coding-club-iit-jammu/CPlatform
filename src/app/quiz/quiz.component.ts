@@ -348,6 +348,7 @@ export class QuizComponent implements OnInit {
           this.showSpinner = false;
           this.current.question = 0;
           this.questions = [];
+          console.log(response['body']['message']);
           this.matComp.openSnackBar(response['body']['message'],5000);
         } else {
           this.questions = response['body']['questions'];
@@ -380,7 +381,6 @@ export class QuizComponent implements OnInit {
     
     await this.http.post(this.storeInfo.serverUrl+'/test/submitSection', data, options).toPromise().then(async (response)=>{
       if(response['status']==200 ){
-        this.matComp.openSnackBar(response['body']['message'],3000);
         if( response['body']['ended']==false){
           await this.getQuestions();
         } else {

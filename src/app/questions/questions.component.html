@@ -44,7 +44,7 @@
                 <mat-tab-group class="mx-auto text-dark justify-content-between">
                     <mat-tab label="MCQ">
                         <div class="accordion w-75 mx-auto my-4" id="accordionExample" *ngIf="mcqQuestions && mcqQuestions.length > 0">
-                            <div class="card border-dark" *ngFor="let q of mcqQuestions; let i=index;">
+                            <div class="card border-dark" data-toggle="tooltip" data-placement="right" title="Click to Expand." *ngFor="let q of mcqQuestions; let i=index;">
                                 <div class="card-header border-dark d-flex flex-column" id="headingOne" data-toggle="collapse" [attr.data-target]="'#collapseMCQ'+i" aria-expanded="false" [attr.aria-controls]="'#collapseMCQ'+i">
                                     <div class="d-flex flex-row">
                                         <div class="w-75 text-center" [innerHtml]='q.question'></div>
@@ -52,9 +52,6 @@
                                             <button class="btn btn-danger btn-sm float-right rounded-circle rounded-sm" [disabled]='q.used' (click)="deleteQuestion(q._id,'mcq')">
                                                 <i class="fa h-100 w-100 fa-trash"></i>
                                             </button>
-                                            <!-- <button class="btn btn-dark btn-sm float-right rounded-circle rounded-sm" type="button">
-                                                <i class="fa h-100 w-100 fa-chevron-circle-down"></i>
-                                            </button> -->
                                         </div>
                                     </div>
                                     <div class="dropdown text-center">
@@ -89,7 +86,7 @@
                     </mat-tab>
                     <mat-tab label="True/False">
                         <div class="accordion w-75 mx-auto my-4" id="accordionExample" *ngIf="trueFalseQuestions && trueFalseQuestions.length>0">
-                            <div class="card border-dark" *ngFor="let q of trueFalseQuestions; let i=index;">
+                            <div class="card border-dark" data-toggle="tooltip" data-placement="right" title="Click to Expand." *ngFor="let q of trueFalseQuestions; let i=index;">
                                 <div class="card-header border-dark d-flex flex-column" id="headingOne" data-toggle="collapse" [attr.data-target]="'#collapseTrueFalse'+i" aria-expanded="false" [attr.aria-controls]="'#collapseTrueFalse'+i">
                                     <div class="d-flex flex-row">
                                         <div class="w-75 text-center" [innerHtml]='q.question'></div>
@@ -97,9 +94,6 @@
                                             <button class="btn btn-danger btn-sm float-right rounded-circle rounded-sm" [disabled]='q.used' (click)="deleteQuestion(q._id,'truefalse')">
                                                 <i class="fa h-100 w-100 fa-trash"></i>
                                             </button>
-                                            <!-- <button class="btn btn-dark btn-sm float-right rounded-circle rounded-sm" type="button" >
-                                            <i class="fa h-100 w-100 fa-chevron-circle-down"></i>
-                                            </button> -->
                                         </div>
                                     </div>
                                     <div class="dropdown text-center">
@@ -136,7 +130,7 @@
                     </mat-tab>
                     <mat-tab label="Coding Questions">
                         <div class="accordion w-75 mx-auto my-4" id="accordionExample">
-                            <div class="card border-dark" *ngFor="let q of codingQuestions; let i=index;">
+                            <div class="card border-dark" data-toggle="tooltip" data-placement="right" title="Click to Expand." *ngFor="let q of codingQuestions; let i=index;">
                                 <div class="card-header border-dark d-flex flex-column" id="headingOne" data-toggle="collapse" [attr.data-target]="'#collapseCoding'+i" aria-expanded="false" [attr.aria-controls]="'#collapseCoding'+i">
                                     <div class="d-flex flex-row">
                                         <div class="w-75 text-center" [innerHtml]='q.title'></div>
@@ -147,9 +141,6 @@
                                             <button class="btn btn-danger btn-sm float-right rounded-circle rounded-sm " [disabled]='q.used' (click)="deleteQuestion(q._id,'codingQuestion')">
                                                 <i class="fa h-100 w-100 fa-trash"></i>
                                             </button>
-                                            <!-- <button class="btn btn-dark btn-sm float-right rounded-circle rounded-sm" type="button" >
-                                            <i class="fa h-100 w-100 fa-chevron-circle-down"></i>
-                                            </button> -->
                                         </div>
                                     </div>
                                     <div class="dropdown text-center">

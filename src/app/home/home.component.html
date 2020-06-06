@@ -110,7 +110,7 @@
             <div class="modal-body">
               <form [formGroup]="addCourseForm">
                 <label for="code" >Course Code</label>
-                <input type="text" class="form-control" name="code" formControlName="code" placeholder="Enter Course Code Here"  required>
+                <input type="text" class="form-control" name="code" formControlName="code" placeholder="Enter Course Code Here"  required data-toggle="tooltip" data-placement="top" title="Ex: 2019_01_CSL100, Prefix represents semester.">
                 <br>
                 <label for="title">Course Title</label>
                 <input type="text" class="form-control" name="title" formControlName="title" placeholder="Enter Course Title Here" required>

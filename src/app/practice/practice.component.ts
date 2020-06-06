@@ -266,9 +266,10 @@ export class PracticeComponent implements OnInit {
     await this.http.post(this.storeInfo.serverUrl+'/practice/submitCodingQuestion',data,options).toPromise().then(response=>{
       if (response['body']['error']) {
         this.matComp.openSnackBar(response['body']['error']['message'],10000);  
+      } else {
+        this.matComp.openSnackBar(response['body']['message'],10000);
+        this.getLeaderBoard();
       }
-      this.matComp.openSnackBar(response['body']['message'],10000);
-      this.getLeaderBoard();
     },error=>{
       this.matComp.openSnackBar(error['error']['message'],3000);
     })
