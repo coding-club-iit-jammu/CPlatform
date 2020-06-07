@@ -51,7 +51,7 @@
                                 <h5 class="card-title">{{post.title}}</h5>
                                 <p class="card-text text-left" [innerHtml]="post.description"></p>
                                 <div *ngIf="post.file">
-                                    <button class="btn btn-link my-2" (click)="getPostResource(post._id)"><i class="fa fa-download"></i> Resourse</button>
+                                    <button class="btn btn-link my-2" (click)="getPostResource(post._id,post.file)"><i class="fa fa-download"></i> Resourse</button>
                                 </div>  
                             </div>
                             <div class="card-footer border-info text-muted">
@@ -140,7 +140,7 @@
                 <div class="view3" *ngIf="view==3">
                     <div class="row mx-3 pl-4" *ngIf="course.tests && course.tests.length>0">
                         <div class="card shadow text-center mt-3 mx-2 border-primary width45" *ngFor="let test of course.tests">
-                            <div class="card-header border-danger">
+                            <div class="card-header border-primary text-danger">
                               {{test.testId}}
                             </div>
                             <div class="card-body">

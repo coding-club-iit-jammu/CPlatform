@@ -424,7 +424,7 @@ export class CoursehomeComponent implements OnInit {
     this.showSpinner = false;
   }
 
-  async getPostResource(postId){
+  async getPostResource(postId,path){
     this.showSpinner = true;
     const options = {
       observe: 'response' as 'body',
@@ -432,9 +432,10 @@ export class CoursehomeComponent implements OnInit {
       params : new HttpParams().set('courseCode',this.code).set('postId',postId)
     };
     
+    var filename = path.replace(/^.*[\\\/]/, '');
     await this.http.get(this.storeInfo.serverUrl+'/post/getResource', options).toPromise().then( (resData : Blob) => {
       if(resData['status'] == 200){
-        this.download(resData['body']);
+        this.downloadPost(resData['body'],filename);
       } else {
         this.matComp.openSnackBar(resData['body']['message'],2000);  
       }
@@ -542,6 +543,20 @@ export class CoursehomeComponent implements OnInit {
     let downloadLink = document.createElement('a');
     downloadLink.href = window.URL.createObjectURL(new Blob(binaryData,{type : dataType}));
     downloadLink.target = "_blank";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+		document.body.removeChild(downloadLink);
+  }
+
+  downloadPost(data,name){
+
+    let dataType = data.type;
+    let binaryData = [];
+    binaryData.push(data);
+    let downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(new Blob(binaryData,{type : dataType}));
+    downloadLink.target = "_blank";
+    downloadLink.download = name;
     document.body.appendChild(downloadLink);
     downloadLink.click();
 		document.body.removeChild(downloadLink);

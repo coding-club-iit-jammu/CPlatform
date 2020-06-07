@@ -85,10 +85,10 @@
               <h4>
                 Teaching Assistant
               </h4>
-              <div class="row my-3 px-2">
-                <div *ngFor="let item of userData.courses.teachingAssistant">
-                  <div class="card border-dark">
-                    <div class="card-body">
+              <div >
+                <div class="row my-3 px-2" *ngFor="let item of userData.courses.teachingAssistant">
+                  <div class="card border-dark w-100">
+                    <div class="card-body text-center">
                       <h5 class="card-title">{{item.code.substring(8) | uppercase}}</h5>
                       <p class="card-text">{{item.title | titlecase}}</p>
                       <button class="btn btn-dark btn-block" (click)="openCourse(item.code,'teachingAssistant')">Open</button>
