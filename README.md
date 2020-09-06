@@ -1,3 +1,7 @@
+# Installation Instructions
+
+Can be found in this wiki page: https://github.com/prateek18597/CodingPlatform/wiki/Installation
+
 # CodingPlatform
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.21.
