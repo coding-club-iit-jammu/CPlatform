@@ -24,6 +24,7 @@
     "@angular/router": "~8.2.14",
     "@mrodrig/json-2-csv-cli": "^3.6.1",
     "ace-builds": "^1.4.11",
+    "angular-cli-ghpages": "^0.6.2",
     "bootstrap": "^4.4.1",
     "canvasjs": "^1.8.3",
     "chart.js": "^2.9.3",

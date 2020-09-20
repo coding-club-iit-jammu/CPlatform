@@ -11,6 +11,8 @@ import { PracticeComponent } from './practice/practice.component';
 import { CreateTestComponent } from './test-settings/create-test.component';
 import { TestReportComponent } from './test-report/test-report.component';
 import { TestStatisticsComponent } from './test-statistics/test-statistics.component';
+import { ResetComponent } from './reset/reset.component';
+import { VerifyComponent } from './verify/verify.component';
 
 const routes: Routes = [
   {
@@ -20,6 +22,14 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'reset/:_id/:token',
+    component: ResetComponent
+  },
+  {
+    path: 'verify/:_id/:token',
+    component: VerifyComponent
   },
   {
     path:'course/:courseId/questions',

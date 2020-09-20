@@ -16,7 +16,7 @@
                     <div class="card-body text-left">
                         <form [formGroup] = "form">
                             <label for="email" class="my-2"><b>Email</b></label>
-                            <input type="text" class="form-control" placeholder="Enter Email" name="email" required formControlName = "email">
+                            <input type="email" class="form-control" placeholder="Enter Email" name="email" required formControlName = "email" [(ngModel)]="emailng">
                             <label for="psw" class="my-2"><b>Password</b></label>
                             <input type="password" class="form-control" placeholder="Enter Password" name="psw" required formControlName = "password">
                             <div class="text-center">
@@ -26,7 +26,7 @@
                     </div>
                     <div class="card-footer d-flex flex-row justify-content-around">
                         <div>
-                            <button class="btn btn-warning" (click)="reset()">
+                            <button class="btn btn-warning" [disabled]="!emailng" (click)="reset()">
                                 <i class="fa fa-eraser"></i> Reset
                             </button>
                         </div>

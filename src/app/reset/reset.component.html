@@ -1,0 +1,45 @@
+<div class="wrapper bg-dark">
+    <div class="overlay" *ngIf="showSpinner">
+      <div class="spinner-wrapper">
+        <app-spinner></app-spinner>
+      </div>
+    </div>
+    <div class="all" [class.blurred]="showSpinner">
+        <div class="w-100 pr-3 pt-3">
+            <button class="btn btn-warning float-right" (click)="navToLogin()">Back</button>
+        </div>
+    <main class="my-form w-75 mx-auto">
+                <div class="cotainer">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                                <div class="card border-dark">
+                                    <div class="card-header text-center border-dark text-dark font-weight-bold">Change Password</div>
+                                    <div class="card-body">
+                                        <form [formGroup] = "form" (ngSubmit)="onSubmit(form.value)">
+                                            <div class="form-group row">
+                                                <label for="password" class="col-md-4 col-form-label text-md-right">New Password</label>
+                                                <div class="col-md-6">
+                                                    <input type="password" class="form-control" name="password" required formControlName="password">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="confirmPassword" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
+                                                <div class="col-md-6">
+                                                    <input type="password" class="form-control" name="confirmPassword" required formControlName="confirmPassword">
+                                                </div>
+                                            </div>
+
+                                            <div class="text-center mt-4">
+                                                <button type="submit" class="btn btn-danger" [disabled]="!form.valid">
+                                                    Change Password
+                                                </button>
+                                            </div>
+                                            </form>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+    </main>
+</div>
