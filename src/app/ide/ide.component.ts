@@ -453,6 +453,32 @@ export class IdeComponent implements OnInit {
       );
     }
   }
+
+public eraseLink()
+{
+  document.getElementById("downloadlink").style.display = 'none';
+}
+  public onClickDownload() {             
+        var textFile = null,
+  makeTextFile = function (text) {
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+
+    textFile = window.URL.createObjectURL(data);
+
+    return textFile;
+  };
+
+ var link= document.getElementById("downloadlink")
+ link.href = makeTextFile(this.codeEditor.getValue());
+ link.style.display = 'block';
+ 
+     }
 }
 
 interface RunResult {
