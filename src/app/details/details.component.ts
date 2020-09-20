@@ -53,7 +53,7 @@ export class DetailsComponent implements OnInit {
       };
       this.http.post(this.storeInfo.serverUrl + '/createUser',data, options).subscribe((response)=>{
         if(response['status']==201){
-          this.matComp.openSnackBar('User Registered Successfuly!', 2500);
+          this.matComp.openSnackBar('Verification Email set to your email.', 2500);
         } else if(response['status']==200){
           this.matComp.openSnackBar('User Already Registered.',2500);
         }

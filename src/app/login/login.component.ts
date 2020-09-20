@@ -13,7 +13,7 @@ import { MaterialComponentService } from '../services/material-component.service
 export class LoginComponent implements OnInit {
 
   form: FormGroup;
-  
+  emailng: String;
   showSpinner:boolean = false;
   showSpinner1:boolean = false;
   
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     this.http.post(this.storeInfo.serverUrl + '/login',this.form.value).pipe().subscribe((data)=>{
       this.showSpinner1 = false;
       if(!data["userId"]){
-        this.material.openSnackBar(data['message'],2000);
+        this.material.openSnackBar(data['message'],6000);
         this.router.navigateByUrl('/');
         return;
       }
@@ -61,9 +61,17 @@ export class LoginComponent implements OnInit {
   }
 
   reset(){
-    this.form = this.formBuilder.group({
-      email : this.formBuilder.control(''),
-      password : this.formBuilder.control('')
+    this.showSpinner1 = true;
+    this.http.post(this.storeInfo.serverUrl + '/changePasswordEmail',this.form.value).pipe().subscribe((data)=>{
+      this.showSpinner1 = false;
+      this.material.openSnackBar(data['message'],8000);
+    },error =>{
+      this.showSpinner1 = false;
+      this.material.openSnackBar(error['statusText'],3000);
+    })
+    this.form.setValue({
+      email : "",
+      password : ""
     });
   }
 

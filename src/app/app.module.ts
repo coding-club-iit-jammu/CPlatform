@@ -38,7 +38,9 @@ import { QuestionsComponent } from './questions/questions.component';
 import { PracticeComponent } from './practice/practice.component';
 import { CreateTestComponent } from './test-settings/create-test.component';
 import { TestReportComponent } from './test-report/test-report.component';
-import { TestStatisticsComponent } from './test-statistics/test-statistics.component'
+import { TestStatisticsComponent } from './test-statistics/test-statistics.component';
+import { ResetComponent } from './reset/reset.component';
+import { VerifyComponent } from './verify/verify.component'
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { TestStatisticsComponent } from './test-statistics/test-statistics.compo
     CreateTestComponent,
     TestReportComponent,
     TestStatisticsComponent,
+    ResetComponent,
+    VerifyComponent,
   ],
   imports: [
     BrowserModule,
