@@ -35,6 +35,8 @@
     "materialize-css": "^1.0.0",
     "mongoose": "^5.9.7",
     "ng-katex": "^2.0.3",
+    "ng-uikit": "^0.1.6",
+    "ng-uikit-pro-standard": "^1.0.0",
     "ngx-quill": "^8.1.3",
     "ngx-spinner": "^8.1.0",
     "npm": "^6.14.8",
