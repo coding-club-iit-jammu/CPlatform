@@ -470,8 +470,7 @@ export class IdeComponent implements OnInit {
      fr.onload= function(){
      pastingCode(fr.result);
      }
-
-     fr.readAsText(event.target.files[0])
+     fr.readAsText((<HTMLInputElement>document.getElementById('getFile')).files[0])
    })
  }
 
