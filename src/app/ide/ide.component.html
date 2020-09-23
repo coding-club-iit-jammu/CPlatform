@@ -125,9 +125,17 @@
             </div>
             <!-- beautify button -->
             <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
-                <button type="button" class="btn btn-beautify btn-sm btn-block px-4 mx-2" (click)="onBeautifyContent()">
-                    Increase Font
-                </button>
+                <select id= "fontbox" class="input btn btn-beautify btn-sm btn-block px-4 mx-2" (change)="changefont()">
+                <option value="10">10</option>
+                <option value="12">12</option>
+                <option value="14">14</option>
+                <option value="16">16</option>
+                <option selected="18">18</option>
+                <option value="20">20</option>
+                <option value="22">22</option>
+                <option value="24">24</option>
+                <option value="26">26</option>
+                </select>
             </div>
         </div>
         <!-- input box -->

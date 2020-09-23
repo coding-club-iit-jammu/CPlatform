@@ -474,6 +474,10 @@ export class IdeComponent implements OnInit {
    })
  }
 
+  public changefont() {
+  	var val = (<HTMLInputElement>document.getElementById('fontbox')).value + 'px';  	
+  	this.codeEditor.setFontSize(val);  	
+  }  
   public onClickDownload() {             
     var textFile = null,
     makeTextFile = function (text) {
