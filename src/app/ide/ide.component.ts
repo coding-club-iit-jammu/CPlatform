@@ -1,4 +1,4 @@
-import { Component, Directive, OnInit, ViewChild, ElementRef, ChangeDetectorRef, EventEmitter } from '@angular/core';
+import { Component, Directive, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Input } from '@angular/core'
 import * as ace from 'ace-builds'; // ace-module
 import { languageModuleMap } from './consts/language-module-table';
@@ -94,7 +94,6 @@ export class IdeComponent implements OnInit {
   private codeHeader: ace.Ace.Editor;
   private codeFooter: ace.Ace.Editor;
   private editorBeautify;
-  
   // @Input() content: string;
   @Input() initOptions: {
     languageMode?: string, theme?: string, content?: string
@@ -115,8 +114,7 @@ export class IdeComponent implements OnInit {
   showSpinner: Boolean = false; 
   constructor(private handler: ServerHandlerService,
               private cd: ChangeDetectorRef,
-              private matComp: MaterialComponentService
-              ) { }
+              private matComp: MaterialComponentService) { }
 
   // input from parent component
   @Input('headerCode') headerCode: string;
@@ -455,26 +453,6 @@ export class IdeComponent implements OnInit {
       );
     }
   }
-  //for upload button
-  
- 
- public clickUploadButton() {
-   document.getElementById('getFile').click();
-   this.codeEditor.setValue('');
-   var pastingCode=(textVal)=>
-   {
-     this.codeEditor.setValue(textVal)
-   }
-   document.getElementById("getFile").addEventListener('change',function(){
-     var fr = new FileReader();
-     fr.onload= function(){
-     pastingCode(fr.result);
-     }
-
-     fr.readAsText(event.target.files[0])
-   })
- }
-
   public onClickDownload() {             
     var textFile = null,
     makeTextFile = function (text) {
