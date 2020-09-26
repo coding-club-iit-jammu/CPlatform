@@ -453,6 +453,27 @@ export class IdeComponent implements OnInit {
       );
     }
   }
+  //for upload button
+ public clickUploadButton() {
+   document.getElementById('getFile').click();
+   this.codeEditor.setValue('');
+   var pastingCode=(textVal)=>
+   {
+     this.codeEditor.setValue(textVal)
+   }
+   document.getElementById("getFile").addEventListener('change',function(){
+     var fr = new FileReader();
+     fr.onload= function(){
+     pastingCode(fr.result);
+     }
+     fr.readAsText((<HTMLInputElement>document.getElementById('getFile')).files[0])
+   })
+ }
+
+  public changefont() {
+  	var val = (<HTMLInputElement>document.getElementById('fontbox')).value + 'px';  	
+  	this.codeEditor.setFontSize(val);  	
+  }  
   public onClickDownload() {             
     var textFile = null,
     makeTextFile = function (text) {
