@@ -143,6 +143,7 @@ export class CoursehomeComponent implements OnInit {
     this.view = tabvalue;
     if(tabvalue == 1){
       await this.getPosts();
+       //await this.http.get(this.storeInfo.serverUrl+'/user').toPromise().then(data=> console.log(data))
     } else if(tabvalue == 2) {
       await this.getAssignments();
     } else if(tabvalue == 3){

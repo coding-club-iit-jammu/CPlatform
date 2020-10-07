@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   studentAccessCode: FormArray = new FormArray([]);
   joinCourseForm: FormGroup;
 
-  userData: any = {
+ userData : any = {
     name : '',
     branch : '',
     email : '',
@@ -48,6 +48,8 @@ export class HomeComponent implements OnInit {
     }
 
     this.fetchUserData();
+
+
   }
 
   async addCourse(){
@@ -90,6 +92,7 @@ export class HomeComponent implements OnInit {
 
 
   async fetchUserData(){
+    
     this.showSpinner = true;
     const options = {
       observe : 'response' as 'body',

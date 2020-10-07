@@ -5,9 +5,12 @@ import { languageModuleMap } from './consts/language-module-table';
 import { Language } from 'src/models/languages/languages';
 import { themeModuleMap } from './consts/theme-module-table';
 import { ServerHandlerService } from '../services/http/server-handler.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, interval, timer } from 'rxjs';
 import { catchError, map, tap, timeout } from 'rxjs/operators';
+
 import { MaterialComponentService } from '../services/material-component.service';
+import { StoreInfoService } from '../services/store-info.service';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 // Reference: https://github.com/judge0/ide/blob/master/js/ide.js
 function encode(str) {
@@ -114,15 +117,31 @@ export class IdeComponent implements OnInit {
   showSpinner: Boolean = false; 
   constructor(private handler: ServerHandlerService,
               private cd: ChangeDetectorRef,
-              private matComp: MaterialComponentService) { }
+              private matComp: MaterialComponentService,
+              private http: HttpClient,
+              private storeInfo: StoreInfoService) { }
 
   // input from parent component
   @Input('headerCode') headerCode: string;
   @Input('footerCode') footerCode: string;
   @Input('mainCode') mainCode: string;
   @Input('problemInput') problemInput: string;
+  userData : any = {
+    name : '',
+    branch : '',
+    email : '',
+    courses: {
+      teaching: [],
+      teachingAssistant: [],
+      studying : []
+    }
+  }
+  private timer;
 
   async ngOnInit() {
+    // 3 seconds tiomer for autosave
+    this.timer = timer(1000,3000);
+
     ace.require('ace/ext/language_tools');
     const editorMain = this.codeEditorElmRef.nativeElement;
     const editorOptions = this.getEditorOptions();
@@ -130,14 +149,44 @@ export class IdeComponent implements OnInit {
 
     this.setLanguageMode(this.initOptions.languageMode || DEFAULT_LANG_MODE);
     this.setEditorTheme(this.initOptions.theme || DEFAULT_THEME_MODE);
-    this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
+    
 
     this.editorBeautify = ace.require('ace/ext/beautify');
     this.languagesArray$ = this.pipeSupportedLanguages();
     this.activatedTheme = this.initEditorOptions.theme;
+    
+    // initially getting code from the database
+     await this.fetchUserData();
+     await fetch("http://localhost:8080/CodeofIDE/getidecode",{
+       method: 'post',
+       headers: {'Content-Type': 'application/json'},
+       body: JSON.stringify({email: this.userData.email})
+     }).then(response=> response.json()).then(data=> {
+       if(data.data.length!=0)
+       {
+          INIT_CONTENT_CPP = data.data[0].cpp;
+          INIT_CONTENT_JAVA = data.data[0].java;
+          INIT_CONTENT_PY = data.data[0].python;
 
-    this.codeEditor.clearSelection();
-
+       }
+       else
+       {
+         //if user is not found in database then generate def code
+         fetch("http://localhost:8080/CodeofIDE/saveidecode",{
+           method: 'post',
+           headers: { 'Content-Type': 'application/json'},
+           body: JSON.stringify({email: this.userData.email})
+         }).then(response=> response.json()).then(data=>{
+           console.log(data)
+           INIT_CONTENT_CPP = data.data.cpp;
+           INIT_CONTENT_JAVA = data.data.java;
+           INIT_CONTENT_PY = data.data.python;
+         })
+       }
+     });
+     
+     await this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
+     this.codeEditor.clearSelection();
     this.codeEditor.on("change", (delta) => {
       const content = this.codeEditor.getValue();
       let linesInContent = content.split(/\r\n|\r|\n/).length;
@@ -149,6 +198,92 @@ export class IdeComponent implements OnInit {
         this.codeFooter.setOption("firstLineNumber", linesInHeader + linesInContent + 1);
       }
     });
+    
+   //autosave code
+    await this.timer.subscribe((t) => {
+      if(this.currentConfig.langMode=="cpp14")
+      {
+
+        fetch("http://localhost:8080/CodeofIDE/autosaveidecode",{
+        method:'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: this.userData.email,
+          cpp: this.codeEditor.getValue(),
+          python: INIT_CONTENT_PY,
+          java: INIT_CONTENT_JAVA
+        })
+      }).then(response=> response.json()).then(data=>{
+        if(data.status==200)
+        {
+          INIT_CONTENT_CPP = data.data.cpp;
+          INIT_CONTENT_JAVA = data.data.java;
+          INIT_CONTENT_PY = data.data.python;
+        }
+        else
+        {
+          console.log(data)
+        }
+      })
+      }
+      else if(this.currentConfig.langMode=="python3")
+      {
+
+        fetch("http://localhost:8080/CodeofIDE/autosaveidecode",{
+        method:'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: this.userData.email,
+          python: this.codeEditor.getValue(),
+          cpp: INIT_CONTENT_CPP,
+          java: INIT_CONTENT_JAVA
+        })
+      }).then(response=> response.json()).then(data=>{
+        if(data.status==200)
+        {
+          INIT_CONTENT_CPP = data.data.cpp;
+          INIT_CONTENT_JAVA = data.data.java;
+          INIT_CONTENT_PY = data.data.python;
+        }
+        else
+        {
+          console.log(data)
+        }
+      })
+      }
+       else if(this.currentConfig.langMode=="java")
+      {
+
+        fetch("http://localhost:8080/CodeofIDE/autosaveidecode",{
+        method:'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: this.userData.email,
+          java: this.codeEditor.getValue(),
+          cpp: INIT_CONTENT_CPP,
+          python: INIT_CONTENT_PY
+        })
+      }).then(response=> response.json()).then(data=>{
+        if(data.status==200)
+        {
+          INIT_CONTENT_CPP = data.data.cpp;
+          INIT_CONTENT_JAVA = data.data.java;
+          INIT_CONTENT_PY = data.data.python;
+        }
+        else
+        {
+          console.log(data)
+        }
+      })
+      }
+      
+      
+    });
+
+
+   
+   
+    
 
   }
 
@@ -183,14 +318,14 @@ export class IdeComponent implements OnInit {
       this.codeFooterPresent = false;
       INIT_FOOTER_CPP = DEF_FOOTER_CPP;
     }
-    if (this.mainCode != null) {
-      INIT_CONTENT_CPP = this.mainCode;
-    } else {
-      INIT_CONTENT_CPP = DEF_CONTENT_CPP;
-    }
+    // if (this.mainCode != null) {
+    //   INIT_CONTENT_CPP = this.mainCode;
+    // } else {
+    //   INIT_CONTENT_CPP = DEF_CONTENT_CPP;
+    // }
     this.setLanguageMode(this.initOptions.languageMode || DEFAULT_LANG_MODE);
     this.setEditorTheme(this.initOptions.theme || DEFAULT_THEME_MODE);
-    this.setContent(INIT_CONTENT_CPP);
+    //this.setContent(INIT_CONTENT_CPP);
     this.activatedTheme = this.initEditorOptions.theme;
     // sample input
     if (this.problemInput != null) {
@@ -343,7 +478,7 @@ export class IdeComponent implements OnInit {
   public onClearContent() {
     if (this.codeEditor) {
       if (this.currentConfig.langMode == 'cpp14') {
-        this.codeEditor.setValue(INIT_CONTENT_CPP);
+        //this.codeEditor.setValue(INIT_CONTENT_CPP);
         if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_CPP);
         if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_CPP);
       } else if (this.currentConfig.langMode == 'java') {
@@ -453,6 +588,8 @@ export class IdeComponent implements OnInit {
       );
     }
   }
+   
+
   //for upload button
  public clickUploadButton() {
    document.getElementById('getFile').click();
@@ -489,6 +626,31 @@ export class IdeComponent implements OnInit {
     var link= document.getElementById("downloadlink")
     link.setAttribute('href', makeTextFile(this.codeEditor.getValue()));
     link.click();
+  }
+
+
+  
+  async fetchUserData(){
+    
+    this.showSpinner = true;
+    const options = {
+      observe : 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    await this.http.get(this.storeInfo.serverUrl + '/user/get',options).toPromise().then((data)=>{
+      if(data['status'] == 200){
+        this.userData = data['body'];
+        
+        
+      } else {
+        this.matComp.openSnackBar(data['body']['message'],2000);
+      }
+    }, error =>{
+      this.matComp.openSnackBar('Network Problem!',2000);
+    });
+    this.showSpinner = false;
   }
 }
 
