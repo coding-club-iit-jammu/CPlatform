@@ -157,7 +157,7 @@ export class IdeComponent implements OnInit {
     
     // initially getting code from the database
      await this.fetchUserData();
-     await fetch(this.storeInfo.serverUrl + "/getidecode",{
+     await fetch("http://localhost:8080/CodeofIDE/getidecode",{
        method: 'post',
        headers: {'Content-Type': 'application/json'},
        body: JSON.stringify({email: this.userData.email})
