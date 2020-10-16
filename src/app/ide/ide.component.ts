@@ -582,6 +582,7 @@ export class IdeComponent implements OnInit {
         })
       );
     }
+   
   }
    
 
@@ -622,6 +623,7 @@ export class IdeComponent implements OnInit {
     link.setAttribute('href', makeTextFile(this.codeEditor.getValue()));
     link.click();
   }
+ 
 
 
   
