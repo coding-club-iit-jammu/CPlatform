@@ -268,7 +268,7 @@ export class PracticeComponent implements OnInit {
     await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/fetchsubmission',options).toPromise().then((code)=>{
       if(code['status'] == 200 ){
         
-        if(code['body'].data[0].prevsubmission!=="no submission"){
+        
               var textFile = null,
               makeTextFile = function (text) {
                 var data = new Blob([text], {type: 'text/plain'});
@@ -283,11 +283,8 @@ export class PracticeComponent implements OnInit {
               var link= document.getElementById("downloadlink")
               link.setAttribute('href', makeTextFile(code['body'].data[0].prevsubmission));
               link.click();
-        }
-        else
-        {
-          this.matComp.openSnackBar("you have made no submissions yet",2000);
-        }
+        
+        
 
 
         
@@ -300,8 +297,39 @@ export class PracticeComponent implements OnInit {
     this.showSpinner = false;
 
     
-    
-   
+    // fetch(this.storeInfo.serverUrl + "/CodeofIDE/fetchsubmission",{
+    //   method: 'post',
+    //   headers: {'Content-Type': 'application/json'},
+    //   body: JSON.stringify({
+    //     email: this.userData.email
+    //   })
+    // }).then(response=> response.json()).then(data=> {
+      
+    //  if(data.data[0].prevsubmission!=="no submission")
+    //  {
+       
+    //     var textFile = null,
+    // makeTextFile = function (text) {
+    //   var data = new Blob([text], {type: 'text/plain'});
+    //   // If we are replacing a previously generated file we need to
+    //   // manually revoke the object URL to avoid memory leaks.
+    //   if (textFile !== null) {
+    //     window.URL.revokeObjectURL(textFile);
+    //   }
+    //   textFile = window.URL.createObjectURL(data);
+    //   return textFile;
+    // };
+    // var link= document.getElementById("downloadlink")
+    // link.setAttribute('href', makeTextFile(data.data[0].prevsubmission));
+    // link.click();
+    //  }
+    //  else
+    //  {
+    //     this.matComp.openSnackBar("no submission made",2000);
+    //  }
+
+      
+    // })
   
   }
   //for getting user info
