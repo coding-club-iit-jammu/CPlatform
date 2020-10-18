@@ -74,26 +74,33 @@ export class PracticeComponent implements OnInit {
     this.getCodingQuestion();
     this.getLeaderBoard();
     await this.fetchUserData();
-    await fetch(this.storeInfo.serverUrl+ "/CodeofIDE/getidecode",{
-       method: 'post',
-       headers: {'Content-Type': 'application/json'},
-       body: JSON.stringify({email: this.userData.email})
-     }).then(response=> response.json()).then(data=> {
-       if(data.data.length!=0)
-       {
-          
-
-       }
-       else
-       {
-         //if user is not found in database then generate def code
+    this.showSpinner = true;
+    const options = {
+      observe : 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/getidecode',options).toPromise().then((code)=>{
+      if(code['status'] == 200){
+        
+        
+        if(code['body'].data.length===0){
+          //     if user is not found in database then generate def code
          fetch(this.storeInfo.serverUrl+"/CodeofIDE/saveidecode",{
            method: 'post',
            headers: { 'Content-Type': 'application/json'},
            body: JSON.stringify({email: this.userData.email})
          }).then(response=> response.json())
-       }
-     });
+        }
+      } else {
+        this.matComp.openSnackBar(code['body']['message'],2000);
+      }
+    }, error =>{
+      this.matComp.openSnackBar('Network Problem!',2000);
+    });
+    this.showSpinner = false;
+    
 
   }
 
@@ -250,40 +257,51 @@ export class PracticeComponent implements OnInit {
 
   //for fetching previous submission
   async fetchPrevSubmission(){
-    
-    fetch(this.storeInfo.serverUrl + "/CodeofIDE/fetchsubmission",{
-      method: 'post',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        email: this.userData.email
-      })
-    }).then(response=> response.json()).then(data=> {
-      
-     if(data.data[0].prevsubmission!=="no submission")
-     {
-       
-        var textFile = null,
-    makeTextFile = function (text) {
-      var data = new Blob([text], {type: 'text/plain'});
-      // If we are replacing a previously generated file we need to
-      // manually revoke the object URL to avoid memory leaks.
-      if (textFile !== null) {
-        window.URL.revokeObjectURL(textFile);
-      }
-      textFile = window.URL.createObjectURL(data);
-      return textFile;
-    };
-    var link= document.getElementById("downloadlink")
-    link.setAttribute('href', makeTextFile(data.data[0].prevsubmission));
-    link.click();
-     }
-     else
-     {
-        this.matComp.openSnackBar("no submission made",2000);
-     }
 
-      
-    })
+    this.showSpinner = true;
+    const options = {
+      observe : 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/fetchsubmission',options).toPromise().then((code)=>{
+      if(code['status'] == 200 ){
+        
+        if(code['body'].data[0].prevsubmission!=="no submission"){
+              var textFile = null,
+              makeTextFile = function (text) {
+                var data = new Blob([text], {type: 'text/plain'});
+                // If we are replacing a previously generated file we need to
+                // manually revoke the object URL to avoid memory leaks.
+                if (textFile !== null) {
+                  window.URL.revokeObjectURL(textFile);
+                }
+                textFile = window.URL.createObjectURL(data);
+                return textFile;
+              };
+              var link= document.getElementById("downloadlink")
+              link.setAttribute('href', makeTextFile(code['body'].data[0].prevsubmission));
+              link.click();
+        }
+        else
+        {
+          this.matComp.openSnackBar("you have made no submissions yet",2000);
+        }
+
+
+        
+      } else {
+        this.matComp.openSnackBar(code['body']['message'],2000);
+      }
+    }, error =>{
+      this.matComp.openSnackBar('Network Problem!',2000);
+    });
+    this.showSpinner = false;
+
+    
+    
+   
   
   }
   //for getting user info
