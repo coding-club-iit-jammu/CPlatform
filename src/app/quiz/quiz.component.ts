@@ -42,6 +42,20 @@ export class QuizComponent implements OnInit {
 
   test_id:any;
   userTestRecordId:any;
+  //for using test/getUserTestRecord
+  userTestRecord:any = {
+    mcq:[],
+    trueFalse:[],
+    codingQuestion:[],
+    securedMarks:0
+  }
+  stats = {
+    maxMarks:0,
+    minMarks:0,
+    avgMarks:0
+  }
+  marks:Number = 0;
+  notFound:boolean = false;
 
   remainTime:any = "30:00:00";
   time:String;
@@ -395,5 +409,38 @@ export class QuizComponent implements OnInit {
     })
     this.showSpinner = false;
   }
+  //prevSubmission button
+  async prevSubmission(){
+    this.showSpinner = true;
+    const options = {
+      observe : 'response' as 'body',
+      params: new HttpParams().set('courseCode',this.code).set('test_id',this.test_id)
+    }
+
+    await this.http.get(this.storeInfo.serverUrl+'/test/getUserTestRecord',options).toPromise().then((response)=>{
+      if(response['status'] == 200){
+       
+         var textFile = null,
+    makeTextFile = function (text) {
+      var data = new Blob([text], {type: 'text/plain'});
+      
+      if (textFile !== null) {
+        window.URL.revokeObjectURL(textFile);
+      }
+      textFile = window.URL.createObjectURL(data);
+      return textFile;
+    };
+    var link= document.getElementById("fetchsubmissionlink")
+    link.setAttribute('href', makeTextFile(response['body']['userTestRecord']['codingQuestion']['problems'][0]['response']));
+    link.click();
+       
+      }
+    },error=>{
+      this.matComp.openSnackBar(error['statusText'],2000);
+     
+    })
+    this.showSpinner = false; 
+  }
+
 
 }
