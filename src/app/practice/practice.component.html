@@ -295,6 +295,8 @@
                     </app-ide>
                     <div class="modal-footer d-flex justify-content-around bg-light">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-info"  (click)="fetchPrevSubmission()">Previous Submission</button>
+                        <a download="submmission.txt" id="prevsubmissionlink" style="display: none">Download</a>
                         <button class="btn btn-success my-3" (click)="submitCodingQuestion(selectedCodingQuestion, codeEditor.getContent(),
                                                                     codeEditor.getLangId(), codeEditor.getLangVersion())">Submit</button>
                         <div class="spinner-border" role="status" *ngIf="submitted">

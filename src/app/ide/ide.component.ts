@@ -157,21 +157,26 @@ export class IdeComponent implements OnInit {
     
     // initially getting code from the database
      await this.fetchUserData();
-     await fetch(this.storeInfo.serverUrl+ "/CodeofIDE/getidecode",{
-       method: 'post',
-       headers: {'Content-Type': 'application/json'},
-       body: JSON.stringify({email: this.userData.email})
-     }).then(response=> response.json()).then(data=> {
-       if(data.data.length!=0)
-       {
-          INIT_CONTENT_CPP = data.data[0].cpp;
-          INIT_CONTENT_JAVA = data.data[0].java;
-          INIT_CONTENT_PY = data.data[0].python;
-
-       }
-       else
-       {
-         //if user is not found in database then generate def code
+     
+    
+    this.showSpinner = true;
+    const options = {
+      observe : 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/getidecode',options).toPromise().then((code)=>{
+      if(code['status'] == 200){
+        if(code['body'].data.length!==0)
+        {
+          INIT_CONTENT_CPP = code['body'].data[0].cpp;
+          INIT_CONTENT_JAVA = code['body'].data[0].java;
+          INIT_CONTENT_PY = code['body'].data[0].python;
+        }
+        
+        else{
+        	//     if user is not found in database then generate def code
          fetch(this.storeInfo.serverUrl+"/CodeofIDE/saveidecode",{
            method: 'post',
            headers: { 'Content-Type': 'application/json'},
@@ -181,8 +186,16 @@ export class IdeComponent implements OnInit {
            INIT_CONTENT_JAVA = data.data.java;
            INIT_CONTENT_PY = data.data.python;
          })
-       }
-     });
+        }
+      } else {
+        this.matComp.openSnackBar(code['body']['message'],2000);
+      }
+    }, error =>{
+      this.matComp.openSnackBar('Network Problem!',2000);
+    });
+    this.showSpinner = false;
+  
+     
      
      await this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
      this.codeEditor.clearSelection();
@@ -198,7 +211,7 @@ export class IdeComponent implements OnInit {
       }
     });
     
-   //autosave code
+  // autosave code
     await this.timer.subscribe((t) => {
       if(this.currentConfig.langMode=="cpp14")
       {
@@ -582,6 +595,7 @@ export class IdeComponent implements OnInit {
         })
       );
     }
+   
   }
    
 
@@ -622,6 +636,7 @@ export class IdeComponent implements OnInit {
     link.setAttribute('href', makeTextFile(this.codeEditor.getValue()));
     link.click();
   }
+ 
 
 
   

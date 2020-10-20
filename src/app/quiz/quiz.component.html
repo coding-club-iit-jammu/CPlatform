@@ -193,6 +193,8 @@
                                     </div>
                                      <div class="card-footer d-flex flex-row justify-content-around ">
                                         <button class="btn btn-warning" [disabled]="current.question == 0" (click)="previousQuestion()" accesskey="p" title="ShortCut: Alt + p">Previous</button>
+                                        <button type="button" class="btn btn-info"  (click)="prevSubmission()">Previous Submission</button>
+                                        <a download="submission.txt" id="fetchsubmissionlink" style="display: none">Download</a>
                                         <button class="btn btn-success" (click)="submitCodingQuestion(current.question, codeEditor.getContent(),
                                                                                         codeEditor.getLangId(), codeEditor.getLangVersion())">Submit</button>
                                         <div class="spinner-border" role="status" *ngIf="submitted">
