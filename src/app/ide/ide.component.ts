@@ -177,14 +177,14 @@ export class IdeComponent implements OnInit {
         
         else{
         	//     if user is not found in database then generate def code
-         fetch(this.storeInfo.serverUrl+"/CodeofIDE/saveidecode",{
-           method: 'post',
-           headers: { 'Content-Type': 'application/json'},
-           body: JSON.stringify({email: this.userData.email})
-         }).then(response=> response.json()).then(data=>{
-           INIT_CONTENT_CPP = data.data.cpp;
-           INIT_CONTENT_JAVA = data.data.java;
-           INIT_CONTENT_PY = data.data.python;
+         
+         
+         
+          this.http.post(this.storeInfo.serverUrl+ '/CodeofIDE/saveidecode',{email:this.userData.email}).toPromise().then((code)=>{
+         	
+           INIT_CONTENT_CPP = code['data'].cpp;
+           INIT_CONTENT_JAVA = code['data'].java;
+           INIT_CONTENT_PY = code['data'].python;
          })
         }
       } else {
@@ -213,83 +213,64 @@ export class IdeComponent implements OnInit {
     
   // autosave code
     await this.timer.subscribe((t) => {
+     
       if(this.currentConfig.langMode=="cpp14")
       {
-
-        fetch(this.storeInfo.serverUrl+"/CodeofIDE/autosaveidecode",{
-        method:'put',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          email: this.userData.email,
-          cpp: this.codeEditor.getValue(),
-          python: INIT_CONTENT_PY,
-          java: INIT_CONTENT_JAVA
-        })
-      }).then(response=> response.json()).then(data=>{
-        if(data.status==200)
-        {
-          INIT_CONTENT_CPP = data.data.cpp;
-          INIT_CONTENT_JAVA = data.data.java;
-          INIT_CONTENT_PY = data.data.python;
-        }
-        else
-        {
-          console.log(data)
-        }
-      })
+      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,
+      	 cpp:this.codeEditor.getValue(),
+      	 java: INIT_CONTENT_JAVA,
+      	 python: INIT_CONTENT_PY}).toPromise().then((code)=>{
+      	 	if(code['status']== 200)
+      	 	{
+      	 		INIT_CONTENT_CPP = code['data'].cpp;
+      	 		INIT_CONTENT_JAVA = code['data'].java;
+      	 		INIT_CONTENT_PY = code['data'].python
+      	 	}
+         	else
+         	{
+         		console.log(code)
+         	}
+         })
+      }
+      else if(this.currentConfig.langMode=="java")
+      {
+      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,
+      	 cpp: INIT_CONTENT_CPP,
+      	 java: this.codeEditor.getValue(),
+      	 python: INIT_CONTENT_PY}).toPromise().then((code)=>{
+      	 	if(code['status']== 200)
+      	 	{
+      	 		INIT_CONTENT_CPP = code['data'].cpp;
+      	 		INIT_CONTENT_JAVA = code['data'].java;
+      	 		INIT_CONTENT_PY = code['data'].python
+      	 	}
+      	 	else
+         	{
+         		console.log(code)
+         	}
+         	
+         })
       }
       else if(this.currentConfig.langMode=="python3")
       {
-
-        fetch(this.storeInfo.serverUrl+"/CodeofIDE/autosaveidecode",{
-        method:'put',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          email: this.userData.email,
-          python: this.codeEditor.getValue(),
-          cpp: INIT_CONTENT_CPP,
-          java: INIT_CONTENT_JAVA
-        })
-      }).then(response=> response.json()).then(data=>{
-        if(data.status==200)
-        {
-          INIT_CONTENT_CPP = data.data.cpp;
-          INIT_CONTENT_JAVA = data.data.java;
-          INIT_CONTENT_PY = data.data.python;
-        }
-        else
-        {
-          console.log(data)
-        }
-      })
+      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,
+      	 cpp:INIT_CONTENT_CPP,
+      	 java: INIT_CONTENT_JAVA,
+      	 python: this.codeEditor.getValue()}).toPromise().then((code)=>{
+      	 	if(code['status']== 200)
+      	 	{
+      	 		INIT_CONTENT_CPP = code['data'].cpp;
+      	 		INIT_CONTENT_JAVA = code['data'].java;
+      	 		INIT_CONTENT_PY = code['data'].python
+      	 	}
+      	 	else
+         	{
+         		console.log(code)
+         	}
+         	
+         })
       }
-       else if(this.currentConfig.langMode=="java")
-      {
-
-        fetch(this.storeInfo.serverUrl+"/CodeofIDE/autosaveidecode",{
-        method:'put',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          email: this.userData.email,
-          java: this.codeEditor.getValue(),
-          cpp: INIT_CONTENT_CPP,
-          python: INIT_CONTENT_PY
-        })
-      }).then(response=> response.json()).then(data=>{
-        if(data.status==200)
-        {
-          INIT_CONTENT_CPP = data.data.cpp;
-          INIT_CONTENT_JAVA = data.data.java;
-          INIT_CONTENT_PY = data.data.python;
-        }
-        else
-        {
-          console.log(data)
-        }
-      })
-      }
-      
-      
+       
     });
 
 
