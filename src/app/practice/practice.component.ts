@@ -81,19 +81,16 @@ export class PracticeComponent implements OnInit {
         'Content-Type':  'application/json'
       })
     };
-    await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/getidecode',options).toPromise().then((code)=>{
+     await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/getidecode',options).toPromise().then((code)=>{
       if(code['status'] == 200){
-        
-        
-        if(code['body'].data.length===0){
-          //     if user is not found in database then generate def code
-         fetch(this.storeInfo.serverUrl+"/CodeofIDE/saveidecode",{
-           method: 'post',
-           headers: { 'Content-Type': 'application/json'},
-           body: JSON.stringify({email: this.userData.email})
-         }).then(response=> response.json())
+        if(code['body'].data.length===0)
+        {
+          this.http.post(this.storeInfo.serverUrl+ '/CodeofIDE/saveidecode',{email:this.userData.email}).toPromise()
         }
-      } else {
+        
+        
+      }
+    else {
         this.matComp.openSnackBar(code['body']['message'],2000);
       }
     }, error =>{
@@ -289,7 +286,7 @@ export class PracticeComponent implements OnInit {
 
         
       } else {
-        this.matComp.openSnackBar(code['body']['message'],2000);
+        this.matComp.openSnackBar(code['message'],2000);
       }
     }, error =>{
       this.matComp.openSnackBar('Network Problem!',2000);
@@ -297,39 +294,7 @@ export class PracticeComponent implements OnInit {
     this.showSpinner = false;
 
     
-    // fetch(this.storeInfo.serverUrl + "/CodeofIDE/fetchsubmission",{
-    //   method: 'post',
-    //   headers: {'Content-Type': 'application/json'},
-    //   body: JSON.stringify({
-    //     email: this.userData.email
-    //   })
-    // }).then(response=> response.json()).then(data=> {
-      
-    //  if(data.data[0].prevsubmission!=="no submission")
-    //  {
-       
-    //     var textFile = null,
-    // makeTextFile = function (text) {
-    //   var data = new Blob([text], {type: 'text/plain'});
-    //   // If we are replacing a previously generated file we need to
-    //   // manually revoke the object URL to avoid memory leaks.
-    //   if (textFile !== null) {
-    //     window.URL.revokeObjectURL(textFile);
-    //   }
-    //   textFile = window.URL.createObjectURL(data);
-    //   return textFile;
-    // };
-    // var link= document.getElementById("downloadlink")
-    // link.setAttribute('href', makeTextFile(data.data[0].prevsubmission));
-    // link.click();
-    //  }
-    //  else
-    //  {
-    //     this.matComp.openSnackBar("no submission made",2000);
-    //  }
-
-      
-    // })
+  
   
   }
   //for getting user info
@@ -419,6 +384,12 @@ export class PracticeComponent implements OnInit {
     
     this.showSpinner = false;
     this.submitted = false;
+    this.http.put(this.storeInfo.serverUrl+'/CodeofIDE/updatesubmission',{email:this.userData.email, prevsubmission: submitCode}).toPromise().then(code=>{
+      if(code['status']!=200)
+      {
+        console.log(code)
+      }
+    })
     fetch(this.storeInfo.serverUrl+ "/CodeofIDE/updatesubmission",{
       method: 'put',
       headers: {'Content-Type':'application/json'},
