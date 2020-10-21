@@ -7,7 +7,6 @@ import { themeModuleMap } from './consts/theme-module-table';
 import { ServerHandlerService } from '../services/http/server-handler.service';
 import { Observable, of, interval, timer } from 'rxjs';
 import { catchError, map, tap, timeout } from 'rxjs/operators';
-
 import { MaterialComponentService } from '../services/material-component.service';
 import { StoreInfoService } from '../services/store-info.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -48,7 +47,6 @@ int main () {
     return 0;
 }`;
 let DEF_FOOTER_CPP = '// footer code';
-
 let INIT_HEADER_CPP = '// header code\n';
 let INIT_HEADER_JAVA = '// header code\n';
 let INIT_HEADER_PY = '# header code\n';
@@ -156,9 +154,7 @@ export class IdeComponent implements OnInit {
     this.activatedTheme = this.initEditorOptions.theme;
     
     // initially getting code from the database
-     await this.fetchUserData();
-     
-    
+     await this.fetchUserData();  
     this.showSpinner = true;
     const options = {
       observe : 'response' as 'body',
@@ -176,10 +172,7 @@ export class IdeComponent implements OnInit {
         }
         
         else{
-        	//     if user is not found in database then generate def code
-         
-         
-         
+        	//     if user is not found in database then generate def code      
           this.http.post(this.storeInfo.serverUrl+ '/CodeofIDE/saveidecode',{email:this.userData.email}).toPromise().then((code)=>{
          	
            INIT_CONTENT_CPP = code['data'].cpp;
@@ -193,11 +186,9 @@ export class IdeComponent implements OnInit {
     }, error =>{
       this.matComp.openSnackBar('Network Problem!',2000);
     });
-    this.showSpinner = false;
-  
+    this.showSpinner = false;  
      
-     
-     await this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
+    await this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
      this.codeEditor.clearSelection();
     this.codeEditor.on("change", (delta) => {
       const content = this.codeEditor.getValue();
@@ -212,14 +203,10 @@ export class IdeComponent implements OnInit {
     });
     
   // autosave code
-    await this.timer.subscribe((t) => {
-     
+    await this.timer.subscribe((t) => {     
       if(this.currentConfig.langMode=="cpp14")
       {
-      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,
-      	 cpp:this.codeEditor.getValue(),
-      	 java: INIT_CONTENT_JAVA,
-      	 python: INIT_CONTENT_PY}).toPromise().then((code)=>{
+      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:this.codeEditor.getValue(),java: INIT_CONTENT_JAVA,python: INIT_CONTENT_PY}).toPromise().then((code)=>{
       	 	if(code['status']== 200)
       	 	{
       	 		INIT_CONTENT_CPP = code['data'].cpp;
@@ -234,10 +221,7 @@ export class IdeComponent implements OnInit {
       }
       else if(this.currentConfig.langMode=="java")
       {
-      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,
-      	 cpp: INIT_CONTENT_CPP,
-      	 java: this.codeEditor.getValue(),
-      	 python: INIT_CONTENT_PY}).toPromise().then((code)=>{
+      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp: INIT_CONTENT_CPP,java: this.codeEditor.getValue(),python: INIT_CONTENT_PY}).toPromise().then((code)=>{
       	 	if(code['status']== 200)
       	 	{
       	 		INIT_CONTENT_CPP = code['data'].cpp;
@@ -253,10 +237,7 @@ export class IdeComponent implements OnInit {
       }
       else if(this.currentConfig.langMode=="python3")
       {
-      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,
-      	 cpp:INIT_CONTENT_CPP,
-      	 java: INIT_CONTENT_JAVA,
-      	 python: this.codeEditor.getValue()}).toPromise().then((code)=>{
+      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:INIT_CONTENT_CPP,java: INIT_CONTENT_JAVA,python: this.codeEditor.getValue()}).toPromise().then((code)=>{
       	 	if(code['status']== 200)
       	 	{
       	 		INIT_CONTENT_CPP = code['data'].cpp;
@@ -272,12 +253,7 @@ export class IdeComponent implements OnInit {
       }
        
     });
-
-
-   
-   
-    
-
+  
   }
 
   async ngAfterViewInit() {
@@ -617,9 +593,6 @@ export class IdeComponent implements OnInit {
     link.setAttribute('href', makeTextFile(this.codeEditor.getValue()));
     link.click();
   }
- 
-
-
   
   async fetchUserData(){
     
