@@ -410,7 +410,7 @@ export class QuizComponent implements OnInit {
     this.showSpinner = false;
   }
   //prevSubmission button
-  async prevSubmission(){
+  async prevSubmission(selectedCodingQuestion){
     this.showSpinner = true;
     const options = {
       observe : 'response' as 'body',
@@ -430,10 +430,13 @@ export class QuizComponent implements OnInit {
       textFile = window.URL.createObjectURL(data);
       return textFile;
     };
-    var link= document.getElementById("fetchsubmissionlink")
-    link.setAttribute('href', makeTextFile(response['body']['userTestRecord']['codingQuestion']['problems'][0]['response']));
+    var link= document.getElementById("fetchsubmissionlink");  
+    link.setAttribute('href', makeTextFile(response['body']['userTestRecord']['codingQuestion']['problems'][selectedCodingQuestion].response));
     link.click();
-       
+      
+   
+    
+    
       }
     },error=>{
       this.matComp.openSnackBar(error['statusText'],2000);

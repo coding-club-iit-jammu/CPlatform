@@ -40,7 +40,6 @@ import { LanguageTable } from './consts/language-table';
 let DEF_HEADER_CPP = '// header code\n';
 let DEF_CONTENT_CPP = `#include <iostream>
 using namespace std;
-
 int main () {
     
     cout << "hello world";
@@ -52,7 +51,6 @@ let INIT_HEADER_JAVA = '// header code\n';
 let INIT_HEADER_PY = '# header code\n';
 let INIT_CONTENT_CPP = `#include <iostream>
 using namespace std;
-
 int main () {
     
     cout << "hello world";
@@ -172,9 +170,9 @@ export class IdeComponent implements OnInit {
         }
         
         else{
-        	//     if user is not found in database then generate def code      
+          //     if user is not found in database then generate def code      
           this.http.post(this.storeInfo.serverUrl+ '/CodeofIDE/saveidecode',{email:this.userData.email}).toPromise().then((code)=>{
-         	
+           
            INIT_CONTENT_CPP = code['data'].cpp;
            INIT_CONTENT_JAVA = code['data'].java;
            INIT_CONTENT_PY = code['data'].python;
@@ -206,49 +204,49 @@ export class IdeComponent implements OnInit {
     await this.timer.subscribe((t) => {     
       if(this.currentConfig.langMode=="cpp14")
       {
-      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:this.codeEditor.getValue(),java: INIT_CONTENT_JAVA,python: INIT_CONTENT_PY}).toPromise().then((code)=>{
-      	 	if(code['status']== 200)
-      	 	{
-      	 		INIT_CONTENT_CPP = code['data'].cpp;
-      	 		INIT_CONTENT_JAVA = code['data'].java;
-      	 		INIT_CONTENT_PY = code['data'].python
-      	 	}
-         	else
-         	{
-         		console.log(code)
-         	}
+        this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:this.codeEditor.getValue(),java: INIT_CONTENT_JAVA,python: INIT_CONTENT_PY}).toPromise().then((code)=>{
+           if(code['status']== 200)
+           {
+             INIT_CONTENT_CPP = code['data'].cpp;
+             INIT_CONTENT_JAVA = code['data'].java;
+             INIT_CONTENT_PY = code['data'].python
+           }
+           else
+           {
+             console.log(code)
+           }
          })
       }
       else if(this.currentConfig.langMode=="java")
       {
-      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp: INIT_CONTENT_CPP,java: this.codeEditor.getValue(),python: INIT_CONTENT_PY}).toPromise().then((code)=>{
-      	 	if(code['status']== 200)
-      	 	{
-      	 		INIT_CONTENT_CPP = code['data'].cpp;
-      	 		INIT_CONTENT_JAVA = code['data'].java;
-      	 		INIT_CONTENT_PY = code['data'].python
-      	 	}
-      	 	else
-         	{
-         		console.log(code)
-         	}
-         	
+        this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp: INIT_CONTENT_CPP,java: this.codeEditor.getValue(),python: INIT_CONTENT_PY}).toPromise().then((code)=>{
+           if(code['status']== 200)
+           {
+             INIT_CONTENT_CPP = code['data'].cpp;
+             INIT_CONTENT_JAVA = code['data'].java;
+             INIT_CONTENT_PY = code['data'].python
+           }
+           else
+           {
+             console.log(code)
+           }
+           
          })
       }
       else if(this.currentConfig.langMode=="python3")
       {
-      	this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:INIT_CONTENT_CPP,java: INIT_CONTENT_JAVA,python: this.codeEditor.getValue()}).toPromise().then((code)=>{
-      	 	if(code['status']== 200)
-      	 	{
-      	 		INIT_CONTENT_CPP = code['data'].cpp;
-      	 		INIT_CONTENT_JAVA = code['data'].java;
-      	 		INIT_CONTENT_PY = code['data'].python
-      	 	}
-      	 	else
-         	{
-         		console.log(code)
-         	}
-         	
+        this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:INIT_CONTENT_CPP,java: INIT_CONTENT_JAVA,python: this.codeEditor.getValue()}).toPromise().then((code)=>{
+           if(code['status']== 200)
+           {
+             INIT_CONTENT_CPP = code['data'].cpp;
+             INIT_CONTENT_JAVA = code['data'].java;
+             INIT_CONTENT_PY = code['data'].python
+           }
+           else
+           {
+             console.log(code)
+           }
+           
          })
       }
        
@@ -574,8 +572,8 @@ export class IdeComponent implements OnInit {
  }
 
   public changefont() {
-  	var val = (<HTMLInputElement>document.getElementById('fontbox')).value + 'px';  	
-  	this.codeEditor.setFontSize(val);  	
+    var val = (<HTMLInputElement>document.getElementById('fontbox')).value + 'px';    
+    this.codeEditor.setFontSize(val);    
   }  
   public onClickDownload() {             
     var textFile = null,

@@ -253,20 +253,27 @@ export class PracticeComponent implements OnInit {
   }
 
   //for fetching previous submission
-  async fetchPrevSubmission(){
+  async fetchPrevSubmission(selectedCodingQuestion){
 
     this.showSpinner = true;
+    const data = {
+      questionId : this.codingQuestions[selectedCodingQuestion]['_id'],
+      questionType: 'codingQuestion',
+      courseCode: this.code,
+      
+    }
     const options = {
       observe : 'response' as 'body',
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
-      })
+      }),
+      params: new HttpParams({fromObject: data})
     };
-    await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/fetchsubmission',options).toPromise().then((code)=>{
-      if(code['status'] == 200 ){
-        
-        
-              var textFile = null,
+   	
+
+    this.http.get(this.storeInfo.serverUrl+'/practice/getprevsubmission',options).toPromise().then((code)=>{
+      if(code['status']==200){
+        var textFile = null,
               makeTextFile = function (text) {
                 var data = new Blob([text], {type: 'text/plain'});
                 // If we are replacing a previously generated file we need to
@@ -278,23 +285,27 @@ export class PracticeComponent implements OnInit {
                 return textFile;
               };
               var link= document.getElementById("downloadlink")
-              link.setAttribute('href', makeTextFile(code['body'].data[0].prevsubmission));
-              link.click();
-        
-        
-
-
-        
+              
+              var questionNo = this.codingQuestions[selectedCodingQuestion]._id;
+              
+              for (var currentQuestion of code['body']['data'].questions.codingQuestion)
+              {
+                if (currentQuestion.question== questionNo)
+                {
+                  link.setAttribute('href', makeTextFile(currentQuestion.response));
+                  link.click();
+                  break;
+                }
+              }
+             
       } else {
         this.matComp.openSnackBar(code['message'],2000);
       }
     }, error =>{
       this.matComp.openSnackBar('Network Problem!',2000);
-    });
+      
+    })
     this.showSpinner = false;
-
-    
-  
   
   }
   //for getting user info
@@ -384,21 +395,7 @@ export class PracticeComponent implements OnInit {
     
     this.showSpinner = false;
     this.submitted = false;
-    this.http.put(this.storeInfo.serverUrl+'/CodeofIDE/updatesubmission',{email:this.userData.email, prevsubmission: submitCode}).toPromise().then(code=>{
-      if(code['status']!=200)
-      {
-        console.log(code)
-      }
-    })
-    fetch(this.storeInfo.serverUrl+ "/CodeofIDE/updatesubmission",{
-      method: 'put',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        email: this.userData.email,
-        prevsubmission:submitCode
-      })
-
-    }).then(response=> response.json())
+    
 
   }
 
