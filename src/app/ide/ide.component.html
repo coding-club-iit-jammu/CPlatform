@@ -1,169 +1,141 @@
-<div class="wrapper">
-    <div class="overlay" *ngIf="showSpinner">   
-        <div class="spinner-wrapper">
-            <app-spinner></app-spinner>
+<p>
+    <mat-toolbar class="black z-depth-3">
+        <div style="width: 100%;">
+            <a href="/" ><span class="white-text">Coding Platform</span></a>
         </div>
+    </mat-toolbar>
+</p>
+<div class="overlay" *ngIf="showSpinner">   
+    <div class="spinner-wrapper">
+        <app-spinner></app-spinner>
     </div>
-    <div [class.blurred]="!showSpinner">
-        <!-- header -->
-        <nav class="navbar navbar-light bg-light ">
-            <div class="container text-center p-2 ">
-                <span class="mx-auto text-bold">CODE EDITOR</span>
-            </div>
-        </nav>
+</div>
+<div class="container" style="padding-bottom: 50px;">
+    <div class="center">
+        <h3>Code Editer</h3>
     </div>
-
-    <div class="container h-100 mt-4">
-        
-    <!-- languages & theme / error message -->
-        <div class="row mb-4 justify-content-center mx-4">
-            <!-- if failed to reach server, show error message -->
-            <div *ngIf="cantReachServer; else reachServer">
-                <span class="font-weight-bold">Can't reach server :(, Try to refresh the page.. </span>
-            </div>
-
-            <ng-template #reachServer>
-                <!-- languages select -->
-                <div class="col-auto col-lg-auto col-md-auto col-sm-auto">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="languages-select">Languages</label>
-                        </div>
-
-                        <select *ngIf="(languagesArray$ | async) as languages; else loadingLanguages;" class="languages-select"
-                            id="languages-select" #languagesSelect (change)="onChangeLanguageMode($event)">
-                            <option *ngFor="let language of languages; let i = index" value="{{i}}" [selected]="initEditorOptions.languageMode===language.lang">
-                                {{language.name}} ({{language.version}})
-                            </option>
-                        </select>
-
-                        <!-- loading message while waiting languagesArray$ -->
-                        <ng-template #loadingLanguages>
-                            <span class="mx-2">Loading ...</span>
-                        </ng-template>
-                    </div>
-                </div>
-                <!-- theme radio buttons -->
-                <div class="col-auto col-lg-3 col-md-4 col-sm-6">
-                    <div class="btn-group btn-group-toggle btn-group-sm w-100 mx-auto" data-toggle="buttons">
-                        <label *ngFor="let theme of supportedThemes" [ngClass]="{'active': theme===activatedTheme}" (click)="onChangeTheme(theme); activatedTheme=theme;" class="btn btn-secondary sudo-radio-btn">
-                            <input type="radio" name="{{theme}}" autocomplete="off" [checked]="theme===activatedTheme">
+    <div *ngIf="cantReachServer; else reachServer">
+        <span class="font-weight-bold">Can't reach server :(, Try to refresh the page.. </span>
+    </div>
+    <ng-template #reachServer>
+        <!-- languages select -->
+        <div class="row" style="width: 100%;">
+            <div class="col right-align">
+                <mat-button-toggle-group>
+                    <mat-button-toggle color="warn" *ngFor="let theme of supportedThemes" (click)="onChangeTheme(theme); activatedTheme=theme;">
                             <span>{{theme}}</span>
-                        </label>
-                    </div>
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 0;">
+            <div class="col" style="display: flex;">
+                <!--
+                    <div class="input-group-prepend">
+                    <label class="input-group-text" for="languages-select">Languages</label>
                 </div>
-            </ng-template>
-        </div>
-        
-        <!-- the code editor header -->
-        <div class="row">
-            <div class="col">
-                <div class="code-editor-header" #codeEditorHeader [hidden]="!this.codeHeaderPresent"></div>
-            </div>
-        </div>
-        <!-- the code editor -->
-        <div class="row">
-            <div class="col">
-                <div class="code-editor" #codeEditor></div>
-            </div>
-        </div>
-        <!-- the code editor footer -->
-        <div class="row">
-            <div class="col">
-                <div class="code-editor-footer" #codeEditorFooter [hidden]="!this.codeFooterPresent"></div>
-            </div>
-        </div>
+                -->
+                <mat-form-field appearance="fill" *ngIf="(languagesArray$ | async) as languages; else loadingLanguages;"> 
+                    <select matNativeControl  class="languages-select"
+                        id="languages-select" #languagesSelect (change)="onChangeLanguageMode($event)">
+                        <option *ngFor="let language of languages; let i = index" value="{{i}}" [selected]="initEditorOptions.languageMode===language.lang">
+                            {{language.name}} ({{language.version}})
+                        </option>
+                    </select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" style="width: 60px; margin-left: 10px;">
+                    <select id= "fontbox" matNativeControl (change)="changefont()">
+                        <option value="10">10</option>
+                        <option value="12">12</option>
+                        <option value="14">14</option>
+                        <option value="16">16</option>
+                        <option selected="18">18</option>
+                        <option value="20">20</option>
+                        <option value="22">22</option>
+                        <option value="24">24</option>
+                        <option value="26">26</option>
+                    </select>
+                </mat-form-field>
+                <!-- loading message while waiting languagesArray$ -->
+                <ng-template #loadingLanguages>
+                    <span class="mx-2">Loading ...</span>
+                </ng-template>
+                <div>
+                    <button type="button" mat-stroked-button style="margin-left: 15px;" (click)="onBeautifyContent()">
+                        Beautify
+                    </button>
+                </div>
+                <div>
+                    <button type="button" mat-stroked-button style="margin-left: 15px;" (click)="onClearContent()">
+                        <i class="fa fa-eraser"></i> Clear
+                    </button>
+                </div>
+                
+                     
 
-        <!-- run, clear & beautify buttons -->
-        <div class="row justify-content-center mb-4 mx-4 pt-2">
-            <!-- running loader -->
-            <div class="spinner-border" role="status" *ngIf="running">
-                    <span class="sr-only">Loading...</span>
             </div>
-            <!-- run button -->
-            <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
-                <button type="button" class="btn btn-dark btn-sm btn-block px-4 mx-2" [ngClass]="{'cant-click' : cantReachServer}"
-                    [disabled]="cantReachServer" (click)="onRunCode()">
-                    <i class="fa fa-play"></i> Run
-                </button>
-            </div>
-            <!-- clear button -->
-            <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
-                <button type="button" class="btn btn-primary btn-sm btn-block px-4 mx-2" (click)="onClearContent()">
-                    <i class="fa fa-eraser"></i> Clear
-                </button>
-            </div>
-            <!-- beautify button -->
-            <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
-                <button type="button" class="btn btn-beautify btn-sm btn-block px-4 mx-2" (click)="onBeautifyContent()">
-                    Beautify
-                </button>
-            </div>
-        </div>
-
-
-      <!--   download upload and change font of code -->
-
-              <div class="row justify-content-center mb-4 mx-4 pt-2">
-            <!-- running loader -->
-            <div class="spinner-border" role="status" *ngIf="running">
-                    <span class="sr-only">Loading...</span>
-            </div>
-            <!-- download button -->
-            <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
-                <button type="button" class="btn btn-dark btn-sm btn-block px-4 mx-2"  (click)="onClickDownload()">
-                   Download 
+            <div class="col right-align">
+                
+                <button mat-stroked-button type="button" (click)="onClickDownload()">
+                    <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
                 <a download="code.txt" id="downloadlink" style="display: none">Download</a>
             </div>
-            <!-- upload button -->
-            <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
-                <button  class="js-fileapi-wrapper upload-btn btn btn-primary btn-sm btn-block px-4 mx-2" (click)="clickUploadButton()" >Upload</button>
-                <input id="getFile" type="file" multiple="false"  accept=".txt,.cpp,.py,.java,.jar"style="display:none">   
-               <!--  these are current file extension we can add more later -->
-            </div>
-            <!-- font size button -->
-            <div class="col-4 col-lg-2 col-md-3 col-sm-4 w-75">
-                <select id= "fontbox" class="input btn btn-beautify btn-sm btn-block px-4 mx-2" (change)="changefont()">
-                <option value="10">10</option>
-                <option value="12">12</option>
-                <option value="14">14</option>
-                <option value="16">16</option>
-                <option selected="18">18</option>
-                <option value="20">20</option>
-                <option value="22">22</option>
-                <option value="24">24</option>
-                <option value="26">26</option>
-                </select>
-            </div>
         </div>
-       
-        <!-- input box -->
-        <div class="row mt-4">
-            <div class="col">
-                <div class="label-box border">
-                    <span class="mx-4 font-weight-light">Sample Input</span>
-                </div>
-                <textarea id="codeInput" class="form-control input" rows="5" 
-                aria-label="input-textarea" #sampleInput></textarea>
-            </div>
+    </ng-template>
+    <div class="row" style="margin: 0;">
+        <div class="col">
+            <div class="code-editor-header" #codeEditorHeader [hidden]="!this.codeHeaderPresent"></div>
         </div>
-
-
-
-
-
-    <!-- output box -->
-        <div class="row mt-4">
-            <div class="col">
-                <div class="label-box border">
-                    <span class="mx-4 font-weight-light">Output</span>
-                </div>
-                <textarea class="form-control output" rows="5" 
-                disabled="true" aria-label="output-textarea" 
-                [value]="(output$ | async) || ''">
-            </textarea>
+    </div>
+    <!-- the code editor -->
+    <div class="row" style="margin: 0; ">
+        <div class="col">
+            <div class="code-editor" #codeEditor></div>
+        </div>
+    </div>
+    <!-- the code editor footer -->
+    <div class="row" >
+        <div class="col">
+            <div class="code-editor-footer" #codeEditorFooter [hidden]="!this.codeFooterPresent"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button mat-stroked-button class="js-fileapi-wrapper upload-btn" (click)="clickUploadButton()" >Upload</button>
+            <input id="getFile" type="file" multiple="false"  accept=".txt,.cpp,.py,.java,.jar"style="display:none">   
+        </div>
+        <div class="col right-align">
+            <div style="margin-right: 20px;">
+                <button mat-stroked-button type="button" [ngClass]="{'cant-click' : cantReachServer}"
+                    [disabled]="cantReachServer" (click)="onRunCode()" style="width: 100px;">
+                    Run <i class="fa fa-play"></i>
+                </button>
+            </div>
+            <div class="spinner-border" role="status" *ngIf="running">
+                <span class="sr-only">Loading...</span>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <div class="label-box border">
+                <span class="mx-4 font-weight-light">Sample Input</span>
+            </div>
+            <textarea id="codeInput" class="form-control input" rows="5" 
+            aria-label="input-textarea" #sampleInput></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="label-box border">
+                <span class="mx-4 font-weight-light">Output</span>
+            </div>
+            <textarea class="form-control output" rows="5" 
+            disabled="true" aria-label="output-textarea" 
+            [value]="(output$ | async) || ''">
+        </textarea>
+        </div>
+    </div>
 </div>
+

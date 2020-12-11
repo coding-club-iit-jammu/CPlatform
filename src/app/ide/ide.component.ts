@@ -8,6 +8,7 @@ import { ServerHandlerService } from '../services/http/server-handler.service';
 import { Observable, of, interval, timer } from 'rxjs';
 import { catchError, map, tap, timeout } from 'rxjs/operators';
 import { MaterialComponentService } from '../services/material-component.service';
+import {FormControl} from '@angular/forms'
 import { StoreInfoService } from '../services/store-info.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
@@ -133,6 +134,7 @@ export class IdeComponent implements OnInit {
     }
   }
   private timer;
+  langArrayControl = new FormControl();
 
   async ngOnInit() {
     // 3 seconds tiomer for autosave
@@ -152,41 +154,11 @@ export class IdeComponent implements OnInit {
     this.activatedTheme = this.initEditorOptions.theme;
     
     // initially getting code from the database
-     await this.fetchUserData();  
-    this.showSpinner = true;
-    const options = {
-      observe : 'response' as 'body',
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/getidecode',options).toPromise().then((code)=>{
-      if(code['status'] == 200){
-        if(code['body'].data.length!==0)
-        {
-          INIT_CONTENT_CPP = code['body'].data[0].cpp;
-          INIT_CONTENT_JAVA = code['body'].data[0].java;
-          INIT_CONTENT_PY = code['body'].data[0].python;
-        }
-        
-        else{
-          //     if user is not found in database then generate def code      
-          this.http.post(this.storeInfo.serverUrl+ '/CodeofIDE/saveidecode',{email:this.userData.email}).toPromise().then((code)=>{
-           
-           INIT_CONTENT_CPP = code['data'].cpp;
-           INIT_CONTENT_JAVA = code['data'].java;
-           INIT_CONTENT_PY = code['data'].python;
-         })
-        }
-      } else {
-        this.matComp.openSnackBar(code['body']['message'],2000);
-      }
-    }, error =>{
-      this.matComp.openSnackBar('Network Problem!',2000);
-    });
-    this.showSpinner = false;  
+    this.fetchUserData(); 
+    await this.getUserCode();
+    
      
-    await this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
+    //await this.setContent(this.initOptions.content || INIT_CONTENT_CPP);
      this.codeEditor.clearSelection();
     this.codeEditor.on("change", (delta) => {
       const content = this.codeEditor.getValue();
@@ -201,56 +173,21 @@ export class IdeComponent implements OnInit {
     });
     
   // autosave code
-    await this.timer.subscribe((t) => {     
+    await this.timer.subscribe((t) => {    
       if(this.currentConfig.langMode=="cpp14")
       {
-        this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:this.codeEditor.getValue(),java: INIT_CONTENT_JAVA,python: INIT_CONTENT_PY}).toPromise().then((code)=>{
-           if(code['status']== 200)
-           {
-             INIT_CONTENT_CPP = code['data'].cpp;
-             INIT_CONTENT_JAVA = code['data'].java;
-             INIT_CONTENT_PY = code['data'].python
-           }
-           else
-           {
-             console.log(code)
-           }
-         })
+        this.saveCode(this.codeEditor.getValue(),INIT_CONTENT_JAVA, INIT_CONTENT_PY );
       }
       else if(this.currentConfig.langMode=="java")
       {
-        this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp: INIT_CONTENT_CPP,java: this.codeEditor.getValue(),python: INIT_CONTENT_PY}).toPromise().then((code)=>{
-           if(code['status']== 200)
-           {
-             INIT_CONTENT_CPP = code['data'].cpp;
-             INIT_CONTENT_JAVA = code['data'].java;
-             INIT_CONTENT_PY = code['data'].python
-           }
-           else
-           {
-             console.log(code)
-           }
-           
-         })
+        this.saveCode( INIT_CONTENT_CPP,this.codeEditor.getValue(), INIT_CONTENT_PY );
       }
       else if(this.currentConfig.langMode=="python3")
       {
-        this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:INIT_CONTENT_CPP,java: INIT_CONTENT_JAVA,python: this.codeEditor.getValue()}).toPromise().then((code)=>{
-           if(code['status']== 200)
-           {
-             INIT_CONTENT_CPP = code['data'].cpp;
-             INIT_CONTENT_JAVA = code['data'].java;
-             INIT_CONTENT_PY = code['data'].python
-           }
-           else
-           {
-             console.log(code)
-           }
-           
-         })
+        this.saveCode( INIT_CONTENT_CPP, INIT_CONTENT_JAVA, this.codeEditor.getValue() );
       }
-       
     });
+      
   
   }
 
@@ -298,6 +235,62 @@ export class IdeComponent implements OnInit {
     }
     // sample output
     this.output$ = Observable.create((observer) => { observer.next(''); });
+  }
+
+  saveCode(code_cpp, code_java, code_python){
+    if(this.storeInfo.isSignedIn()){
+      this.http.put(this.storeInfo.serverUrl+ '/CodeofIDE/autosaveidecode',{email:this.userData.email,cpp:code_cpp,java: code_java,python: code_python}).toPromise().then((code)=>{
+        if(code['status']== 200)
+        {
+          INIT_CONTENT_CPP = code['data'].cpp;
+          INIT_CONTENT_JAVA = code['data'].java;
+          INIT_CONTENT_PY = code['data'].python
+        }
+        else{
+          INIT_CONTENT_CPP = code_cpp;
+          INIT_CONTENT_JAVA = code_java;
+          INIT_CONTENT_PY = code_python;
+        }
+      })
+    }
+    else{
+      INIT_CONTENT_CPP = code_cpp;
+      INIT_CONTENT_JAVA = code_java;
+      INIT_CONTENT_PY = code_python;
+    }
+  }
+  async getUserCode(){
+    if(this.storeInfo.isSignedIn() == false) return;
+    this.showSpinner = true;
+    const options = {
+      observe : 'response' as 'body',
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    await this.http.get(this.storeInfo.serverUrl + '/CodeofIDE/getidecode',options).toPromise().then((code)=>{
+      if(code['status'] == 200){
+        if(code['body'].data.length!==0){
+          INIT_CONTENT_CPP = code['body'].data[0].cpp;
+          INIT_CONTENT_JAVA = code['body'].data[0].java;
+          INIT_CONTENT_PY = code['body'].data[0].python;
+        }
+        else{
+          //  if user is not found in database then generate def code      
+          this.http.post(this.storeInfo.serverUrl+ '/CodeofIDE/saveidecode',{email:this.userData.email}).toPromise().then((code)=>{
+           INIT_CONTENT_CPP = code['data'].cpp;
+           INIT_CONTENT_JAVA = code['data'].java;
+           INIT_CONTENT_PY = code['data'].python;
+         })
+        }
+      } else {
+        this.matComp.openSnackBar(code['body']['message'],2000);
+      }
+      this.setLanguageMode(this.initOptions.languageMode || DEFAULT_LANG_MODE);
+    }, error =>{
+      this.matComp.openSnackBar('Network Problem!',2000);
+    });
+    this.showSpinner = false;   
   }
   
   private pipeSupportedLanguages() {
@@ -593,7 +586,7 @@ export class IdeComponent implements OnInit {
   }
   
   async fetchUserData(){
-    
+    if(this.storeInfo.isSignedIn() == false) return;
     this.showSpinner = true;
     const options = {
       observe : 'response' as 'body',
@@ -604,8 +597,6 @@ export class IdeComponent implements OnInit {
     await this.http.get(this.storeInfo.serverUrl + '/user/get',options).toPromise().then((data)=>{
       if(data['status'] == 200){
         this.userData = data['body'];
-        
-        
       } else {
         this.matComp.openSnackBar(data['body']['message'],2000);
       }

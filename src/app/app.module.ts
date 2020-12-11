@@ -24,9 +24,13 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { HttpService } from './services/http/http.service';
 import { ServerHandlerService } from './services/http/server-handler.service';
 import { MaterialComponentService } from './services/material-component.service';
@@ -73,11 +77,16 @@ import { VerifyComponent } from './verify/verify.component'
     NoopAnimationsModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatButtonModule,
     MatTabsModule,
     MatCheckboxModule,
     MatRadioModule,
     FormsModule,
     MatSidenavModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatToolbarModule,
+    MatButtonToggleModule,
     QuillModule.forRoot({
       modules: {
         syntax: true,

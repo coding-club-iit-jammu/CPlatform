@@ -1,3 +1,4 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css";
 div.code-editor { max-height: 70vh; }
 
 div.label-box {
@@ -8,7 +9,24 @@ div.label-box {
 .form-control { border-radius: 0 !important; }
 
 .form-control:disabled { background-color: #ffffff !important; }
-
+::ng-deep .mat-form-field-underline {
+    display: none;
+}
+::ng-deep .mat-form-field-wrapper{
+    padding-bottom: 0;
+ }
+ ::ng-deep .mat-form-field-infix{
+     border-top: 0;
+ }
+ select:focus{
+     outline: none;
+ }
+ ::ng-deep button:focus{
+     background-color: transparent !important;
+ }
+ ::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content{
+     line-height: 30px !important;
+ }
 .output {
     border-bottom-left-radius: .5rem!important;
     border-bottom-right-radius: .5rem!important;
@@ -18,7 +36,18 @@ div.label-box {
     color: #ffffff;
     background-color: #e83e8c;
 }
-
+.btn-beautify:hover{
+    color: #ffffff;
+    background-color: #e46ba3 !important;
+}
+.btn-beautify:focus {
+    color: #ffffff;
+    outline: none;
+    background-color: #e83e8c !important;
+}
+.code-editor{
+    min-height: 50vh !important;
+}
 select.languages-select {
     cursor: pointer;
 }
