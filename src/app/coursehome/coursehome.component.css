@@ -1,4 +1,5 @@
-  .completeView{
+@import '~bootstrap/dist/css/bootstrap.min.css'; 
+.completeView{
     display: flex;
     flex-direction: row;
   }

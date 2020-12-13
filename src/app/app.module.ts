@@ -29,6 +29,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { HttpService } from './services/http/http.service';
@@ -87,6 +88,7 @@ import { VerifyComponent } from './verify/verify.component'
     MatFormFieldModule,
     MatToolbarModule,
     MatButtonToggleModule,
+    MatProgressSpinnerModule,
     QuillModule.forRoot({
       modules: {
         syntax: true,

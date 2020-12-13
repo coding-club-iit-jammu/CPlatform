@@ -1,4 +1,5 @@
-  .bg-dark{
+@import '~bootstrap/dist/css/bootstrap.min.css'; 
+.bg-dark{
     color: white;
   }
   .wrapper {

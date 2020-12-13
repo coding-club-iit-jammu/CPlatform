@@ -63,6 +63,19 @@ let INIT_CONTENT_JAVA = `class Main {
         System.out.println("hello world");
     }
 };`;
+let CONTENT_CPP = `#include <iostream>
+using namespace std;
+int main () {
+    
+    cout << "hello world";
+    return 0;
+}`;
+let CONTENT_PY = `print('hello world')`;
+let CONTENT_JAVA = `class Main {
+  public static void main(String[] args) {
+      System.out.println("hello world");
+  }
+};`;
 let INIT_FOOTER_CPP = '// footer code';
 let INIT_FOOTER_JAVA = '// footer code';
 let INIT_FOOTER_PY = '# footer code';
@@ -83,6 +96,7 @@ export class IdeComponent implements OnInit {
   @ViewChild('languagesSelect', {static: false}) languagesSelect: ElementRef;
   // input
   @ViewChild('sampleInput', {static: true}) myInput: ElementRef;
+  
   // observable of the run request output
   public output$: Observable<string>;
   // current editor theme name
@@ -434,15 +448,15 @@ export class IdeComponent implements OnInit {
   public onClearContent() {
     if (this.codeEditor) {
       if (this.currentConfig.langMode == 'cpp14') {
-        //this.codeEditor.setValue(INIT_CONTENT_CPP);
+        this.codeEditor.setValue(CONTENT_CPP);
         if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_CPP);
         if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_CPP);
       } else if (this.currentConfig.langMode == 'java') {
-        this.codeEditor.setValue(INIT_CONTENT_JAVA);
+        this.codeEditor.setValue(CONTENT_JAVA);
         if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_JAVA);
         if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_JAVA);
       } else if (this.currentConfig.langMode == 'python3') {
-        this.codeEditor.setValue(INIT_CONTENT_PY);
+        this.codeEditor.setValue(CONTENT_PY);
         if (this.codeHeader) this.codeHeader.setValue(INIT_HEADER_PY);
         if (this.codeFooter) this.codeFooter.setValue(INIT_FOOTER_PY);
       }

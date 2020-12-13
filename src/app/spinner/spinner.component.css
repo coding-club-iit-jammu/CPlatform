@@ -1,3 +1,4 @@
+@import '~bootstrap/dist/css/bootstrap.min.css'; 
 #loader {
     bottom: 0;
     height: 175px;

@@ -1,4 +1,4 @@
-<p>
+<p style="margin: 0;">
     <mat-toolbar class="black z-depth-3">
         <div style="width: 100%;">
             <a href="/" ><span class="white-text">Coding Platform</span></a>
@@ -20,7 +20,7 @@
     <ng-template #reachServer>
         <!-- languages select -->
         <div class="row" style="width: 100%;">
-            <div class="col right-align">
+            <div class="col right">
                 <mat-button-toggle-group>
                     <mat-button-toggle color="warn" *ngFor="let theme of supportedThemes" (click)="onChangeTheme(theme); activatedTheme=theme;">
                             <span>{{theme}}</span>
@@ -29,7 +29,23 @@
             </div>
         </div>
         <div class="row" style="margin-bottom: 0;">
-            <div class="col" style="display: flex;">
+            <div class="col right" style="display: flex; margin-top: 30px;">
+                <div>
+                    <button type="button" mat-stroked-button style="margin-left: 15px;" (click)="onBeautifyContent()">
+                        Beautify
+                    </button>
+                </div>
+                <div>
+                    <button type="button" mat-stroked-button style="margin-left: 15px;" (click)="onClearContent()">
+                        <i class="fa fa-eraser"></i> Clear
+                    </button>
+                </div>
+                <button mat-stroked-button type="button" style="margin-left: 15px;" (click)="onClickDownload()">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </button>
+                <a download="code.txt" id="downloadlink" style="display: none">Download</a>
+            </div>
+            <div class="col" style="display: flex; margin-top: 20px;">
                 <!--
                     <div class="input-group-prepend">
                     <label class="input-group-text" for="languages-select">Languages</label>
@@ -60,81 +76,63 @@
                 <ng-template #loadingLanguages>
                     <span class="mx-2">Loading ...</span>
                 </ng-template>
-                <div>
-                    <button type="button" mat-stroked-button style="margin-left: 15px;" (click)="onBeautifyContent()">
-                        Beautify
-                    </button>
-                </div>
-                <div>
-                    <button type="button" mat-stroked-button style="margin-left: 15px;" (click)="onClearContent()">
-                        <i class="fa fa-eraser"></i> Clear
-                    </button>
-                </div>
                 
-                     
-
             </div>
-            <div class="col right-align">
-                
-                <button mat-stroked-button type="button" (click)="onClickDownload()">
-                    <i class="fa fa-download" aria-hidden="true"></i>
-                </button>
-                <a download="code.txt" id="downloadlink" style="display: none">Download</a>
-            </div>
+            
         </div>
     </ng-template>
     <div class="row" style="margin: 0;">
-        <div class="col">
+        <div class="col s12">
             <div class="code-editor-header" #codeEditorHeader [hidden]="!this.codeHeaderPresent"></div>
         </div>
     </div>
     <!-- the code editor -->
     <div class="row" style="margin: 0; ">
-        <div class="col">
+        <div class="col s12">
             <div class="code-editor" #codeEditor></div>
         </div>
     </div>
     <!-- the code editor footer -->
     <div class="row" >
-        <div class="col">
+        <div class="col s12">
             <div class="code-editor-footer" #codeEditorFooter [hidden]="!this.codeFooterPresent"></div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="height: 50px;">
         <div class="col">
             <button mat-stroked-button class="js-fileapi-wrapper upload-btn" (click)="clickUploadButton()" >Upload</button>
             <input id="getFile" type="file" multiple="false"  accept=".txt,.cpp,.py,.java,.jar"style="display:none">   
         </div>
-        <div class="col right-align">
+        <div class="col right ">
             <div style="margin-right: 20px;">
                 <button mat-stroked-button type="button" [ngClass]="{'cant-click' : cantReachServer}"
                     [disabled]="cantReachServer" (click)="onRunCode()" style="width: 100px;">
                     Run <i class="fa fa-play"></i>
                 </button>
-            </div>
-            <div class="spinner-border" role="status" *ngIf="running">
-                <span class="sr-only">Loading...</span>
+                <div class="progress" *ngIf="running">
+                    <div class="indeterminate"></div>
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <div class="label-box border">
-                <span class="mx-4 font-weight-light">Sample Input</span>
-            </div>
-            <textarea id="codeInput" class="form-control input" rows="5" 
+        <div style="border-style: solid; border-width: 2px 2px 0 2px; border-radius: 10px 10px 0 0;">
+            <span style="padding-left: 15px;">Sample Input</span> 
+        </div>
+        
+        <div class="col s12" style="height: 200px; border-style: solid; border-width: 2px;">
+            <textarea matInput id="codeInput" style="height: 100%; "  
             aria-label="input-textarea" #sampleInput></textarea>
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <div class="label-box border">
-                <span class="mx-4 font-weight-light">Output</span>
-            </div>
-            <textarea class="form-control output" rows="5" 
+        <div style="border-style: solid; border-width: 2px 2px 0 2px; border-radius: 10px 10px 0 0;">
+            <span style="padding-left: 15px;">Output</span> 
+        </div>
+        <div class="col s12" style="height: 200px; border-style: solid; border-width: 2px;">
+            <textarea matInput style="height: 100%;" 
             disabled="true" aria-label="output-textarea" 
-            [value]="(output$ | async) || ''">
-        </textarea>
+            [value]="(output$ | async) || ''"></textarea>
         </div>
     </div>
 </div>
