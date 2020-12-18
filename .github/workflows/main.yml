@@ -27,6 +27,7 @@ jobs:
           ${{ runner.os }}-node-    
     - name: Build
       run: |
+        git checkout fronend
         npm install
         npm run-script deploy
     - name: copy file
