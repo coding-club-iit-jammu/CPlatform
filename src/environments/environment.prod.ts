@@ -17,5 +17,5 @@ export const environment = {
     appId: "1:942333182454:web:eee953ca74939e7dcec7d7",
     measurementId: "G-B6JFTKYZ2J"
   },
-  serverUrl: "https://cplatform.azurewebsites.net",
+  serverUrl: "http://backend.cplatform.codingclub.abhis.me",
 };
